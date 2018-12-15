@@ -1,6 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, useReducer } from 'react'
 import * as S from './styles'
-
+import useMouse from '../../useHooks/useMouse'
 
 function linesReducer(state, {type, payload}) {
   let newLines = [...state]
@@ -16,63 +16,36 @@ function linesReducer(state, {type, payload}) {
 }
 
 
-
-function drawMainLine(ctx, line){
-  ctx.beginPath();
-  ctx.moveTo(line[0].x, line[0].y);
-  
-  for (let p = 0; p < line.length; p++) {
-    const point = line[p];
-    ctx.lineTo(point.x, point.y)
-    
-  }
-  ctx.stroke();
-  ctx.closePath();
-
-
-}
-
-
-
 function Canvas({currentTime, width, height}){
   const canvas = useRef(null);
-  const [ mousePosition, updateMousePosition ] =  useState(null)
-  const [ mouseStatus, updateMouseStatus ] =  useState(null)
-  const [ lines, updateLines ] =  useState([[]])
+  const {mousePosition, mouseStatus}   = useMouse() 
   const [ points, updatePoints ] =  useState([])
+  const [ lines, handleUpdateLines] = useReducer(linesReducer, [[]]);
 
-  function handleUpdateCanvas(){
-
+  useEffect(() => {
     const ctx = canvas && canvas.current.getContext("2d")
 
     if(lines && lines.length){
       
-
       for (let l = 0; l < lines.length; l++) {
         const line = lines[l]
         if(!line.length  || !line[0]) return
-
-        drawMainLine(ctx, line)
-
         
+        ctx.beginPath();
+        ctx.moveTo(line[0].x, line[0].y);
+        
+        for (let p = 0; p < line.length; p++) {
+          const point = line[p];
+          ctx.lineTo(point.x, point.y)
+          
+        }
+        ctx.stroke();
+        ctx.closePath();
+
+        // draw frattali
       }      
     }
-  }
-
-  useEffect(() => {
-    handleUpdateCanvas()
-    console.log({points, lines})
   }, [points]);
-
-
-  function handleUpdateLines(action){
-    const newLines = linesReducer(lines, action)
-    updateLines(newLines)
-  }
-
-  function handleUpdatePoints(){
-    updatePoints([...points, mousePosition].filter(e => e))
-  }
 
   useEffect(() => {
     const lastPoint = points && points.length && points[points.length -1 ]
@@ -82,9 +55,8 @@ function Canvas({currentTime, width, height}){
 
     if(isMousePositionIsChangedFromTheLastPoint){
       const lastLine = lines[lines.length -1]
-
       if(mouseStatus === "mousedown"){
-        handleUpdatePoints()
+        updatePoints([...points, mousePosition].filter(e => e))
         handleUpdateLines({type:'POINT_ADD', payload: mousePosition})
       }
       if(mouseStatus === "mouseup" && lastLine.length){
@@ -93,17 +65,7 @@ function Canvas({currentTime, width, height}){
     }
 
   }, [mousePosition]);
-
-
-  useEffect(() => {
-    window.addEventListener("mousedown", () => updateMouseStatus("mousedown"))
-    window.addEventListener("mouseup", () => updateMouseStatus("mouseup"))
-    window.addEventListener("mousemove", (e) =>  updateMousePosition({
-      x: e.clientX,
-      y: e.clientY
-    }))
-  }, []);
-
+  
 
   return(
     <S.CanvasWrapper>
@@ -112,6 +74,8 @@ function Canvas({currentTime, width, height}){
   )
 
 }
+
+
 
 
 export default Canvas
