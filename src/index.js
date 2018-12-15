@@ -1,8 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+
+import { Canvas, Timer, Sizeme } from './components';
 import * as serviceWorker from './serviceWorker';
+
+
+const App = () => <Sizeme>
+  {({ size }) => 
+    <Timer>{({currentTime}) =>
+      <Canvas {...size} currentTime={currentTime} />  
+    }</Timer>
+  }
+</Sizeme>
+
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
