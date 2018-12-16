@@ -8,7 +8,9 @@ import { useEffect, useState } from 'react'
 
   function handleMouseDown(){
     window.addEventListener("mousemove", handleMouseMove)
-    window.addEventListener("mouseup", handleMouseUp)    
+    window.addEventListener("mouseup", handleMouseUp) 
+    window.addEventListener("touchmove",handleMouseMove)
+    window.addEventListener("touchend", handleMouseUp) 
     updateMouseStatus("mousedown")
   }
 
@@ -18,19 +20,25 @@ import { useEffect, useState } from 'react'
 
   function handleMouseMove(e){
     updateMousePosition ({
-      x: e.clientX,
-      y: e.clientY
+      x: e.clientX || e.touches[0].clientX,
+      y: e.clientY || e.touches[0].clientY
     })
   }
 
 
   useEffect(() => {
     window.addEventListener("mousedown", handleMouseDown)
+    window.addEventListener("touchstart", handleMouseDown)
     
     return(() => {
       window.removeEventListener("mousedown", handleMouseDown)
+      window.addEventListener("touchstart", handleMouseDown)
+
+
       window.removeEventListener("mouseup", handleMouseUp)    
+      window.removeEventListener("touchend", handleMouseUp)    
       window.removeEventListener("mousemove",handleMouseMove)
+      window.removeEventListener("touchmove",handleMouseMove)
     })
 
   }, []);
