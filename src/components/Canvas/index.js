@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useReducer } from 'react'
 import * as S from './styles'
-import useMouse from '../../useHooks/useMouse'
+import { useMouse, useCanvasCenter } from '../../useHooks'
 
 function linesReducer(state, {type, payload}) {
   let newLines = [...state]
@@ -15,12 +15,9 @@ function linesReducer(state, {type, payload}) {
   }
 }
 
-
 function drawMain(ctx, line){
   ctx.beginPath();
-        
   for (let p = 0; p < line.length; p++) {
-    // point
     const { x: xp, y: yp } = line[p];
     ctx.lineTo(xp, yp)
   }
@@ -30,49 +27,34 @@ function drawMain(ctx, line){
 }
 
 
-function getCartesianPoint(point, center){
-  // point
+function getCartesianPoint(point, canvasCenter){
   const { x: xp, y: yp } = point;
-
-  // center
-  const { x: xc, y: yc } = center;
-
+  const { x: xc, y: yc } = canvasCenter;
   return {
     x: xp - xc,
     y: yc - yp
   }
 }
 
-function getCanvasPoint(point, center){
-  // point
+function getCanvasPoint(point, canvasCenter){
   const { x: xp, y: yp } = point;
-
-  // center
-  const { x: xc, y: yc } = center;
-
+  const { x: xc, y: yc } = canvasCenter;
   return {
     x: xc + xp,
     y: yc - yp
   }
 }
 
-function getAngle(x,y) {
-  const alpha = Math.atan2(y, x) * 180 / Math.PI;
-  return alpha < 0 ? 180 + (180 + alpha) : alpha
-}
 
-
-function drawFrattali({ctx, line, frattali, center}){
-    
+function drawFrattali({ctx, line, frattali, canvasCenter}){
           
     for (let p = 0; p < line.length; p++) {
-
       // CARTESIANO/////////////
-      const { x, y } = getCartesianPoint(line[p], center)
+      const { x, y } = getCartesianPoint(line[p], canvasCenter)
       const radius = Math.sqrt(Math.abs(Math.pow(x, 2) + Math.pow(y,2)))
-      const pointAngle = getAngle(x,y)
+      const alpha = Math.atan2(y, x) * 180 / Math.PI;
+      const pointAngle = alpha < 0 ? 180 + (180 + alpha) : alpha
       const angles = Array.from({length: frattali}, (e, index) =>( 360 / frattali)*(index + 1))
-      
       
       // beta: da rifattorizzare correttamente
       
@@ -85,7 +67,7 @@ function drawFrattali({ctx, line, frattali, center}){
         const frattalePoint = getCanvasPoint({
           x: frattaleX,
           y: frattaleY
-        }, center)
+        }, canvasCenter)
 
         
         ctx.moveTo(frattalePoint.x,frattalePoint.y);
@@ -97,27 +79,16 @@ function drawFrattali({ctx, line, frattali, center}){
     }
 }
 
-function Canvas({currentTime, width, height}){
+
+
+function Canvas({width, height}){
   const canvas = useRef(null);
   const { mousePosition, mouseStatus }   = useMouse() 
+  const { canvasCenter } =  useCanvasCenter(canvas)
   const [ points, updatePoints ] =  useState([])
-  const [ center, updateCenter ] =  useState([])
-  const [ frattali, updateFrattali ] =  useState(1)
+  const [ frattali, updateFrattali ] =  useState(10)
   const [ lines, handleUpdateLines] = useReducer(linesReducer, [[]]);
 
-
-  useEffect(() => {
-    const myCanvas = canvas && canvas.current
-    const ctx = canvas && canvas.current.getContext("2d")
-    const { offsetHeight, offsetWidth, offsetTop,offsetLeft } = myCanvas
-
-    const newCenter = {
-      y: (offsetHeight / 2) - offsetTop,
-      x: (offsetWidth / 2) + offsetLeft,
-    }
-
-    updateCenter(newCenter)
-  }, [canvas && canvas.current]);
 
   useEffect(() => {
     const ctx = canvas && canvas.current.getContext("2d")
@@ -126,7 +97,7 @@ function Canvas({currentTime, width, height}){
         const line = lines[l]
         if(!line.length  || !line[0]) return
         drawMain(ctx, line)
-        drawFrattali({ctx, line, frattali, center})
+        drawFrattali({ctx, line, frattali, canvasCenter})
       }      
     }
   }, [points]);
@@ -153,7 +124,6 @@ function Canvas({currentTime, width, height}){
 
   return(
     <S.CanvasWrapper>
-
       <S.CanvasInner>
         <canvas id="canvas" width={width} height={height}  ref={canvas} />
         <S.CanvasValue>{frattali}</S.CanvasValue>

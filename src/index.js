@@ -1,15 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { Canvas, Timer, Sizeme } from './components';
+import { Canvas, Sizeme } from './components';
 import * as serviceWorker from './serviceWorker';
 
 
 const App = () => <Sizeme>
   {({ size }) => 
-    <Timer>{({currentTime}) =>
-      <Canvas {...size} currentTime={currentTime} />  
-    }</Timer>
+    <Canvas {...size} />  
   }
 </Sizeme>
 
