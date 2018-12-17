@@ -20,8 +20,8 @@ import { useEffect, useState } from 'react'
 
   function handleMouseMove(e){
     updateMousePosition ({
-      x: e.clientX || e.touches[0].clientX,
-      y: e.clientY || e.touches[0].clientY
+      x: e.clientX ||( e.touches && e.touches[0].clientX),
+      y: e.clientY || (e.touches && e.touches[0].clientY)
     })
   }
 
