@@ -27,7 +27,7 @@ function Canvas({width, height}){
   const { canvasCenter } =  useCanvasCenter(canvas)
   const [ points, updatePoints ] =  useState([])
   const [ lines, handleUpdateLines] = useReducer(linesReducer, [[]]);
-  const [ frattali, updateFrattali ] =  useState(10)
+  const [ frattali, updateFrattali ] =  useState(50)
 
   useEffect(() => {
     const ctx = canvas && canvas.current.getContext("2d")
