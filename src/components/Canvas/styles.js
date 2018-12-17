@@ -13,32 +13,48 @@ export const CanvasInner = styled.div`
 `
 
 export const CanvasPanel = styled.div`
-  display: flex;
   background: #ac00ff;
   color: white;
-  padding: 1rem;
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  justify-content: space-around;
+  display: flex;
+`
+
+export const CanvasControllerWrapper = styled.div`
+  display: flex;
+  color: #ac00ff;
+  margin: .5rem;
 `
 export const CanvasController = styled.div`
   cursor: pointer;
-  background: white;
-  color:  #ac00ff;
-  min-width: 1.5rem;
-  height: 1.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
+  color:  #ac00ff;
+  border: 1px solid white;
+  min-width: 1.5rem;
+  height: 1.5rem;
+  background-color: white;
+  ${props => props.isActive && `
+    background-color:  #ac00ff;
+    color: white;
+    border: 1px solid white;
+  
+  `}
+
+  &:hover{
+    background-color:  #ac00ff;
+    color: white;
+    border: 1px solid white;
+  }
 `
 
 export const CanvasValue = styled.div`
   position: absolute;
   left: 50%;
   top: 50%;
-  transform: translate(-50%,-50%);
   transform: translate(-50%,-50%);
   font-size: 1.5rem;
   border-radius: 50%;

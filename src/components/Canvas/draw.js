@@ -17,9 +17,26 @@ function getCanvasPoint(point, canvasCenter){
 }
 
 
+function drawEffect({d, ctx, effect,frattalePoint}){
+
+  if(effect === 'noise'){
+    if(Math.random(0,1)*100 > 99.5) {
+      ctx.lineTo(frattalePoint.x + Math.random(-1,1)* 30 ,frattalePoint.y+ Math.random(-1,1)* 30);
+
+    }
+  }
+
+  if(effect === 'tree'){
+    if(d % 30 === 0){
+      ctx.lineTo(frattalePoint.x + Math.random(-1,1)* 20 ,frattalePoint.y+ Math.random(-1,1)* 20);
+    }
+    
+  }
+
+}
 
 
-export const drawFrattali = ({ctx, line, frattali, canvasCenter}) => {
+export const drawFrattali = ({ctx, line, frattali, canvasCenter, effect}) => {
   
   let frattaliLines = Array.from({length: frattali}, (e) => [])
 
@@ -50,6 +67,12 @@ export const drawFrattali = ({ctx, line, frattali, canvasCenter}) => {
     for (let d = 0; d < frattaleLine.length; d++) {
       const frattalePoint = frattaleLine[d];
       ctx.lineTo(frattalePoint.x,frattalePoint.y);
+
+      if(effect){
+        drawEffect({d, ctx, effect, frattalePoint})
+      }
+
+      
       ctx.strokeStyle="#ac00ff"
     }
     ctx.stroke();

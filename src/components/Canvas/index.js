@@ -26,8 +26,13 @@ function Canvas({width, height}){
   const { mousePosition, mouseStatus }   = useMouse() 
   const { canvasCenter } =  useCanvasCenter(canvas)
   const [ points, updatePoints ] =  useState([])
-  const [ lines, handleUpdateLines] = useReducer(linesReducer, [[]]);
-  const [ frattali, updateFrattali ] =  useState(50)
+  const [ lines, updateLines] = useReducer(linesReducer, [[]]);
+  const [ frattali, updateFrattali ] =  useState(30)
+  const [ effect, updateEffect ] =  useState(null)
+
+
+
+
 
   useEffect(() => {
     const ctx = canvas && canvas.current.getContext("2d")
@@ -35,7 +40,7 @@ function Canvas({width, height}){
       for (let l = 0; l < lines.length; l++) {
         const line = lines[l]
         if(!line.length  || !line[0]) return
-        drawFrattali({ctx, line, frattali, canvasCenter})
+        drawFrattali({ctx, line, frattali, canvasCenter, effect})
       }      
     }
   }, [points]);
@@ -50,10 +55,10 @@ function Canvas({width, height}){
       const lastLine = lines[lines.length -1]
       if(mouseStatus === "mousedown"){
         updatePoints([...points, mousePosition].filter(e => e))
-        handleUpdateLines({type:'POINT_ADD', payload: mousePosition})
+        updateLines({type:'POINT_ADD', payload: mousePosition})
       }
       if(mouseStatus === "mouseup" && lastLine.length){
-        handleUpdateLines({type:'LINE_ADD'})
+        updateLines({type:'LINE_ADD'})
       }
     }
 
@@ -63,7 +68,7 @@ function Canvas({width, height}){
     const ctx = canvas && canvas.current.getContext("2d")
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     updatePoints([])
-    handleUpdateLines({type:'CLEAR'})
+    updateLines({type:'CLEAR'})
     console.log(lines)
   }
 
@@ -71,7 +76,12 @@ function Canvas({width, height}){
     clearCanvas()
     updateFrattali(value)
   }
-  
+  function handleUpdateEffect(effect){
+    clearCanvas()
+    updateEffect(effect)
+  }
+
+
 
   return(
     <S.CanvasWrapper>
@@ -79,11 +89,25 @@ function Canvas({width, height}){
         <canvas id="canvas" width={width} height={height}  ref={canvas} />
         <S.CanvasValue>{frattali}</S.CanvasValue>
       </S.CanvasInner>
+
       <S.CanvasPanel>
-        <S.CanvasController onClick={() => handleUpdateFrattali(frattali-1)}>-</S.CanvasController>
-        <S.CanvasController onClick={clearCanvas}>Repaint</S.CanvasController>
-        <S.CanvasController onClick={() => handleUpdateFrattali(frattali+1)}>+</S.CanvasController>
+        <S.CanvasControllerWrapper>
+          <S.CanvasController onClick={() => handleUpdateFrattali(frattali-1)}>-</S.CanvasController>
+          <S.CanvasController onClick={() => handleUpdateFrattali(frattali+1)}>+</S.CanvasController>
+        </S.CanvasControllerWrapper>
+        
+        <S.CanvasControllerWrapper>
+          <S.CanvasController onClick={clearCanvas}>Repaint</S.CanvasController>
+        </S.CanvasControllerWrapper>
+
+        <S.CanvasControllerWrapper>
+          <S.CanvasController isActive={effect === "noise"} onClick={() => updateEffect("noise")}>Noise</S.CanvasController>
+          <S.CanvasController isActive={effect === "tree"} onClick={() => updateEffect("tree")}>Tree</S.CanvasController>
+          <S.CanvasController isActive={effect === null} onClick={() => updateEffect(null)}>No Effect</S.CanvasController>
+        </S.CanvasControllerWrapper>
+
       </S.CanvasPanel>
+
     </S.CanvasWrapper> 
   )
 
