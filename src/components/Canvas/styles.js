@@ -27,7 +27,7 @@ export const CanvasController = styled.div`
   cursor: pointer;
   background: white;
   color:  #ac00ff;
-  width: 1.5rem;
+  min-width: 1.5rem;
   height: 1.5rem;
   display: flex;
   align-items: center;
