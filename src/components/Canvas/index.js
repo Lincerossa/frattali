@@ -65,11 +65,8 @@ function Canvas({width, height}){
   }, [mousePosition]);
 
   function clearCanvas(){
-    const ctx = canvas && canvas.current.getContext("2d")
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     updatePoints([])
     updateLines({type:'CLEAR'})
-    console.log(lines)
   }
 
   function handleUpdateFrattali(value){
@@ -80,8 +77,6 @@ function Canvas({width, height}){
     clearCanvas()
     updateEffect(effect)
   }
-
-
 
   return(
     <S.CanvasWrapper>
