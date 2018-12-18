@@ -101,9 +101,9 @@ function Canvas({width, height}){
         </S.CanvasControllerWrapper>
 
         <S.CanvasControllerWrapper>
-          <S.CanvasController isActive={effect === "noise"} onClick={() => updateEffect("noise")}>Noise</S.CanvasController>
-          <S.CanvasController isActive={effect === "tree"} onClick={() => updateEffect("tree")}>Tree</S.CanvasController>
-          <S.CanvasController isActive={effect === null} onClick={() => updateEffect(null)}>No Effect</S.CanvasController>
+          <S.CanvasController isActive={effect === "noise"} onClick={() => handleUpdateEffect("noise")}>Noise</S.CanvasController>
+          <S.CanvasController isActive={effect === "tree"} onClick={() => handleUpdateEffect("tree")}>Tree</S.CanvasController>
+          <S.CanvasController isActive={effect === null} onClick={() => handleUpdateEffect(null)}>No Effect</S.CanvasController>
         </S.CanvasControllerWrapper>
 
       </S.CanvasPanel>
