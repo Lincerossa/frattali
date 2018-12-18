@@ -36,7 +36,7 @@ function drawEffect({d, ctx, effect,frattalePoint}){
 }
 
 
-export const drawFrattali = ({ctx, line, frattali, canvasCenter, effect}) => {
+export const drawFrattali = ({ctx, line, frattali, canvasCenter, effect, color}) => {
   
   let frattaliLines = Array.from({length: frattali}, (e) => [])
 
@@ -73,7 +73,7 @@ export const drawFrattali = ({ctx, line, frattali, canvasCenter, effect}) => {
       }
 
       
-      ctx.strokeStyle="#ac00ff"
+      ctx.strokeStyle=color
     }
     ctx.stroke();
     ctx.closePath();  

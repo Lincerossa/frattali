@@ -1,4 +1,8 @@
 import React, { useState, useRef, useEffect, useReducer } from 'react'
+
+import ColorPicker from '../ColorPicker'
+import ModalOverlay from '../ModalOverlay'
+
 import * as S from './styles'
 import { useMouse, useCanvasCenter } from '../../useHooks'
 import { drawFrattali } from './draw'
@@ -29,8 +33,8 @@ function Canvas({width, height}){
   const [ lines, updateLines] = useReducer(linesReducer, [[]]);
   const [ frattali, updateFrattali ] =  useState(30)
   const [ effect, updateEffect ] =  useState(null)
-
-
+  const [ color, updateColor ] = useState("#ac00ff")
+  const [ isModalOpen, toggleModal ] = useState(0)
 
 
 
@@ -40,7 +44,7 @@ function Canvas({width, height}){
       for (let l = 0; l < lines.length; l++) {
         const line = lines[l]
         if(!line.length  || !line[0]) return
-        drawFrattali({ctx, line, frattali, canvasCenter, effect})
+        drawFrattali({ctx, line, frattali, canvasCenter, effect, color})
       }      
     }
   }, [points]);
@@ -78,31 +82,42 @@ function Canvas({width, height}){
     updateEffect(effect)
   }
 
+  function handleSetColor(color){
+    clearCanvas()
+    updateColor(color)
+  }
+
   return(
     <S.CanvasWrapper>
       <S.CanvasInner>
         <canvas id="canvas" width={width} height={height}  ref={canvas} />
-        <S.CanvasValue>{frattali}</S.CanvasValue>
+        <S.CanvasValue onClick={() => toggleModal(true)}>{frattali}</S.CanvasValue>
       </S.CanvasInner>
+      {
+        isModalOpen && <ModalOverlay>
+        <S.CanvasPanel>
+          <S.ModalOverlayClose onClick={() => toggleModal(false)}>x</S.ModalOverlayClose>
+          <S.CanvasControllerWrapper>
+            <S.CanvasController onClick={() => handleUpdateFrattali(frattali-1)}>-</S.CanvasController>
+            <S.CanvasController onClick={() => handleUpdateFrattali(frattali+1)}>+</S.CanvasController>
+          </S.CanvasControllerWrapper>
+          
+          <S.CanvasControllerWrapper>
+            <S.CanvasController onClick={clearCanvas}>Repaint</S.CanvasController>
+          </S.CanvasControllerWrapper>
 
-      <S.CanvasPanel>
-        <S.CanvasControllerWrapper>
-          <S.CanvasController onClick={() => handleUpdateFrattali(frattali-1)}>-</S.CanvasController>
-          <S.CanvasController onClick={() => handleUpdateFrattali(frattali+1)}>+</S.CanvasController>
-        </S.CanvasControllerWrapper>
-        
-        <S.CanvasControllerWrapper>
-          <S.CanvasController onClick={clearCanvas}>Repaint</S.CanvasController>
-        </S.CanvasControllerWrapper>
+          <S.CanvasControllerWrapper>
+            <S.CanvasController isActive={effect === "noise"} onClick={() => handleUpdateEffect("noise")}>Noise</S.CanvasController>
+            <S.CanvasController isActive={effect === "tree"} onClick={() => handleUpdateEffect("tree")}>Tree</S.CanvasController>
+            <S.CanvasController isActive={effect === null} onClick={() => handleUpdateEffect(null)}>No Effect</S.CanvasController>
+          </S.CanvasControllerWrapper>
+          <S.CanvasControllerWrapper>
+            <ColorPicker color={color} updateColor={handleSetColor} />
+          </S.CanvasControllerWrapper>
+        </S.CanvasPanel>
 
-        <S.CanvasControllerWrapper>
-          <S.CanvasController isActive={effect === "noise"} onClick={() => handleUpdateEffect("noise")}>Noise</S.CanvasController>
-          <S.CanvasController isActive={effect === "tree"} onClick={() => handleUpdateEffect("tree")}>Tree</S.CanvasController>
-          <S.CanvasController isActive={effect === null} onClick={() => handleUpdateEffect(null)}>No Effect</S.CanvasController>
-        </S.CanvasControllerWrapper>
-
-      </S.CanvasPanel>
-
+      </ModalOverlay>}
+      
     </S.CanvasWrapper> 
   )
 

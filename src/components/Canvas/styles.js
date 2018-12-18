@@ -7,8 +7,8 @@ export const CanvasWrapper = styled.div`
 
 export const CanvasInner = styled.div`
   height: calc(100vh);
+  width: calc(100vw);
   position: relative;
-
   background-color: rgb(29, 24, 35);
 `
 
@@ -16,10 +16,19 @@ export const CanvasPanel = styled.div`
   background: #ac00ff;
   color: white;
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  display: flex;
+  left: 50%;
+  top: 50%;
+  padding: 1rem;
+  transform: translate(-50%,-50%);
+`
+
+export const ModalOverlayClose = styled.div`
+  background: #ac00ff;
+  color: white;
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  font-size: 1rem;
 `
 
 export const CanvasControllerWrapper = styled.div`
@@ -66,3 +75,5 @@ export const CanvasValue = styled.div`
   background: #ac00ff;
   color: white;
 `
+
+export const ColorPicker = styled.div``
