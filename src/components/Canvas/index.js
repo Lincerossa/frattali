@@ -27,79 +27,58 @@ function linesReducer(state = defaultLine, {type, payload}) {
 
 function Canvas({width, height}){
   const canvas = useRef(null);
-  const { mousePosition, mouseStatus }   = useMouse() 
+  const { mousePosition, mouseStatus }  = useMouse() 
   const { canvasCenter } =  useCanvasCenter(canvas)
-  const [ points, updatePoints ] =  useState([])
-  const [ lines, updateLines] = useReducer(linesReducer, [[]]);
-  const [ frattali, updateFrattali ] =  useState(30)
-  const [ effect, updateEffect ] =  useState(null)
-  const [ color, updateColor ] = useState("#ac00ff")
-  const [ isModalOpen, toggleModal ] = useState(0)
-
+  const [ points, setPoints ] =  useState([])
+  const [ lines, setLines] = useReducer(linesReducer, [[]]);
+  const [ frattali, setFrattali ] =  useState(2)
+  const [ effect, setEffect ] =  useState(null)
+  const [ color, setColor ] = useState("white")
+  const [ isModalOpen, setModal ] = useState(0)
 
 
   useEffect(() => {
-    const ctx = canvas && canvas.current.getContext("2d")
-    if(lines && lines.length){
-      for (let l = 0; l < lines.length; l++) {
-        const line = lines[l]
-        if(!line.length  || !line[0]) return
-        drawFrattali({ctx, line, frattali, canvasCenter, effect, color})
-      }      
-    }
+    for (let l = 0; l < lines.length; l++) {
+      const line = lines[l]
+      if(!line.length  || !line[0]) return
+      drawFrattali({ctx: canvas.current.getContext("2d"), line, frattali, canvasCenter, effect, color})
+    }  
   }, [points]);
 
   useEffect(() => {
-    const lastPoint = points && points.length && points[points.length -1 ]
-    const isMousePositionIsChangedFromTheLastPoint = !lastPoint || 
-      lastPoint.x !== mousePosition.x ||
-      lastPoint.y !== mousePosition.y
-
-    if(isMousePositionIsChangedFromTheLastPoint){
-      const lastLine = lines[lines.length -1]
-      if(mouseStatus === "mousedown"){
-        updatePoints([...points, mousePosition].filter(e => e))
-        updateLines({type:'POINT_ADD', payload: mousePosition})
-      }
-      if(mouseStatus === "mouseup" && lastLine.length){
-        updateLines({type:'LINE_ADD'})
-      }
+    if(mouseStatus === "mousedown"){
+      setPoints([...points, mousePosition].filter(e => e))
+      setLines({type:'POINT_ADD', payload: mousePosition})
     }
-
+    if(mouseStatus === "mouseup" && lines[lines.length -1].length){
+      setLines({type:'LINE_ADD'})
+    }
   }, [mousePosition]);
 
   function clearCanvas(){
-    updatePoints([])
-    updateLines({type:'CLEAR'})
-  }
-
-  function handleUpdateFrattali(value){
-    clearCanvas()
-    updateFrattali(value)
-  }
-  function handleUpdateEffect(effect){
-    clearCanvas()
-    updateEffect(effect)
-  }
-
-  function handleSetColor(color){
-    clearCanvas()
-    updateColor(color)
+    setPoints([])
+    setLines({type:'CLEAR'})
   }
 
   return(
     <S.CanvasWrapper>
       <S.CanvasInner>
         <canvas id="canvas" width={width} height={height}  ref={canvas} />
-        <S.CanvasValue onClick={() => toggleModal(true)}>{frattali}</S.CanvasValue>
+        <S.CanvasValue onClick={() => setModal(true)}>{frattali}</S.CanvasValue>
       </S.CanvasInner>
       {
         isModalOpen && <ModalOverlay>
         <S.CanvasPanel>
-          <S.ModalOverlayClose onClick={() => toggleModal(false)}>x</S.ModalOverlayClose>
+          <S.ModalOverlayClose onClick={() => setModal(false)}>x</S.ModalOverlayClose>
           <S.CanvasControllerWrapper>
-            <S.CanvasController onClick={() => handleUpdateFrattali(frattali-1)}>-</S.CanvasController>
-            <S.CanvasController onClick={() => handleUpdateFrattali(frattali+1)}>+</S.CanvasController>
+            <S.CanvasController onClick={() => {
+              clearCanvas()
+              setFrattali(frattali-1)}
+            }>-</S.CanvasController>
+            <S.CanvasController onClick={() => {
+              clearCanvas()
+              setFrattali(frattali+1)}
+            }>+</S.CanvasController>
           </S.CanvasControllerWrapper>
           
           <S.CanvasControllerWrapper>
@@ -107,12 +86,24 @@ function Canvas({width, height}){
           </S.CanvasControllerWrapper>
 
           <S.CanvasControllerWrapper>
-            <S.CanvasController isActive={effect === "noise"} onClick={() => handleUpdateEffect("noise")}>Noise</S.CanvasController>
-            <S.CanvasController isActive={effect === "tree"} onClick={() => handleUpdateEffect("tree")}>Tree</S.CanvasController>
-            <S.CanvasController isActive={effect === null} onClick={() => handleUpdateEffect(null)}>No Effect</S.CanvasController>
+            <S.CanvasController isActive={effect === "noise"} onClick={() => {
+              clearCanvas()
+              setEffect("noise")}
+            }>Noise</S.CanvasController>
+            <S.CanvasController isActive={effect === "tree"} onClick={() => {
+              clearCanvas()
+              setEffect("tree")}
+            }>Tree</S.CanvasController>
+            <S.CanvasController isActive={!effect} onClick={() => {
+              clearCanvas()
+              setEffect(null)}
+            }>no effect</S.CanvasController>
           </S.CanvasControllerWrapper>
           <S.CanvasControllerWrapper>
-            <ColorPicker color={color} updateColor={handleSetColor} />
+            <ColorPicker color={color} setColor={color => {
+              clearCanvas()
+              setColor(color)
+            }} />
           </S.CanvasControllerWrapper>
         </S.CanvasPanel>
 

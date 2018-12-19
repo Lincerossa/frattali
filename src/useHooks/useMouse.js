@@ -2,8 +2,8 @@
 import { useEffect, useState } from 'react'
 
  export default () => {
-  const [ mousePosition, updateMousePosition ] =  useState(null)
-  const [ mouseStatus, updateMouseStatus ] =  useState(null)
+  const [ mousePosition, setMousePosition ] =  useState(null)
+  const [ mouseStatus, setMouseStatus ] =  useState(null)
 
 
   function handleMouseDown(){
@@ -11,15 +11,15 @@ import { useEffect, useState } from 'react'
     window.addEventListener("mouseup", handleMouseUp) 
     window.addEventListener("touchmove",handleMouseMove)
     window.addEventListener("touchend", handleMouseUp) 
-    updateMouseStatus("mousedown")
+    setMouseStatus("mousedown")
   }
 
   function handleMouseUp(){
-    updateMouseStatus("mouseup")
+    setMouseStatus("mouseup")
   }
 
   function handleMouseMove(e){
-    updateMousePosition ({
+    setMousePosition ({
       x: e.clientX ||( e.touches && e.touches[0].clientX),
       y: e.clientY || (e.touches && e.touches[0].clientY)
     })

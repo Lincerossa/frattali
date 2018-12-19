@@ -2,12 +2,13 @@
 import { useEffect, useState } from 'react'
 
 export default (canvas) => {
- const [ canvasCenter, updateCanvasCenter ] =  useState(null)
+ const [ canvasCenter, setCanvasCenter ] =  useState(null)
 
  useEffect(() => {
-   console.log({canvas})
-  const { offsetHeight, offsetWidth, offsetTop,offsetLeft } = canvas && canvas.current
-  updateCanvasCenter({
+
+  const { offsetHeight, offsetWidth, offsetTop, offsetLeft } = canvas && canvas.current
+  
+  setCanvasCenter({
     y: (offsetHeight / 2) - offsetTop,
     x: (offsetWidth / 2) + offsetLeft,
   })
