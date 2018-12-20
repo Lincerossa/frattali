@@ -36,16 +36,19 @@ function drawEffect({f, ctx, effect,frattalePoint, lastPoint, color}){
     ctx.stroke();
     ctx.closePath();  
     
+   
     const dx = frattalePoint.x - lastPoint.x;
     const dy = frattalePoint.y - lastPoint.y;
     const d = dx * dx + dy * dy;
-  
     if (d < 1000) {
+      console.log({lastPoint})
       ctx.beginPath();
-      ctx.strokeStyle = color;
       ctx.moveTo(lastPoint.x + (dx * 0.2), lastPoint.y + (dy * 0.2));
       ctx.lineTo(frattalePoint.x - (dx * 0.2), frattalePoint.y - (dy * 0.2));
+      ctx.strokeStyle = color;
       ctx.stroke();
+      ctx.closePath();  
+    
     }
   }
 
@@ -85,18 +88,19 @@ export const drawFrattali = ({ctx, line, frattali, canvasCenter, effect, color})
     const frattaleLine = frattaliLines[i];
 
     
-
     ctx.beginPath();
     for (let f = 0; f < frattaleLine.length; f++) {
       const frattalePoint = frattaleLine[f];
       const lastPoint = frattaleLine[frattaleLine.length-1]
-      ctx.lineTo(frattalePoint.x,frattalePoint.y);
+
+      if(effect !== "japanese") ctx.lineTo(frattalePoint.x,frattalePoint.y);
 
       if(effect){
         drawEffect({f, ctx, effect, frattalePoint,lastPoint, color })
+      
       }
 
-      
+
       ctx.strokeStyle=color
     }
     ctx.stroke();
