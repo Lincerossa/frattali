@@ -79,3 +79,27 @@ export const drawFrattali = ({ctx, line, frattali, canvasCenter, effect, color})
     ctx.closePath();  
   }
 }
+
+// ctx.beginPath();
+// for (let f = 0; f < frattaleLine.length; f++) {
+//   const frattalePoint = frattaleLine[f];
+
+
+//   ctx.stroke();
+//   ctx.closePath();  
+
+//   var lastPoint = frattaleLine[frattaleLine.length-1];
+  
+//   const dx = frattalePoint.x - lastPoint.x;
+//   const dy = frattalePoint.y - lastPoint.y;
+//   const d = dx * dx + dy * dy;
+
+//   if (d < 1000) {
+//     ctx.beginPath();
+//     ctx.strokeStyle = color;
+//     ctx.moveTo(lastPoint.x + (dx * 0.2), lastPoint.y + (dy * 0.2));
+//     ctx.lineTo(frattalePoint.x - (dx * 0.2), frattalePoint.y - (dy * 0.2));
+//     ctx.stroke();
+//   }
+
+// }

@@ -18,6 +18,8 @@ const backdropStyle = {
   zIndex: "auto",
   backgroundColor: "#000",
   opacity: 0.5,
+  cursor: "pointer",
+  
 }
 
 class ModalOverlay extends Component {
@@ -32,15 +34,19 @@ class ModalOverlay extends Component {
   }
 
   render() {
-    const { children } = this.props
+    const { children, handleClose } = this.props
     return (
       <Modal
         aria-labelledby="modal-label"
         style={modalStyle}
         backdropStyle={backdropStyle}
         show
+        onHide={() => handleClose(false)}
       >
-      {children}
+        <S.ModalInner>
+          <S.Close  onClick={() => handleClose(false)}>X</S.Close>
+          {children}
+        </S.ModalInner>
       </Modal>
     )
   }

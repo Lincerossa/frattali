@@ -1,14 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { Canvas, Sizeme } from './components';
+import { Sizeme } from './headless';
 import * as serviceWorker from './serviceWorker';
-
+import Art from './page/Art'
 
 const App = () => <Sizeme>
   {({ size }) => 
-    <Canvas {...size} />  
-  }
+    <Art {...size} />  
+  } 
 </Sizeme>
 
 

@@ -1,3 +1,3 @@
-export { default as Canvas } from './Canvas'
-export { default as Timer } from './Headless/Timer'
-export { default as Sizeme } from './Headless/Sizeme'
+export { default as ColorPicker } from './ColorPicker'
+export { default as ModalOverlay } from './ModalOverlay'
+export { default as Panel } from './Panel'
