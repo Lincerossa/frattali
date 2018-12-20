@@ -7,7 +7,7 @@ function getCartesianPoint(point, canvasCenter){
   }
 }
 
-function getCanvasPoint(point, canvasCenter){
+function getCanvasPoint(point, canvasCenter, ){
   const { x: xp, y: yp } = point;
   const { x: xc, y: yc } = canvasCenter;
   return {
@@ -17,7 +17,7 @@ function getCanvasPoint(point, canvasCenter){
 }
 
 
-function drawEffect({d, ctx, effect,frattalePoint}){
+function drawEffect({f, ctx, effect,frattalePoint, lastPoint, color}){
 
   if(effect === 'noise'){
     if(Math.random(0,1)*100 > 99.5) {
@@ -27,10 +27,26 @@ function drawEffect({d, ctx, effect,frattalePoint}){
   }
 
   if(effect === 'tree'){
-    if(d % 30 === 0){
+    if(f % 30 === 0){
       ctx.lineTo(frattalePoint.x + Math.random(-1,1)* 20 ,frattalePoint.y+ Math.random(-1,1)* 20);
     }
     
+  }
+  if(effect === "japanese"){
+    ctx.stroke();
+    ctx.closePath();  
+    
+    const dx = frattalePoint.x - lastPoint.x;
+    const dy = frattalePoint.y - lastPoint.y;
+    const d = dx * dx + dy * dy;
+  
+    if (d < 1000) {
+      ctx.beginPath();
+      ctx.strokeStyle = color;
+      ctx.moveTo(lastPoint.x + (dx * 0.2), lastPoint.y + (dy * 0.2));
+      ctx.lineTo(frattalePoint.x - (dx * 0.2), frattalePoint.y - (dy * 0.2));
+      ctx.stroke();
+    }
   }
 
 }
@@ -61,18 +77,23 @@ export const drawFrattali = ({ctx, line, frattali, canvasCenter, effect, color})
     }
   }
 
+
+  
+
+
   for (let i = 0; i < frattaliLines.length; i++) {
     const frattaleLine = frattaliLines[i];
 
     
 
     ctx.beginPath();
-    for (let d = 0; d < frattaleLine.length; d++) {
-      const frattalePoint = frattaleLine[d];
+    for (let f = 0; f < frattaleLine.length; f++) {
+      const frattalePoint = frattaleLine[f];
+      const lastPoint = frattaleLine[frattaleLine.length-1]
       ctx.lineTo(frattalePoint.x,frattalePoint.y);
 
       if(effect){
-        drawEffect({d, ctx, effect, frattalePoint})
+        drawEffect({f, ctx, effect, frattalePoint,lastPoint, color })
       }
 
       
@@ -83,26 +104,7 @@ export const drawFrattali = ({ctx, line, frattali, canvasCenter, effect, color})
   }
 }
 
-// ctx.beginPath();
-// for (let f = 0; f < frattaleLine.length; f++) {
-//   const frattalePoint = frattaleLine[f];
 
 
-//   ctx.stroke();
-//   ctx.closePath();  
-
-//   var lastPoint = frattaleLine[frattaleLine.length-1];
-  
-//   const dx = frattalePoint.x - lastPoint.x;
-//   const dy = frattalePoint.y - lastPoint.y;
-//   const d = dx * dx + dy * dy;
-
-//   if (d < 1000) {
-//     ctx.beginPath();
-//     ctx.strokeStyle = color;
-//     ctx.moveTo(lastPoint.x + (dx * 0.2), lastPoint.y + (dy * 0.2));
-//     ctx.lineTo(frattalePoint.x - (dx * 0.2), frattalePoint.y - (dy * 0.2));
-//     ctx.stroke();
-//   }
 
 // }

@@ -106,6 +106,7 @@ export default ({width, height}) => {
                     onClick: () => {
                       clearCanvas()
                       setEffect("noise")
+                      setModal(false)
                     },
                     text: "Noise",
                     isActive: effect === "noise"
@@ -114,6 +115,7 @@ export default ({width, height}) => {
                     onClick: () => {
                       clearCanvas()
                       setEffect("tree")
+                      setModal(false)
                     },
                     text: "Tree",
                     isActive: effect === "tree"
@@ -122,6 +124,7 @@ export default ({width, height}) => {
                     onClick: () => {
                       clearCanvas()
                       setEffect("japanese")
+                      setModal(false)
                     },
                     text: "Japanese",
                     isActive: effect === "japanese"
@@ -130,6 +133,7 @@ export default ({width, height}) => {
                     onClick: () => {
                       clearCanvas()
                       setEffect(null)
+                      setModal(false)
                     },
                     text: "Natural",
                     isActive: effect === null
