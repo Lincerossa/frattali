@@ -41,7 +41,6 @@ function drawEffect({f, ctx, effect,frattalePoint, lastPoint, color}){
     const dy = frattalePoint.y - lastPoint.y;
     const d = dx * dx + dy * dy;
     if (d < 1000) {
-      console.log({lastPoint})
       ctx.beginPath();
       ctx.moveTo(lastPoint.x + (dx * 0.2), lastPoint.y + (dy * 0.2));
       ctx.lineTo(frattalePoint.x - (dx * 0.2), frattalePoint.y - (dy * 0.2));
