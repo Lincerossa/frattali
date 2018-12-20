@@ -63,6 +63,9 @@ export const drawFrattali = ({ctx, line, frattali, canvasCenter, effect, color})
 
   for (let i = 0; i < frattaliLines.length; i++) {
     const frattaleLine = frattaliLines[i];
+
+    
+
     ctx.beginPath();
     for (let d = 0; d < frattaleLine.length; d++) {
       const frattalePoint = frattaleLine[d];

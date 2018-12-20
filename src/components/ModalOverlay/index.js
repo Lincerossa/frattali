@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import { Modal } from "react-overlays"
 import PropTypes from "prop-types"
+import { MdHighlightOff } from 'react-icons/md';
 
 import * as S from "./styles"
 
@@ -44,7 +45,7 @@ class ModalOverlay extends Component {
         onHide={() => handleClose(false)}
       >
         <S.ModalInner>
-          <S.Close  onClick={() => handleClose(false)}>X</S.Close>
+          <S.Close  onClick={() => handleClose(false)}><MdHighlightOff /></S.Close>
           {children}
         </S.ModalInner>
       </Modal>

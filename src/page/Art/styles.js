@@ -13,16 +13,16 @@ export const CanvasInner = styled.div`
 `
 
 
-export const CanvasValue = styled.div`
+export const PanelOpen = styled.div`
   position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%,-50%);
-  font-size: 1.5rem;
-  border-radius: 50%;
-  width: 2rem;
-  height: 2rem;
+  right: 0;
+  top:  0;
+  font-size: 1.25rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-bottom-left-radius: 1.5rem;
   display: flex;
+  cursor: pointer;
   align-items: center;
   justify-content: center;
   background: #ac00ff;

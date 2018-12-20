@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect, useReducer } from 'react'
 
+import { MdSettings, dExposurePlus1 ,MdExposureNeg1 } from 'react-icons/md';
+
 import { Panel, ModalOverlay, ColorPicker } from '../../components'
 
 import * as S from './styles'
@@ -61,8 +63,8 @@ export default ({width, height}) => {
     <S.CanvasWrapper>
       <S.CanvasInner>
         <canvas id="canvas" width={width} height={height}  ref={canvas} />
-        <S.CanvasValue onClick={() => setModal(true)}>{frattali}</S.CanvasValue>
       </S.CanvasInner>
+      <S.PanelOpen onClick={() => setModal(true)}><MdSettings /></S.PanelOpen>
       {
         isModalOpen && (
           <ModalOverlay handleClose={setModal}>
@@ -119,9 +121,17 @@ export default ({width, height}) => {
                   {
                     onClick: () => {
                       clearCanvas()
+                      setEffect("japanese")
+                    },
+                    text: "Japanese",
+                    isActive: effect === "japanese"
+                  },
+                  {
+                    onClick: () => {
+                      clearCanvas()
                       setEffect(null)
                     },
-                    text: "No effect",
+                    text: "Natural",
                     isActive: effect === null
                   }
                 ],
