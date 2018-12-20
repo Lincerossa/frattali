@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useReducer } from 'react'
 
-import { MdSettings, dExposurePlus1 ,MdExposureNeg1 } from 'react-icons/md';
+import { MdSettings } from 'react-icons/md';
 
 import { Panel, ModalOverlay, ColorPicker } from '../../components'
 
@@ -14,7 +14,7 @@ export default ({width, height}) => {
   
   const { mousePosition, mouseStatus }  = useMouse() 
   const { canvasCenter } =  useCanvasCenter(canvas)
-  const [ points, setPoints ] =  useState([])
+
   const [ lines, setLines] = useReducer(linesReducer, [[]]);
   const [ frattali, setFrattali ] =  useState(2)
   const [ effect, setEffect ] =  useState(null)
@@ -42,12 +42,11 @@ export default ({width, height}) => {
       if(!line.length  || !line[0]) return
       drawFrattali({ctx: canvas.current.getContext("2d"), line, frattali, canvasCenter, effect, color})
     }  
-  }, [points]);
+  }, [lines]);
 
   useEffect(() => {
     if(mouseStatus === "mousedown"){
-      setPoints([...points, mousePosition].filter(e => e))
-      setLines({type:'POINT_ADD', payload: mousePosition})
+      setLines({type:'POINT_ADD', payload: {...mousePosition, timestamp: new Date().getTime()}})
     }
     if(mouseStatus === "mouseup" && lines[lines.length -1].length){
       setLines({type:'LINE_ADD'})
@@ -55,7 +54,6 @@ export default ({width, height}) => {
   }, [mousePosition]);
 
   function clearCanvas(){
-    setPoints([])
     setLines({type:'CLEAR'})
   }
 

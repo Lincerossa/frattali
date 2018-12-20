@@ -61,7 +61,7 @@ export const drawFrattali = ({ctx, line, frattali, canvasCenter, effect, color})
   for (let p = 0; p < line.length; p++) {
 
     const point = getCartesianPoint(line[p], canvasCenter)
-    const radius = Math.sqrt(Math.abs(Math.pow(point.x, 2) + Math.pow(point.y,2)))
+    const radius = Math.sqrt(Math.pow(point.x, 2) + Math.pow(point.y,2))
     const alpha = Math.atan2(point.y, point.x) * 180 / Math.PI;
     const anglePointToCenter = alpha < 0 ? 180 + (180 + alpha) : alpha
     const angles = Array.from({length: frattali}, (e, index) =>( 360 / frattali)*(index + 1))
@@ -96,7 +96,6 @@ export const drawFrattali = ({ctx, line, frattali, canvasCenter, effect, color})
 
       if(effect){
         drawEffect({f, ctx, effect, frattalePoint,lastPoint, color })
-      
       }
 
 
