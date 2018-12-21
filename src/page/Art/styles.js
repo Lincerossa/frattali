@@ -89,4 +89,6 @@ export const PanelInner = styled.div`
   }
 `
 
-export const ColorPicker = styled.div``
+export const ColorPicker = styled.div`
+  
+`

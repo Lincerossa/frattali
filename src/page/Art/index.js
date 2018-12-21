@@ -12,7 +12,7 @@ const defaultState = {
   lines:[{
     color: 'white',
     points: [],
-    frattali: 3,
+    frattali: 30,
     effect: null
   }],
 }
@@ -113,7 +113,7 @@ export default ({width, height}) => {
   const { mousePosition, mouseStatus }  = useMouse(canvas) 
   const { canvasCenter } =  useCanvasCenter(canvas)
   const [ lines, setLines] = useReducer(linesReducer, defaultState.lines);
-  const [ frattali, setFrattali ] =  useState(3)
+  const [ frattali, setFrattali ] =  useState(30)
   const [ effect, setEffect ] =  useState(null)
   const [ color, setColor ] = useState("white")
   const [ storyline, setStory] = useState([])
@@ -129,10 +129,7 @@ export default ({width, height}) => {
   }, [lines]);
 
   function goBack(storyline){
-    
     const previousState = getPreviousState(storyline)
-
-
     if(previousState){
       const {frattali, lines, color, effect, storyline } = previousState
       setColor(color)
@@ -141,12 +138,16 @@ export default ({width, height}) => {
       setStory(storyline)
       canvas.current.getContext("2d").clearRect(0, 0, width, height)
       setLines(lines)
+      setLines({type:'LINE_ADD'})
     }
   }
 
   useEffect(() => {
- 
-    if(mouseStatus === "mouseup" && lines && lines[lines.length -1].points.length){
+    if(mouseStatus === "mouseup"){
+      
+      if(!lines || !lines[lines.length - 1].points.length) return
+
+
       setLines({type:'LINE_ADD'})
       const updatedStoryline = getUpdatedStoryline(storyline, {
         lines, 
@@ -167,11 +168,13 @@ export default ({width, height}) => {
         <canvas id="canvas" width={width} height={height}  ref={canvas} />
       </S.CanvasInner>
       <S.Controllers>
+
         <S.Controller onClick={() =>{
           setLines({type:'LINE_CLEAR'})
           setStory([])
           canvas.current.getContext("2d").clearRect(0, 0, width, height)
         }}><MdClose /></S.Controller>
+        
         <S.Controller onClick={() => goBack(storyline)}><MdKeyboardBackspace /></S.Controller>
         <S.Controller onClick={() => setModal(true)}><MdSettings /></S.Controller>
       </S.Controllers>
