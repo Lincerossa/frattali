@@ -142,10 +142,12 @@ export default ({width, height}) => {
   }
 
   useEffect(() => {
+    if(mousePosition && (mousePosition.y <50 && mousePosition.x > width - 150)) return
     if(mouseStatus === "mousedown"){
       setLines({type:'LINE_POINT_ADD', payload: {...mousePosition, timestamp: new Date().getTime()}})
     }
     if(mouseStatus === "mouseup" && lines && lines[lines.length -1].points.length){
+      
       setLines({type:'LINE_ADD'})
       const updatedStoryline = getUpdatedStoryline(storyline, {
         lines, 
