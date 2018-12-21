@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect, useReducer } from 'react'
 
-import { MdSettings } from 'react-icons/md';
+import { MdSettings, MdClose, MdKeyboardBackspace } from 'react-icons/md';
 
-import { Panel, ModalOverlay, ColorPicker } from '../../components'
+import { ModalOverlay, ColorPicker  } from '../../components'
 
 import * as S from './styles'
 import { useMouse, useCanvasCenter } from '../../useHooks'
@@ -92,106 +92,98 @@ export default ({width, height}) => {
       <S.CanvasInner>
         <canvas id="canvas" width={width} height={height}  ref={canvas} />
       </S.CanvasInner>
-      <S.PanelOpen onClick={() => setModal(true)}><MdSettings /></S.PanelOpen>
+      <S.Controllers>
+        <S.Controller onClick={() =>{
+          setLines({type:'CLEAR'})
+          canvas.current.getContext("2d").clearRect(0, 0, width, height)
+        }}><MdClose /></S.Controller>
+        <S.Controller><MdKeyboardBackspace /></S.Controller>
+        <S.Controller onClick={() => setModal(true)}><MdSettings /></S.Controller>
+      </S.Controllers>
+      
       {
         isModalOpen && (
           <ModalOverlay handleClose={setModal}>
-            <Panel
-              items={[
-                [
-                  {
-                    onClick: () => {
-                      setLines({type:'CLEAR'})
-                      canvas.current.getContext("2d").clearRect(0, 0, width, height);
-                    },
-                    text: "Repaint"
-                  }
-                ],
-                [
-                  {
-                    onClick: () => {
-                      setLines({type:'LINE_UPDATE', payload: {
-                        frattali: frattali -1
-                      }})
-                      setFrattali(frattali-1)
-                    },
-                    text: "-"
-                  },
-
-                  {
-                    text: `${frattali} aree`,
-                    isActive: true,
-                  },
-                  {
-                    onClick: () => {
-                      setLines({type:'LINE_UPDATE', payload: {
-                        frattali: frattali + 1
-                      }})
-                      setFrattali(frattali+1)
-                    },
-                    text: "+"
-                  },
-                ],
-
-                [
-                  {
-                    onClick: () => {
-                      setLines({type:'LINE_UPDATE', payload: {
-                        effect: "noise"
-                      }})
-                      setEffect("noise")
-                      setModal(false)
-                    },
-                    text: "Noise",
-                    isActive: effect === "noise"
-                  },
-                  {
-                    onClick: () => {
-                      setLines({type:'LINE_UPDATE', payload: {
-                        effect: "tree"
-                      }})
-                      setEffect("tree")
-                      setModal(false)
-                    },
-                    text: "Tree",
-                    isActive: effect === "tree"
-                  },
-                  {
-                    onClick: () => {
-                      setLines({type:'LINE_UPDATE', payload: {
-                        effect: "japanese"
-                      }})
-                      setEffect("japanese")
-                      setModal(false)
-                    },
-                    text: "Japanese",
-                    isActive: effect === "japanese"
-                  },
-                  {
-                    onClick: () => {
-                      setLines({type:'LINE_UPDATE', payload: {
-                        effect: null
-                      }})
-                      setEffect(null)
-                      setModal(false)
-                    },
-                    text: "Natural",
-                    isActive: effect === null
-                  }
-                ],
-                [
-                  {
-                    Component: () => (
-                      <ColorPicker color={color} setColor={color => {
-                        setLines({type:'LINE_UPDATE', payload: {
-                          color
-                        }})
-                        setColor(color)
-                      }} />)
-                  }
-                ]
-              ]}
-            />
+            <S.Panel>
+              <S.PanelBlock>
+                <S.PanelInner
+                  onClick={() => {
+                    setLines({type:'LINE_UPDATE', payload: {
+                      frattali: frattali -1
+                    }})
+                    setFrattali(frattali-1)
+                  }}
+                >Frattali -1
+                </S.PanelInner>
+                <S.PanelInner
+                  onClick={() => {
+                    setLines({type:'LINE_UPDATE', payload: {
+                      frattali: frattali +1
+                    }})
+                    setFrattali(frattali+1)
+                  }}
+                >Frattali +1
+                </S.PanelInner>
+              </S.PanelBlock>
+              <S.PanelBlock>
+                <S.PanelInner
+                  onClick={() => {
+                    setLines({type:'LINE_UPDATE', payload: {
+                      effect: "noise"
+                    }})
+                    setEffect("noise")
+                    setModal(false)
+                  }}
+                  isActive={effect === "noise"}
+                >
+                  Noise
+                </S.PanelInner>
+                <S.PanelInner
+                  onClick={() => {
+                    setLines({type:'LINE_UPDATE', payload: {
+                      effect: "tree"
+                    }})
+                    setEffect("tree")
+                    setModal(false)
+                  }}
+                  isActive={effect === "tree"}
+                >
+                  tree
+                </S.PanelInner>
+                <S.PanelInner
+                  onClick={() => {
+                    setLines({type:'LINE_UPDATE', payload: {
+                      effect: "japanese"
+                    }})
+                    setEffect("japanese")
+                    setModal(false)
+                  }}
+                  isActive={effect === "japanese"}
+                >
+                  japanese
+                </S.PanelInner>
+                <S.PanelInner
+                  onClick={() => {
+                    setLines({type:'LINE_UPDATE', payload: {
+                      effect: null
+                    }})
+                    setEffect(null)
+                    setModal(false)
+                  }}
+                  isActive={effect === null}
+                >
+                  Line
+                </S.PanelInner>
+              </S.PanelBlock>
+              <S.PanelBlock>
+                <ColorPicker color={color} setColor={color => {
+                  setLines({type:'LINE_UPDATE', payload: {
+                    color
+                  }})
+                  setColor(color)
+                }} />)
+              </S.PanelBlock>
+            </S.Panel>
           </ModalOverlay>)
       }
       
