@@ -42,9 +42,19 @@ export const Controller = styled.div`
   &:last-of-type{
     margin:0;
   }
-  &:hover{
+  &:active{
     background-color: white;
     color: #ac00ff;
+  }
+  &:focus{
+    outline: none;
+  }
+
+  @media screen and (min-width: 600px) {
+    &:hover{
+      background-color: white;
+      color: #ac00ff;
+    }
   }
 `
 
