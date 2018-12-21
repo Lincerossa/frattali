@@ -11,7 +11,10 @@
     "styled-components": "^4.1.2"
   },
   "devDependencies": {
-    "react-scripts": "2.1.1"
+    "react-scripts": "2.1.1",
+    "husky": "^1.2.1",
+    "lint-staged": "^8.1.0",
+    "prettier": "^1.15.3"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -27,5 +30,20 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "prettier": {
+    "printWidth": 80,
+    "trailingComma": "es5"
+  }
 }
