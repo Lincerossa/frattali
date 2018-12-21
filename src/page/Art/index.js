@@ -15,10 +15,6 @@ const defaultState = {
     frattali: 3,
     effect: null
   }],
-  isModalOpen: null,
-  color: 'white',
-  effect: null,
-  frattali: 3,
 }
 
 
@@ -40,6 +36,7 @@ function linesReducer(state, {type, payload}) {
       return [...newLines, {
         color: lastLine.color,
         frattali: lastLine.frattali,
+        effect: lastLine.effect,
         points: []
       }]
 
@@ -51,8 +48,10 @@ function linesReducer(state, {type, payload}) {
           ...payload
         }
       ]
-
-    case "CLEAR":
+    case "LINES_NEW":{
+      return payload
+    }
+    case "LINE_CLEAR":
       return defaultState.lines
     default:
       return defaultState.lines
@@ -60,17 +59,68 @@ function linesReducer(state, {type, payload}) {
 }
 
 
+function getUpdatedStoryline(storyline, state){
+  // aggiorna la storia, aggiunge uno stato
+  const lastStory = storyline[storyline.length - 1]
+  if(lastStory){
+    return [
+      ...(storyline.slice(0, storyline.length -1 ) || []),
+      {
+        ...lastStory,
+        isCurrent: false,
+      },
+      {
+        ...state,
+        isCurrent: true,
+      }]
+  }
+  return[
+    {
+    ...state,
+    isCurrent: true,
+  }]
+}
+
+function getPreviousState(storyline){
+  if(!storyline || !storyline.length) return
+  const currentStoryIndex = storyline.findIndex(({isCurrent}) => isCurrent)
+
+  if(storyline[currentStoryIndex - 1 ]){
+    const { lines,frattali, color, effect } = storyline[currentStoryIndex -1]
+
+    return {
+      lines: {type: "LINES_NEW", payload: lines},
+      frattali,
+      color,
+      effect,
+      storyline: [
+        ...storyline.slice(0, currentStoryIndex - 1),
+        {
+          ...storyline[currentStoryIndex - 1],
+          isCurrent: true,
+        }
+      ]
+    }
+  }
+  return null
+
+}
+
+
+
 export default ({width, height}) => {
   const canvas = useRef(null);
   const { mousePosition, mouseStatus }  = useMouse() 
   const { canvasCenter } =  useCanvasCenter(canvas)
   const [ lines, setLines] = useReducer(linesReducer, defaultState.lines);
-  const [ frattali, setFrattali ] =  useState(defaultState.frattali)
-  const [ effect, setEffect ] =  useState(defaultState.effect)
-  const [ color, setColor ] = useState(defaultState.color)
-  const [ isModalOpen, setModal ] = useState(defaultState.isModalOpen)
+  const [ frattali, setFrattali ] =  useState(3)
+  const [ effect, setEffect ] =  useState(null)
+  const [ color, setColor ] = useState("white")
+  const [ storyline, setStory] = useState([])
+  const [ isModalOpen, setModal ] = useState(null)
 
   useEffect(() => {
+    if(!lines )return
     for (let l = 0; l < lines.length; l++) {
       const line = lines[l]
       if(!line || !line.points.length) return
@@ -78,12 +128,32 @@ export default ({width, height}) => {
     }  
   }, [lines]);
 
+  function playStoryline(storyline){
+    const previousState = getPreviousState(storyline)
+    if(previousState){
+      canvas.current.getContext("2d").clearRect(0, 0, width, height)
+      const {frattali, lines, color, effect, storyline } = previousState
+      setColor(color)
+      setLines(lines)
+      setFrattali(frattali)
+      setEffect(effect)
+      setStory(storyline)
+    }
+  }
+
   useEffect(() => {
     if(mouseStatus === "mousedown"){
       setLines({type:'LINE_POINT_ADD', payload: {...mousePosition, timestamp: new Date().getTime()}})
     }
-    if(mouseStatus === "mouseup" && lines[lines.length -1].points.length){
+    if(mouseStatus === "mouseup" && lines && lines[lines.length -1].points.length){
       setLines({type:'LINE_ADD'})
+      const updatedStoryline = getUpdatedStoryline(storyline, {
+        lines, 
+        frattali,
+        color,
+        effect
+      })
+      setStory(updatedStoryline)
     }
   }, [mousePosition]);
 
@@ -94,10 +164,11 @@ export default ({width, height}) => {
       </S.CanvasInner>
       <S.Controllers>
         <S.Controller onClick={() =>{
-          setLines({type:'CLEAR'})
+          setLines({type:'LINE_CLEAR'})
+          setStory([])
           canvas.current.getContext("2d").clearRect(0, 0, width, height)
         }}><MdClose /></S.Controller>
-        <S.Controller><MdKeyboardBackspace /></S.Controller>
+        <S.Controller onClick={() => playStoryline(storyline)}><MdKeyboardBackspace /></S.Controller>
         <S.Controller onClick={() => setModal(true)}><MdSettings /></S.Controller>
       </S.Controllers>
       
