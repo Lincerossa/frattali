@@ -110,7 +110,7 @@ function getPreviousState(storyline){
 
 export default ({width, height}) => {
   const canvas = useRef(null);
-  const { mousePosition, mouseStatus }  = useMouse() 
+  const { mousePosition, mouseStatus }  = useMouse(canvas) 
   const { canvasCenter } =  useCanvasCenter(canvas)
   const [ lines, setLines] = useReducer(linesReducer, defaultState.lines);
   const [ frattali, setFrattali ] =  useState(3)
@@ -128,22 +128,24 @@ export default ({width, height}) => {
     }  
   }, [lines]);
 
-  function playStoryline(storyline){
+  function goBack(storyline){
+    
     const previousState = getPreviousState(storyline)
+
+
     if(previousState){
-      canvas.current.getContext("2d").clearRect(0, 0, width, height)
       const {frattali, lines, color, effect, storyline } = previousState
       setColor(color)
-      setLines(lines)
       setFrattali(frattali)
       setEffect(effect)
       setStory(storyline)
+      canvas.current.getContext("2d").clearRect(0, 0, width, height)
+      setLines(lines)
     }
   }
 
   useEffect(() => {
-    if(mousePosition && (mousePosition.y <50 && mousePosition.x > width - 150)) return
-
+ 
     if(mouseStatus === "mouseup" && lines && lines[lines.length -1].points.length){
       setLines({type:'LINE_ADD'})
       const updatedStoryline = getUpdatedStoryline(storyline, {
@@ -170,7 +172,7 @@ export default ({width, height}) => {
           setStory([])
           canvas.current.getContext("2d").clearRect(0, 0, width, height)
         }}><MdClose /></S.Controller>
-        <S.Controller onClick={() => playStoryline(storyline)}><MdKeyboardBackspace /></S.Controller>
+        <S.Controller onClick={() => goBack(storyline)}><MdKeyboardBackspace /></S.Controller>
         <S.Controller onClick={() => setModal(true)}><MdSettings /></S.Controller>
       </S.Controllers>
       
