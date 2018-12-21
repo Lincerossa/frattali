@@ -15,20 +15,37 @@ export const CanvasInner = styled.div`
 
 export const Controllers = styled.div`
   position: absolute;
-  right: 0;
-  top:  0;  
-  height: 2.5rem;
-  border-bottom-left-radius: 1.5rem;
+  right: .5rem;
+  top: .5rem;  
+  display: flex;
+ 
+  align-items: center;
+  justify-content: center;
+`
+
+export const Controller = styled.div`
+  
+  font-size: 1.75rem;
+  position: relative;
   display: flex;
   cursor: pointer;
   align-items: center;
   justify-content: center;
-  background: #ac00ff;
+  border-radius: 50%;
+  height: 2.5rem;
+  width: 2.5rem;
+  border-radius: 50%;
+  background-color: #ac00ff;
   color: white;
-`
-
-export const Controller = styled.div`
-  padding: 0 .5rem;
+  margin-right: .5rem;
+  
+  &:last-of-type{
+    margin:0;
+  }
+  &:hover{
+    background-color: white;
+    color: #ac00ff;
+  }
 `
 
 
