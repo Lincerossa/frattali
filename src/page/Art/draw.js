@@ -59,7 +59,6 @@ export const drawFrattali = ({ctx, line, canvasCenter }) => {
   const { frattali, color, points, effect } = line
   let frattaliLines = Array.from({length: frattali}, (e) => [])
 
-  console.log({line})
   for (let p = 0; p < points.length; p++) {
 
     const point = getCartesianPoint(points[p], canvasCenter)
