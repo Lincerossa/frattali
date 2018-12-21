@@ -2,8 +2,7 @@ import React, { useState, useRef, useEffect, useReducer } from 'react'
 
 import { MdSettings, MdClose, MdKeyboardBackspace } from 'react-icons/md';
 
-import { ModalOverlay, ColorPicker  } from '../../components'
-
+import Panel from './Panel'
 import * as S from './styles'
 import { useMouse, useCanvasCenter } from '../../useHooks'
 import { drawFrattali } from './draw'
@@ -16,7 +15,6 @@ const defaultState = {
     effect: null
   }],
 }
-
 
 function linesReducer(state, {type, payload}) {
     
@@ -60,7 +58,6 @@ function linesReducer(state, {type, payload}) {
 
 
 function getUpdatedStoryline(storyline, state){
-  // aggiorna la storia, aggiunge uno stato
   const lastStory = storyline[storyline.length - 1]
   if(lastStory){
     return [
@@ -117,10 +114,10 @@ export default ({width, height}) => {
   const [ effect, setEffect ] =  useState(null)
   const [ color, setColor ] = useState("white")
   const [ storyline, setStory] = useState([])
-  const [ isModalOpen, setModal ] = useState(null)
-
+  const [ isModalOpen, openModal ] = useState(null)
+  
   useEffect(() => {
-    if(!lines )return
+    if(!lines ) return
     for (let l = 0; l < lines.length; l++) {
       const line = lines[l]
       if(!line || !line.points.length) return
@@ -143,11 +140,7 @@ export default ({width, height}) => {
   }
 
   useEffect(() => {
-    if(mouseStatus === "mouseup"){
-      
-      if(!lines || !lines[lines.length - 1].points.length) return
-
-
+    if(mouseStatus === "mouseup" && lines && lines[lines.length - 1].points.length){
       setLines({type:'LINE_ADD'})
       const updatedStoryline = getUpdatedStoryline(storyline, {
         lines, 
@@ -158,9 +151,15 @@ export default ({width, height}) => {
       setStory(updatedStoryline)
     }
     if(mouseStatus === "mousedown"){
-      setLines({type:'LINE_POINT_ADD', payload: {...mousePosition, timestamp: new Date().getTime()}})
+      setLines({
+        type:'LINE_POINT_ADD', 
+        payload: {
+          ...mousePosition, 
+          timestamp: new Date().getTime()}})
     }
   }, [mousePosition, mouseStatus]);
+
+
 
   return(
     <S.CanvasWrapper>
@@ -168,104 +167,28 @@ export default ({width, height}) => {
         <canvas id="canvas" width={width} height={height}  ref={canvas} />
       </S.CanvasInner>
       <S.Controllers>
-
         <S.Controller onClick={() =>{
           setLines({type:'LINE_CLEAR'})
           setStory([])
           canvas.current.getContext("2d").clearRect(0, 0, width, height)
         }}><MdClose /></S.Controller>
-        
         <S.Controller onClick={() => goBack(storyline)}><MdKeyboardBackspace /></S.Controller>
-        <S.Controller onClick={() => setModal(true)}><MdSettings /></S.Controller>
+        <S.Controller onClick={() => openModal(true)}><MdSettings /></S.Controller>
       </S.Controllers>
-      
       {
         isModalOpen && (
-          <ModalOverlay handleClose={setModal}>
-            <S.Panel>
-              <S.PanelBlock>
-                <S.PanelInner
-                  onClick={() => {
-                    setLines({type:'LINE_UPDATE', payload: {
-                      frattali: frattali -1
-                    }})
-                    setFrattali(frattali-1)
-                  }}
-                >Frattali -1
-                </S.PanelInner>
-                <S.PanelInner
-                  onClick={() => {
-                    setLines({type:'LINE_UPDATE', payload: {
-                      frattali: frattali +1
-                    }})
-                    setFrattali(frattali+1)
-                  }}
-                >Frattali +1
-                </S.PanelInner>
-              </S.PanelBlock>
-              <S.PanelBlock>
-                <S.PanelInner
-                  onClick={() => {
-                    setLines({type:'LINE_UPDATE', payload: {
-                      effect: "noise"
-                    }})
-                    setEffect("noise")
-                    setModal(false)
-                  }}
-                  isActive={effect === "noise"}
-                >
-                  Noise
-                </S.PanelInner>
-                <S.PanelInner
-                  onClick={() => {
-                    setLines({type:'LINE_UPDATE', payload: {
-                      effect: "tree"
-                    }})
-                    setEffect("tree")
-                    setModal(false)
-                  }}
-                  isActive={effect === "tree"}
-                >
-                  tree
-                </S.PanelInner>
-                <S.PanelInner
-                  onClick={() => {
-                    setLines({type:'LINE_UPDATE', payload: {
-                      effect: "japanese"
-                    }})
-                    setEffect("japanese")
-                    setModal(false)
-                  }}
-                  isActive={effect === "japanese"}
-                >
-                  japanese
-                </S.PanelInner>
-                <S.PanelInner
-                  onClick={() => {
-                    setLines({type:'LINE_UPDATE', payload: {
-                      effect: null
-                    }})
-                    setEffect(null)
-                    setModal(false)
-                  }}
-                  isActive={effect === null}
-                >
-                  Line
-                </S.PanelInner>
-              </S.PanelBlock>
-              <S.PanelBlock>
-                <ColorPicker color={color} setColor={color => {
-                  setLines({type:'LINE_UPDATE', payload: {
-                    color
-                  }})
-                  setColor(color)
-                }} />)
-              </S.PanelBlock>
-            </S.Panel>
-          </ModalOverlay>)
+          <Panel
+            setLines={setLines}
+            setEffect={setEffect}
+            setColor={setColor}
+            setFrattali={setFrattali}
+            color={color}
+            frattali={frattali}
+            openModal={openModal}
+            effect={effect}
+          />
+        )
       }
-      
     </S.CanvasWrapper> 
   )
-
 }
