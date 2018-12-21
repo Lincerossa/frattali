@@ -1,16 +1,18 @@
 
 import { useEffect, useState } from 'react'
 
- export default () => {
+ export default (item) => {
   const [ mousePosition, setMousePosition ] =  useState(null)
   const [ mouseStatus, setMouseStatus ] =  useState(null)
 
 
   function handleMouseDown(){
-    window.addEventListener("mousemove", handleMouseMove)
-    window.addEventListener("mouseup", handleMouseUp) 
-    window.addEventListener("touchmove",handleMouseMove)
-    window.addEventListener("touchend", handleMouseUp) 
+    const el = item.current.parentNode
+    
+    el.addEventListener("mousemove", handleMouseMove)
+    el.addEventListener("mouseup", handleMouseUp) 
+    el.addEventListener("touchmove",handleMouseMove)
+    el.addEventListener("touchend", handleMouseUp) 
     setMouseStatus("mousedown")
   }
 
@@ -27,21 +29,24 @@ import { useEffect, useState } from 'react'
 
 
   useEffect(() => {
-    window.addEventListener("mousedown", handleMouseDown)
-    window.addEventListener("touchstart", handleMouseDown)
+    const el = item.current.parentNode
+    
+    console.log(el)
+    el.addEventListener("mousedown", handleMouseDown)
+    el.addEventListener("touchstart", handleMouseDown)
     
     return(() => {
-      window.removeEventListener("mousedown", handleMouseDown)
-      window.addEventListener("touchstart", handleMouseDown)
+      el.removeEventListener("mousedown", handleMouseDown)
+      el.addEventListener("touchstart", handleMouseDown)
 
 
-      window.removeEventListener("mouseup", handleMouseUp)    
-      window.removeEventListener("touchend", handleMouseUp)    
-      window.removeEventListener("mousemove",handleMouseMove)
-      window.removeEventListener("touchmove",handleMouseMove)
+      el.removeEventListener("mouseup", handleMouseUp)    
+      el.removeEventListener("touchend", handleMouseUp)    
+      el.removeEventListener("mousemove",handleMouseMove)
+      el.removeEventListener("touchmove",handleMouseMove)
     })
 
-  }, []);
+  }, [item]);
 
   return {
     mousePosition, 
