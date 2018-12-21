@@ -140,6 +140,18 @@ export default ({width, height}) => {
   }
 
   useEffect(() => {
+    const ratio = window.devicePixelRatio
+
+    canvas.current.width = window.innerWidth * ratio
+    canvas.current.height = window.innerHeight * ratio
+
+    canvas.current.style.width = `${window.innerWidth}px`
+    canvas.current.style.height = `${window.innerHeight}px`
+
+    canvas.current.getContext("2d").scale(ratio, ratio)
+  }, [canvas.current, width, height])
+    
+  useEffect(() => {
     if(mouseStatus === "mouseup" && lines && lines[lines.length - 1].points.length){
       setLines({type:'LINE_ADD'})
       const updatedStoryline = getUpdatedStoryline(storyline, {
