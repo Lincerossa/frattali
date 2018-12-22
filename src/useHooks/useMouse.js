@@ -1,56 +1,52 @@
+import { useEffect, useState } from "react";
 
-import { useEffect, useState } from 'react'
+export default item => {
+  const [mousePosition, setMousePosition] = useState(null);
+  const [mouseStatus, setMouseStatus] = useState(null);
 
- export default (item) => {
-  const [ mousePosition, setMousePosition ] =  useState(null)
-  const [ mouseStatus, setMouseStatus ] =  useState(null)
+  function handleMouseDown() {
+    const el = item.current.parentNode;
 
-
-  function handleMouseDown(){
-    const el = item.current.parentNode
-    
-    el.addEventListener("mousemove", handleMouseMove)
-    el.addEventListener("mouseup", handleMouseUp) 
-    el.addEventListener("touchmove",handleMouseMove)
-    el.addEventListener("touchend", handleMouseUp) 
-    setMouseStatus("mousedown")
+    el.addEventListener("mousemove", handleMouseMove);
+    el.addEventListener("mouseup", handleMouseUp);
+    el.addEventListener("touchmove", handleMouseMove, { passive: false });
+    el.addEventListener("touchend", handleMouseUp);
+    setMouseStatus("mousedown");
   }
 
-  function handleMouseUp(){
-    setMouseStatus("mouseup")
+  function handleMouseUp() {
+    setMouseStatus("mouseup");
   }
 
-  function handleMouseMove(e){
-    setMousePosition ({
-      x: e.clientX ||( e.touches && e.touches[0].clientX),
-      y: e.clientY || (e.touches && e.touches[0].clientY)
-    })
+  function handleMouseMove(e) {
+    setMousePosition({
+      x: e.clientX || (e.touches && e.touches[0].clientX),
+      y: e.clientY || (e.touches && e.touches[0].clientY),
+    });
   }
 
+  useEffect(
+    () => {
+      const el = item.current.parentNode;
 
-  useEffect(() => {
-    const el = item.current.parentNode
-    
-    console.log(el)
-    el.addEventListener("mousedown", handleMouseDown)
-    el.addEventListener("touchstart", handleMouseDown)
-    
-    return(() => {
-      el.removeEventListener("mousedown", handleMouseDown)
-      el.addEventListener("touchstart", handleMouseDown)
+      el.addEventListener("mousedown", handleMouseDown);
+      el.addEventListener("touchstart", handleMouseDown, { passive: false });
 
+      return () => {
+        el.removeEventListener("mousedown", handleMouseDown);
+        el.addEventListener("touchstart", handleMouseDown);
 
-      el.removeEventListener("mouseup", handleMouseUp)    
-      el.removeEventListener("touchend", handleMouseUp)    
-      el.removeEventListener("mousemove",handleMouseMove)
-      el.removeEventListener("touchmove",handleMouseMove)
-    })
-
-  }, [item]);
+        el.removeEventListener("mouseup", handleMouseUp);
+        el.removeEventListener("touchend", handleMouseUp);
+        el.removeEventListener("mousemove", handleMouseMove);
+        el.removeEventListener("touchmove", handleMouseMove);
+      };
+    },
+    [item]
+  );
 
   return {
-    mousePosition, 
-    mouseStatus
-  }
-
-}
+    mousePosition,
+    mouseStatus,
+  };
+};
