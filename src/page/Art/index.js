@@ -150,11 +150,12 @@ export default ({ width, height }) => {
 
   useEffect(
     () => {
+      canvas.current.style.width = `${window.innerWidth}px`;
+      canvas.current.style.height = `${window.innerHeight}px`;
+
       const ratio = window.devicePixelRatio;
       canvas.current.width = window.innerWidth * ratio;
       canvas.current.height = window.innerHeight * ratio;
-      canvas.current.style.width = `${window.innerWidth}px`;
-      canvas.current.style.height = `${window.innerHeight}px`;
       canvas.current.getContext("2d").scale(ratio, ratio);
     },
     [canvas.current, width, height]
