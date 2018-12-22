@@ -1,43 +1,55 @@
-import React from 'react'
-import { ColorPicker } from '../../components'
-import * as S from './styles'
-import { MdClose } from 'react-icons/md';
+import React from "react";
+import { ColorPicker } from "../../components";
+import * as S from "./styles";
+import { MdClose } from "react-icons/md";
 
-
-export default ({frattali, color, effect,setLines, openModal,  setColor, setFrattali, setEffect }) => {
-
-  function handleLineUpdate(payload){
-    setLines({type:'LINE_UPDATE', payload})
-    const [key, value] = Object.entries(payload)[0]
+export default ({
+  frattali,
+  color,
+  effect,
+  setLines,
+  openModal,
+  setColor,
+  setFrattali,
+  setEffect,
+}) => {
+  function handleLineUpdate(payload) {
+    setLines({ type: "LINE_UPDATE", payload });
+    const [key, value] = Object.entries(payload)[0];
 
     // eslint-disable-next-line default-case
     switch (key) {
-      case 'effect':
-        setEffect(value)
-        break
-      case 'frattali':
-        setFrattali(value)
-        break
-      case 'color':
-        setColor(value)
-        break
+      case "effect":
+        setEffect(value);
+        break;
+      case "frattali":
+        setFrattali(value);
+        break;
+      case "color":
+        setColor(value);
     }
-    setEffect(null)
+    setEffect(null);
   }
-  console.log({effect, frattali, color})
-  return(
+
+  return (
     <S.Panel>
-      <S.PanelClose onClick={() => openModal(false)}><MdClose /></S.PanelClose>
+      <S.PanelClose onClick={() => openModal(false)}>
+        <MdClose />
+      </S.PanelClose>
       <S.PanelBlock>
         <S.PanelBlockTitle>divisions: {frattali}</S.PanelBlockTitle>
         <S.ButtonsWrapper>
           <S.Button
-          onClick={() => handleLineUpdate({frattali: frattali - 1})}
-          > -1
+            onClick={() => handleLineUpdate({ frattali: frattali - 1 })}
+          >
+            {" "}
+            -1
           </S.Button>
           <S.Button
-          onClick={() => handleLineUpdate({frattali: frattali + 1})}
-          > +1
+            onClick={() => handleLineUpdate({ frattali: frattali + 1 })}
+          >
+            {" "}
+            +1
           </S.Button>
         </S.ButtonsWrapper>
       </S.PanelBlock>
@@ -45,25 +57,25 @@ export default ({frattali, color, effect,setLines, openModal,  setColor, setFrat
         <S.PanelBlockTitle>style</S.PanelBlockTitle>
         <S.ButtonsWrapper>
           <S.Button
-          onClick={() => handleLineUpdate({effect: "noise"})}
+            onClick={() => handleLineUpdate({ effect: "noise" })}
             isActive={effect === "noise"}
           >
             Noise
           </S.Button>
           <S.Button
-          onClick={() => handleLineUpdate({effect: "tree"})}
+            onClick={() => handleLineUpdate({ effect: "tree" })}
             isActive={effect === "tree"}
           >
-            tree
+            Tree
           </S.Button>
           <S.Button
-          onClick={() => handleLineUpdate({effect: "japanese"})}
+            onClick={() => handleLineUpdate({ effect: "japanese" })}
             isActive={effect === "japanese"}
           >
-            japanese
+            Japanese
           </S.Button>
           <S.Button
-            onClick={() => handleLineUpdate({effect: null})}
+            onClick={() => handleLineUpdate({ effect: null })}
             isActive={effect === null}
           >
             Line
@@ -71,10 +83,14 @@ export default ({frattali, color, effect,setLines, openModal,  setColor, setFrat
         </S.ButtonsWrapper>
       </S.PanelBlock>
       <S.PanelBlock>
-        <S.PanelBlockTitle>color <S.ColorBlock color={color} /> </S.PanelBlockTitle>
-        <ColorPicker color={color} setColor={color => handleLineUpdate({color})} />
+        <S.PanelBlockTitle>
+          color <S.ColorBlock color={color} />{" "}
+        </S.PanelBlockTitle>
+        <ColorPicker
+          color={color}
+          setColor={color => handleLineUpdate({ color })}
+        />
       </S.PanelBlock>
     </S.Panel>
-  )
-}      
- 
+  );
+};
