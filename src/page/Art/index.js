@@ -114,7 +114,7 @@ export default ({ width, height }) => {
   const [frattali, setFrattali] = useState(30);
   const [effect, setEffect] = useState(null);
   const [color, setColor] = useState("white");
-  const [storyline, setStory] = useState([]);
+  const [storyline, setStoryline] = useState([]);
   const [isModalOpen, openModal] = useState(null);
 
   useEffect(
@@ -133,14 +133,19 @@ export default ({ width, height }) => {
     [lines]
   );
 
-  function goBack(j) {
+  function setAll({ lines, frattali, color, effect, storyline, modal }) {
+    lines && setLines(lines);
+    frattali && setFrattali(frattali);
+    color && setColor(color);
+    effect && setEffect(effect);
+    modal && openModal(modal);
+    storyline && setStoryline(storyline);
+  }
+
+  function goBack(storyline) {
     canvas.current.getContext("2d").clearRect(0, 0, width, height);
-    const { frattali, lines, color, effect, storyline } = getPreviousState(j);
-    setColor(color);
-    setFrattali(frattali);
-    setEffect(effect);
-    setStory(storyline);
-    setLines(lines);
+    const previousState = getPreviousState(storyline);
+    setAll(previousState);
     setLines({ type: "LINE_ADD" });
   }
 
@@ -170,7 +175,7 @@ export default ({ width, height }) => {
           color,
           effect,
         });
-        setStory(updatedStoryline);
+        setStoryline(updatedStoryline);
       }
       if (mouseStatus === "mousedown") {
         setLines({
@@ -193,8 +198,8 @@ export default ({ width, height }) => {
       <S.Controllers>
         <S.Controller
           onClick={() => {
+            setStoryline([]);
             setLines({ type: "LINE_CLEAR" });
-            setStory([]);
             canvas.current.getContext("2d").clearRect(0, 0, width, height);
           }}
         >
@@ -211,13 +216,9 @@ export default ({ width, height }) => {
       </S.Controllers>
       {isModalOpen && (
         <Panel
-          setLines={setLines}
-          setEffect={setEffect}
-          setColor={setColor}
-          setFrattali={setFrattali}
+          setAll={setAll}
           color={color}
           frattali={frattali}
-          openModal={openModal}
           effect={effect}
         />
       )}

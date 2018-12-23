@@ -3,37 +3,15 @@ import { ColorPicker } from "../../components";
 import * as S from "./styles";
 import { MdClose } from "react-icons/md";
 
-export default ({
-  frattali,
-  color,
-  effect,
-  setLines,
-  openModal,
-  setColor,
-  setFrattali,
-  setEffect,
-}) => {
+export default ({ frattali, color, effect, setAll }) => {
   function handleLineUpdate(payload) {
-    setLines({ type: "LINE_UPDATE", payload });
-    const [key, value] = Object.entries(payload)[0];
-
-    // eslint-disable-next-line default-case
-    switch (key) {
-      case "effect":
-        setEffect(value);
-        break;
-      case "frattali":
-        setFrattali(value);
-        break;
-      case "color":
-        setColor(value);
-    }
-    setEffect(null);
+    const lines = { type: "LINE_UPDATE", payload };
+    setAll({ lines, ...payload });
   }
 
   return (
     <S.Panel>
-      <S.PanelClose onClick={() => openModal(false)}>
+      <S.PanelClose onClick={() => setAll({ modal: false })}>
         <MdClose />
       </S.PanelClose>
       <S.PanelBlock>
