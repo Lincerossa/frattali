@@ -117,28 +117,12 @@ export default ({ width, height }) => {
   const [storyline, setStoryline] = useState([]);
   const [isModalOpen, openModal] = useState(null);
 
-  useEffect(
-    () => {
-      if (!lines) return;
-      for (let l = 0; l < lines.length; l++) {
-        const line = lines[l];
-        if (!line || !line.points.length) return;
-        drawFrattali({
-          ctx: canvas.current.getContext("2d"),
-          line,
-          canvasCenter,
-        });
-      }
-    },
-    [lines]
-  );
-
   function setAll({ lines, frattali, color, effect, storyline, modal }) {
     lines && setLines(lines);
     frattali && setFrattali(frattali);
     color && setColor(color);
-    effect && setEffect(effect);
-    modal && openModal(modal);
+    effect !== undefined && setEffect(effect);
+    modal !== undefined && openModal(modal);
     storyline && setStoryline(storyline);
   }
 
@@ -151,14 +135,13 @@ export default ({ width, height }) => {
 
   useEffect(
     () => {
-      canvas.current.style.width = `${window.innerWidth}px`;
-      canvas.current.style.height = `${window.innerHeight}px`;
-      const ratio = window.devicePixelRatio;
-      canvas.current.width = window.innerWidth * ratio;
-      canvas.current.height = window.innerHeight * ratio;
-      canvas.current.getContext("2d").scale(ratio, ratio);
+      drawFrattali({
+        ctx: canvas.current.getContext("2d"),
+        lines,
+        canvasCenter,
+      });
     },
-    [canvas.current, width, height]
+    [lines]
   );
 
   useEffect(
@@ -187,7 +170,19 @@ export default ({ width, height }) => {
         });
       }
     },
-    [mousePosition, mouseStatus]
+    [mousePosition]
+  );
+
+  useEffect(
+    () => {
+      canvas.current.style.width = `${window.innerWidth}px`;
+      canvas.current.style.height = `${window.innerHeight}px`;
+      const ratio = window.devicePixelRatio;
+      canvas.current.width = window.innerWidth * ratio;
+      canvas.current.height = window.innerHeight * ratio;
+      canvas.current.getContext("2d").scale(ratio, ratio);
+    },
+    [canvas.current, width, height]
   );
 
   return (

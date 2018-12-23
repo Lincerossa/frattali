@@ -52,57 +52,62 @@ function drawEffect({ f, ctx, effect, frattalePoint, lastPoint, color }) {
   }
 }
 
-export const drawFrattali = ({ ctx, line, canvasCenter }) => {
-  const { frattali, color, points, effect } = line;
-  let frattaliLines = Array.from({ length: frattali }, e => []);
+export const drawFrattali = ({ ctx, lines, canvasCenter }) => {
+  for (let l = 0; l < lines.length; l++) {
+    const line = lines[l];
+    if (!line || !line.points.length) return;
 
-  for (let p = 0; p < points.length; p++) {
-    const point = getCartesianPoint(points[p], canvasCenter);
-    const radius = Math.sqrt(Math.pow(point.x, 2) + Math.pow(point.y, 2));
-    const alpha = (Math.atan2(point.y, point.x) * 180) / Math.PI;
-    const anglePointToCenter = alpha < 0 ? 180 + (180 + alpha) : alpha;
-    const angles = Array.from(
-      { length: frattali },
-      (e, index) => (360 / frattali) * (index + 1)
-    );
+    const { frattali, color, points, effect } = line;
+    let frattaliLines = Array.from({ length: frattali }, e => []);
 
-    for (let i = 0; i < angles.length; i++) {
-      const frattaleAngle = angles[i];
-      const frattaleX =
-        Math.cos(((anglePointToCenter - frattaleAngle) * Math.PI) / 180) *
-        radius;
-      const frattaleY =
-        Math.sin(((anglePointToCenter - frattaleAngle) * Math.PI) / 180) *
-        radius;
-      const frattalePoint = getCanvasPoint(
-        {
-          x: frattaleX,
-          y: frattaleY,
-        },
-        canvasCenter
+    for (let p = 0; p < points.length; p++) {
+      const point = getCartesianPoint(points[p], canvasCenter);
+      const radius = Math.sqrt(Math.pow(point.x, 2) + Math.pow(point.y, 2));
+      const alpha = (Math.atan2(point.y, point.x) * 180) / Math.PI;
+      const anglePointToCenter = alpha < 0 ? 180 + (180 + alpha) : alpha;
+      const angles = Array.from(
+        { length: frattali },
+        (e, index) => (360 / frattali) * (index + 1)
       );
 
-      frattaliLines[i][p] = frattalePoint;
-    }
-  }
+      for (let i = 0; i < angles.length; i++) {
+        const frattaleAngle = angles[i];
+        const frattaleX =
+          Math.cos(((anglePointToCenter - frattaleAngle) * Math.PI) / 180) *
+          radius;
+        const frattaleY =
+          Math.sin(((anglePointToCenter - frattaleAngle) * Math.PI) / 180) *
+          radius;
+        const frattalePoint = getCanvasPoint(
+          {
+            x: frattaleX,
+            y: frattaleY,
+          },
+          canvasCenter
+        );
 
-  for (let i = 0; i < frattaliLines.length; i++) {
-    const frattaleLine = frattaliLines[i];
-
-    ctx.beginPath();
-    for (let f = 0; f < frattaleLine.length; f++) {
-      const frattalePoint = frattaleLine[f];
-      const lastPoint = frattaleLine[frattaleLine.length - 1];
-
-      if (effect !== "japanese") ctx.lineTo(frattalePoint.x, frattalePoint.y);
-
-      if (effect) {
-        drawEffect({ f, ctx, effect, frattalePoint, lastPoint, color });
+        frattaliLines[i][p] = frattalePoint;
       }
-
-      ctx.strokeStyle = color;
     }
-    ctx.stroke();
-    ctx.closePath();
+
+    for (let i = 0; i < frattaliLines.length; i++) {
+      const frattaleLine = frattaliLines[i];
+
+      ctx.beginPath();
+      for (let f = 0; f < frattaleLine.length; f++) {
+        const frattalePoint = frattaleLine[f];
+        const lastPoint = frattaleLine[frattaleLine.length - 1];
+
+        if (effect !== "japanese") ctx.lineTo(frattalePoint.x, frattalePoint.y);
+
+        if (effect) {
+          drawEffect({ f, ctx, effect, frattalePoint, lastPoint, color });
+        }
+
+        ctx.strokeStyle = color;
+      }
+      ctx.stroke();
+      ctx.closePath();
+    }
   }
 };

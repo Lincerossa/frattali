@@ -11,7 +11,7 @@ export default ({ frattali, color, effect, setAll }) => {
 
   return (
     <S.Panel>
-      <S.PanelClose onClick={() => setAll({ modal: false })}>
+      <S.PanelClose onClick={() => setAll({ modal: null })}>
         <MdClose />
       </S.PanelClose>
       <S.PanelBlock>
