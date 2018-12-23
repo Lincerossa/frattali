@@ -1,17 +1,21 @@
 import { useEffect, useState } from "react";
 
-export default item => {
+export default element => {
   const [mousePosition, setMousePosition] = useState(null);
   const [mouseStatus, setMouseStatus] = useState(null);
 
-  function handleMouseDown() {
-    const el = item.current.parentNode;
-
+  function handleMouseDown(e) {
+    const el = element.current.parentNode;
     el.addEventListener("mousemove", handleMouseMove);
     el.addEventListener("mouseup", handleMouseUp);
     el.addEventListener("touchmove", handleMouseMove, { passive: false });
     el.addEventListener("touchend", handleMouseUp);
     setMouseStatus("mousedown");
+  }
+
+  function handleTouchStart(e) {
+    handleMouseMove(e);
+    handleMouseDown();
   }
 
   function handleMouseUp() {
@@ -27,10 +31,10 @@ export default item => {
 
   useEffect(
     () => {
-      const el = item.current.parentNode;
+      const el = element.current.parentNode;
 
       el.addEventListener("mousedown", handleMouseDown);
-      el.addEventListener("touchstart", handleMouseDown, { passive: false });
+      el.addEventListener("touchstart", handleTouchStart, { passive: false });
 
       return () => {
         el.removeEventListener("mousedown", handleMouseDown);
@@ -42,7 +46,7 @@ export default item => {
         el.removeEventListener("touchmove", handleMouseMove);
       };
     },
-    [item]
+    [element]
   );
 
   return {
