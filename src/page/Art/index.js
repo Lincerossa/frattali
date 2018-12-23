@@ -84,7 +84,6 @@ function getUpdatedStoryline(storyline, state) {
 }
 
 function getPreviousState(storyline) {
-  if (!storyline || !storyline.length) return;
   const currentStoryIndex = storyline.findIndex(({ isCurrent }) => isCurrent);
 
   if (storyline[currentStoryIndex - 1]) {
@@ -134,25 +133,21 @@ export default ({ width, height }) => {
     [lines]
   );
 
-  function goBack(storyline) {
-    const previousState = getPreviousState(storyline);
-    if (previousState) {
-      const { frattali, lines, color, effect, storyline } = previousState;
-      setColor(color);
-      setFrattali(frattali);
-      setEffect(effect);
-      setStory(storyline);
-      canvas.current.getContext("2d").clearRect(0, 0, width, height);
-      setLines(lines);
-      setLines({ type: "LINE_ADD" });
-    }
+  function goBack(j) {
+    canvas.current.getContext("2d").clearRect(0, 0, width, height);
+    const { frattali, lines, color, effect, storyline } = getPreviousState(j);
+    setColor(color);
+    setFrattali(frattali);
+    setEffect(effect);
+    setStory(storyline);
+    setLines(lines);
+    setLines({ type: "LINE_ADD" });
   }
 
   useEffect(
     () => {
       canvas.current.style.width = `${window.innerWidth}px`;
       canvas.current.style.height = `${window.innerHeight}px`;
-
       const ratio = window.devicePixelRatio;
       canvas.current.width = window.innerWidth * ratio;
       canvas.current.height = window.innerHeight * ratio;
@@ -205,7 +200,9 @@ export default ({ width, height }) => {
         >
           <MdClose />
         </S.Controller>
-        <S.Controller onClick={() => goBack(storyline)}>
+        <S.Controller
+          onClick={() => storyline && storyline.length > 1 && goBack(storyline)}
+        >
           <MdKeyboardBackspace />
         </S.Controller>
         <S.Controller onClick={() => openModal(true)}>
