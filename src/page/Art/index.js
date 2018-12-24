@@ -12,7 +12,7 @@ const defaultState = {
     {
       color: "white",
       points: [],
-      frattali: 30,
+      frattali: 50,
       effect: null,
     },
   ],
@@ -111,7 +111,7 @@ export default ({ width, height }) => {
   const { mousePosition, mouseStatus } = useMouse(canvas);
   const { canvasCenter } = useCanvasCenter(canvas);
   const [lines, setLines] = useReducer(linesReducer, defaultState.lines);
-  const [frattali, setFrattali] = useState(30);
+  const [frattali, setFrattali] = useState(50);
   const [effect, setEffect] = useState(null);
   const [color, setColor] = useState("white");
   const [storyline, setStoryline] = useState([]);
@@ -140,6 +140,9 @@ export default ({ width, height }) => {
         lines,
         canvasCenter,
       });
+      return () => {
+        // canvas.current.getContext("2d").clearRect(0, 0, width, height);
+      };
     },
     [lines]
   );
@@ -170,7 +173,7 @@ export default ({ width, height }) => {
         });
       }
     },
-    [mousePosition]
+    [mousePosition, mouseStatus]
   );
 
   useEffect(
