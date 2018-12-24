@@ -3,11 +3,8 @@ import { ColorPicker } from "../../components";
 import * as S from "./styles";
 import { MdClose } from "react-icons/md";
 
-export default ({ frattali, color, effect, setAll }) => {
-  function handleLineUpdate(payload) {
-    const lines = { type: "LINE_UPDATE", payload };
-    setAll({ lines, ...payload });
-  }
+export default ({ frattali, color, effect, setAll, handleLineUpdate }) => {
+
 
   return (
     <S.Panel>

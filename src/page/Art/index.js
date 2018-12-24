@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect, useReducer } from "react";
 
 import { MdSettings, MdClose, MdKeyboardBackspace } from "react-icons/md";
+import produce from 'immer'
 
 import Panel from "./Panel";
 import * as S from "./styles";
@@ -19,68 +20,50 @@ const defaultState = {
 };
 
 function linesReducer(state, { type, payload }) {
-  let newLines = [...state];
-  const lastLine = newLines[newLines.length - 1];
-
   switch (type) {
+
     case "LINE_POINT_ADD":
-      return [
-        ...newLines.slice(0, newLines.length - 1),
-        {
-          ...lastLine,
-          points: [...lastLine.points, payload],
-        },
-      ];
+    return produce(state, draftState => {
+      draftState[draftState.length - 1].points.push(payload)
+    })
+
     case "LINE_ADD":
-      return [
-        ...newLines,
-        {
-          color: lastLine.color,
-          frattali: lastLine.frattali,
-          effect: lastLine.effect,
-          points: [],
-        },
-      ];
+    return produce(state, draftState => {
+      const { color, frattali, effect } = draftState[draftState.length - 1]
+      draftState.push({
+        color,
+        frattali,
+        effect,
+        points: [],
+      })
+    })
 
     case "LINE_UPDATE":
-      return [
-        ...newLines.slice(0, newLines.length - 1),
-        {
-          ...lastLine,
+      return produce(state, draftState => {
+        draftState[draftState.length - 1] = {
+          ...draftState[draftState.length - 1],
           ...payload,
-        },
-      ];
+        }
+      })
+
     case "LINES_NEW": {
       return payload;
     }
+
     case "LINE_CLEAR":
       return defaultState.lines;
+      
     default:
       return defaultState.lines;
   }
 }
 
 function getUpdatedStoryline(storyline, state) {
-  const lastStory = storyline[storyline.length - 1];
-  if (lastStory) {
-    return [
-      ...(storyline.slice(0, storyline.length - 1) || []),
-      {
-        ...lastStory,
-        isCurrent: false,
-      },
-      {
-        ...state,
-        isCurrent: true,
-      },
-    ];
-  }
-  return [
-    {
-      ...state,
-      isCurrent: true,
-    },
-  ];
+  return produce(storyline, draftState => {
+    const lastStory = draftState[draftState.length - 1]
+    if(lastStory) lastStory.isCurrent = false
+    draftState.push({...state, isCurrent: true})
+  })
 }
 
 function getPreviousState(storyline) {
@@ -131,6 +114,13 @@ export default ({ width, height }) => {
     const previousState = getPreviousState(storyline);
     setAll(previousState);
     setLines({ type: "LINE_ADD" });
+  }
+
+  function handleLineUpdate(payload) {
+    setAll({ 
+      lines: { type: "LINE_UPDATE", payload},
+      ...payload 
+    });
   }
 
   useEffect(
@@ -215,6 +205,7 @@ export default ({ width, height }) => {
       {isModalOpen && (
         <Panel
           setAll={setAll}
+          handleLineUpdate={handleLineUpdate}
           color={color}
           frattali={frattali}
           effect={effect}
