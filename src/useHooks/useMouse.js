@@ -4,7 +4,7 @@ export default element => {
   const [mousePosition, setMousePosition] = useState(null);
   const [mouseStatus, setMouseStatus] = useState(null);
 
-  function handleMouseDown(e) {
+  function handleMouseDown() {
     const el = element.current.parentNode;
     el.addEventListener("mousemove", handleMouseMove);
     el.addEventListener("mouseup", handleMouseUp);

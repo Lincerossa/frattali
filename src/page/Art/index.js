@@ -5,7 +5,7 @@ import produce from 'immer'
 
 import Panel from "./Panel";
 import * as S from "./styles";
-import { useMouse, useCanvasCenter } from "../../useHooks";
+import { useMouse, useGetCenter } from "../../useHooks";
 import { drawFrattali } from "./draw";
 
 const defaultState = {
@@ -92,7 +92,7 @@ function getPreviousState(storyline) {
 export default ({ width, height }) => {
   const canvas = useRef(null);
   const { mousePosition, mouseStatus } = useMouse(canvas);
-  const { canvasCenter } = useCanvasCenter(canvas);
+  const { center } = useGetCenter(canvas);
   const [lines, setLines] = useReducer(linesReducer, defaultState.lines);
   const [frattali, setFrattali] = useState(50);
   const [effect, setEffect] = useState(null);
@@ -128,8 +128,9 @@ export default ({ width, height }) => {
       drawFrattali({
         ctx: canvas.current.getContext("2d"),
         lines,
-        canvasCenter,
+        center,
       });
+
     },
     [lines]
   );
@@ -164,7 +165,7 @@ export default ({ width, height }) => {
         });
       }
     },
-    [mousePosition, mouseStatus]
+    [mousePosition, mouseStatus === 'mouseup']
   );
 
   useEffect(

@@ -1,15 +1,15 @@
-function getCartesianPoint(point, canvasCenter) {
+function getCartesianPoint(point, center) {
   const { x: xp, y: yp } = point;
-  const { x: xc, y: yc } = canvasCenter;
+  const { x: xc, y: yc } = center;
   return {
     x: xp - xc,
     y: yc - yp,
   };
 }
 
-function getCanvasPoint(point, canvasCenter) {
+function getCanvasPoint(point, center) {
   const { x: xp, y: yp } = point;
-  const { x: xc, y: yc } = canvasCenter;
+  const { x: xc, y: yc } = center;
   return {
     x: xc + xp,
     y: yc - yp,
@@ -52,16 +52,16 @@ function drawEffect({ f, ctx, effect, frattalePoint, lastPoint, color }) {
   }
 }
 
-export const drawFrattali = ({ ctx, lines, canvasCenter }) => {
+export const drawFrattali = ({ ctx, lines, center }) => {
   for (let l = 0; l < lines.length; l++) {
     const line = lines[l];
-    if (!line || !line.points.length) return;
+    if (!line.points.length) return;
 
     const { frattali, color, points, effect } = line;
     let frattaliLines = Array.from({ length: frattali }, e => []);
 
     for (let p = 0; p < points.length; p++) {
-      const point = getCartesianPoint(points[p], canvasCenter);
+      const point = getCartesianPoint(points[p], center);
       const radius = Math.sqrt(Math.pow(point.x, 2) + Math.pow(point.y, 2));
       const alpha = (Math.atan2(point.y, point.x) * 180) / Math.PI;
       const anglePointToCenter = alpha < 0 ? 180 + (180 + alpha) : alpha;
@@ -83,7 +83,7 @@ export const drawFrattali = ({ ctx, lines, canvasCenter }) => {
             x: frattaleX,
             y: frattaleY,
           },
-          canvasCenter
+          center
         );
 
         frattaliLines[i][p] = frattalePoint;
