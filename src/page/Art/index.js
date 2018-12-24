@@ -58,35 +58,35 @@ function linesReducer(state, { type, payload }) {
   }
 }
 
-function getUpdatedStoryline(storyline, state) {
-  return produce(storyline, draftState => {
-    const lastStory = draftState[draftState.length - 1]
-    if(lastStory) lastStory.isCurrent = false
-    draftState.push({...state, isCurrent: true})
-  })
-}
-
 function getPreviousState(storyline) {
-  const currentStoryIndex = storyline.findIndex(({ isCurrent }) => isCurrent);
 
-  if (storyline[currentStoryIndex - 1]) {
-    const { lines, frattali, color, effect } = storyline[currentStoryIndex - 1];
+  return produce(storyline, draftState => {
 
-    return {
-      lines: { type: "LINES_NEW", payload: lines },
-      frattali,
-      color,
-      effect,
-      storyline: [
-        ...storyline.slice(0, currentStoryIndex - 1),
-        {
-          ...storyline[currentStoryIndex - 1],
-          isCurrent: true,
-        },
-      ],
-    };
-  }
-  return null;
+    const currentStoryIndex = draftState.findIndex(({ isCurrent }) => isCurrent);
+
+    if (draftState[currentStoryIndex - 1]) {
+      const { lines, frattali, color, effect } = draftState[currentStoryIndex - 1];
+  
+      return {
+        lines: { type: "LINES_NEW", payload: lines },
+        frattali,
+        color,
+        effect,
+        storyline: [
+          ...draftState.slice(0, currentStoryIndex - 1),
+          {
+            ...draftState[currentStoryIndex - 1],
+            isCurrent: true,
+          },
+        ],
+      };
+    }
+    return null;
+
+
+  })
+
+
 }
 
 export default ({ width, height }) => {
@@ -111,7 +111,7 @@ export default ({ width, height }) => {
 
   function goBack(storyline) {
     canvas.current.getContext("2d").clearRect(0, 0, width, height);
-    const previousState = getPreviousState(storyline);
+    const previousState = getPreviousState(storyline)
     setAll(previousState);
     setLines({ type: "LINE_ADD" });
   }
@@ -130,9 +130,6 @@ export default ({ width, height }) => {
         lines,
         canvasCenter,
       });
-      return () => {
-        // canvas.current.getContext("2d").clearRect(0, 0, width, height);
-      };
     },
     [lines]
   );
@@ -144,14 +141,18 @@ export default ({ width, height }) => {
         lines &&
         lines[lines.length - 1].points.length
       ) {
-        setLines({ type: "LINE_ADD" });
-        const updatedStoryline = getUpdatedStoryline(storyline, {
-          lines,
-          frattali,
-          color,
-          effect,
-        });
+        const updatedStoryline = produce(storyline, draftState => {
+          const lastStory = draftState[draftState.length - 1]
+          if(lastStory) lastStory.isCurrent = false
+          draftState.push({
+            lines,
+            frattali,
+            color,
+            effect,
+            isCurrent: true})
+          })
         setStoryline(updatedStoryline);
+        setLines({ type: "LINE_ADD" });
       }
       if (mouseStatus === "mousedown") {
         setLines({
