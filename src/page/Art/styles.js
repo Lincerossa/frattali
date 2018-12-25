@@ -144,6 +144,7 @@ export const InputRange = styled.input`
   border: none;
   width: 100%;
   -webkit-appearance: none;
+  -moz-appearance: none;
   height: .5rem;
   border-radius: .5rem;
   position: relative;
@@ -151,9 +152,6 @@ export const InputRange = styled.input`
 
   &:active, &:focus{
     outline: none;
-  }
-  &::-moz-range-track, &::-moz-range-trac, &::-webkit-slider-thumb, &::-webkit-slider-runnable-track{
-    display: none;
   }
 
 
@@ -168,6 +166,7 @@ export const InputRange = styled.input`
     height: .75rem;
     transform:  ${props => `translate(-${((props.value - props.min)/ (props.max - props.min))*16}px , -50%)`};
     padding: .5rem;
+    border-radius: 50%;
     top: 50%;
     cursor: pointer;
     font-size: .875rem;
@@ -175,10 +174,6 @@ export const InputRange = styled.input`
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: -1;
-    @media screen and (min-width: 600px) {
-      z-index: 1;
-  }
   }
 
 `
