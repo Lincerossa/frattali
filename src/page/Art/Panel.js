@@ -4,7 +4,7 @@ import * as S from "./styles";
 import { MdClose } from "react-icons/md";
 import { Sizeme } from '../../headless'
 
-export default ({ frattali, color, effect, setToggleModal, handleLineUpdate }) => (
+export default ({ frattali, color, effect, setToggleModal, handleLineUpdate, thickness }) => (
   <S.Panel>
     <S.PanelClose onClick={() => setToggleModal(null)}>
       <MdClose />
@@ -19,6 +19,27 @@ export default ({ frattali, color, effect, setToggleModal, handleLineUpdate }) =
               min="1" max="200" 
               value={frattali} 
               onChange={e => handleLineUpdate({frattali: e.target.value})}
+              step="1"
+              width={size.width}
+              height={size.height}
+            />
+          )}
+        </Sizeme>
+
+      </S.ButtonsWrapper>
+    </S.PanelBlock>
+    <S.PanelBlock>
+      <S.PanelBlockTitle>
+        Dimension
+      </S.PanelBlockTitle>
+      <S.ButtonsWrapper>
+        <Sizeme>
+          {({size}) => (
+            <S.InputRange 
+              type="range" 
+              min="1" max="10" 
+              value={thickness} 
+              onChange={e => handleLineUpdate({thickness: e.target.value})}
               step="1"
               width={size.width}
               height={size.height}

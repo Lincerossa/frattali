@@ -1,6 +1,6 @@
 export default ({ ctx, lines, center }) => {
   for (let l = 0; l < lines.length; l++) {
-    const { frattali, color, points, effect } = lines[l];  
+    const { frattali, color, thickness, points, effect } = lines[l];  
     const frattaliLines = Array.from({ length: frattali }, e => []);
     for (let p = 0; p < points.length; p++) {
       const point = points[p]
@@ -66,6 +66,7 @@ export default ({ ctx, lines, center }) => {
             ctx.beginPath();
             ctx.moveTo(lastPoint.x + dx * 0.2, lastPoint.y + dy * 0.2);
             ctx.lineTo(frattalePoint.x - dx * 0.2, frattalePoint.y - dy * 0.2);
+            ctx.lineWidth = thickness;
             ctx.strokeStyle = color;
             ctx.stroke();
             ctx.closePath();
@@ -74,7 +75,7 @@ export default ({ ctx, lines, center }) => {
         if(!effect){
           ctx.lineTo(frattalePoint.x, frattalePoint.y)
         }
-
+        ctx.lineWidth = thickness;
         ctx.strokeStyle = color;
       }
       ctx.stroke();

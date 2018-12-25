@@ -15,6 +15,7 @@ const defaultState = {
       points: [],
       frattali: 50,
       effect: null,
+      thickness: 1,
     },
   ],
 };
@@ -29,11 +30,12 @@ function linesReducer(state, { type, payload }) {
 
     case "LINE_ADD":
     return produce(state, draftState => {
-      const { color, frattali, effect } = draftState[draftState.length - 1]
+      const { color, frattali, effect, thickness} = draftState[draftState.length - 1]
       draftState.push({
         color,
         frattali,
         effect,
+        thickness,
         points: [],
       })
     })
@@ -157,6 +159,7 @@ export default ({ width, height }) => {
           color={lines[lines.length -1].color}
           frattali={lines[lines.length -1].frattali}
           effect={lines[lines.length -1].effect}
+          thickness={lines[lines.length -1].thickness}
         />
       )}
     </S.CanvasWrapper>

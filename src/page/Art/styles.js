@@ -140,42 +140,41 @@ export const ColorBlock = styled.div`
 
 
 export const InputRange = styled.input`
-  cursor: pointer;
-  width: 100%;
-  cursor: pointer;
-  width: 100%;
-  font-size: red;
   background-color: ${props => props.theme.colors.main};
   border: none;
+  width: 100%;
   -webkit-appearance: none;
   height: .5rem;
   border-radius: .5rem;
   position: relative;
+  z-index: 1;
+
   &:active, &:focus{
     outline: none;
-  }
-  &:active&:after{
-    opacity: 1;
   }
 
   &:after{
     content: "${props => props.value}";
-    opacity: 0;
-    transition: opacity .5s;
     position: absolute;
     background-color: red;
-    left: ${props => `calc(${(props.value/ props.max)*100}% - .75rem)`};
+    left: ${props => `calc(${((props.value - props.min)/ (props.max - props.min))*100}% - .375rem)`};
     background-color: black;
     color: ${props => props.theme.colors.main};
-    width: 1.5rem;
-    height: 1.5rem;
-    top: -50%;
+    width: .75rem;
+    height: .75rem;
+    transform:  ${props => `translate(-${((props.value - props.min)/ (props.max - props.min))*16}px , -50%)`};
     padding: .5rem;
+    top: 50%;
+    cursor: pointer;
+    font-size: .875rem;
     border: 1px solid ${props => props.theme.colors.main};
-    transform: translate(-.75rem,-.75rem);
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: -1;
+    @media screen and (min-width: 600px) {
+      z-index: 1;
+  }
   }
 
 `
