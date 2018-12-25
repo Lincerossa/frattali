@@ -6,11 +6,6 @@ function SizeMe(props) {
     width: 0,
     height: 0
   });
-  useEffect(() => {
-    window.addEventListener("resize", handleUpdateSize)
-
-    return () => window.removeEventListener("resize", handleUpdateSize)
-  })
 
   useEffect(() => {
     handleUpdateSize();

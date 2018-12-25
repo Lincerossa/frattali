@@ -6,7 +6,7 @@ import produce from 'immer'
 import Panel from "./Panel";
 import * as S from "./styles";
 import { useMouse, useGetCenter } from "../../useHooks";
-import { drawFrattali } from "./draw";
+import drawFrattali from "./draw";
 
 const defaultState = {
   lines: [
@@ -46,10 +46,9 @@ function linesReducer(state, { type, payload }) {
         }
       })
 
-    case "LINES_NEW": {
+    case "LINE_NEW":
       return payload;
-    }
-
+      
     case "LINE_CLEAR":
       return defaultState.lines;
       
@@ -58,69 +57,21 @@ function linesReducer(state, { type, payload }) {
   }
 }
 
-function getPreviousState(storyline) {
-
-  return produce(storyline, draftState => {
-
-    const currentStoryIndex = draftState.findIndex(({ isCurrent }) => isCurrent);
-
-    if (draftState[currentStoryIndex - 1]) {
-      const { lines, frattali, color, effect } = draftState[currentStoryIndex - 1];
-  
-      return {
-        lines: { type: "LINES_NEW", payload: lines },
-        frattali,
-        color,
-        effect,
-        storyline: [
-          ...draftState.slice(0, currentStoryIndex - 1),
-          {
-            ...draftState[currentStoryIndex - 1],
-            isCurrent: true,
-          },
-        ],
-      };
-    }
-    return null;
-
-
-  })
-
-
-}
 
 export default ({ width, height }) => {
   const canvas = useRef(null);
   const { mousePosition, mouseStatus } = useMouse(canvas);
   const { center } = useGetCenter(canvas);
   const [lines, setLines] = useReducer(linesReducer, defaultState.lines);
-  const [frattali, setFrattali] = useState(50);
-  const [effect, setEffect] = useState(null);
-  const [color, setColor] = useState("white");
   const [storyline, setStoryline] = useState([]);
-  const [isModalOpen, openModal] = useState(null);
-
-  function setAll({ lines, frattali, color, effect, storyline, modal }) {
-    lines && setLines(lines);
-    frattali && setFrattali(frattali);
-    color && setColor(color);
-    effect !== undefined && setEffect(effect);
-    modal !== undefined && openModal(modal);
-    storyline && setStoryline(storyline);
-  }
+  const [isModalOpen, setToggleModal] = useState(null);
 
   function goBack(storyline) {
     canvas.current.getContext("2d").clearRect(0, 0, width, height);
-    const previousState = getPreviousState(storyline)
-    setAll(previousState);
+    const lastStory = storyline[storyline.length -2]
+    setLines({ type: "LINE_NEW", payload: lastStory.lines})    
     setLines({ type: "LINE_ADD" });
-  }
-
-  function handleLineUpdate(payload) {
-    setAll({ 
-      lines: { type: "LINE_UPDATE", payload},
-      ...payload 
-    });
+    setStoryline(storyline.slice(0, storyline.length -1))
   }
 
   useEffect(
@@ -130,7 +81,6 @@ export default ({ width, height }) => {
         lines,
         center,
       });
-
     },
     [lines]
   );
@@ -142,24 +92,19 @@ export default ({ width, height }) => {
         lines &&
         lines[lines.length - 1].points.length
       ) {
-        const updatedStoryline = produce(storyline, draftState => {
-          const lastStory = draftState[draftState.length - 1]
-          if(lastStory) lastStory.isCurrent = false
+        setStoryline(produce(storyline, draftState => {
           draftState.push({
-            lines,
-            frattali,
-            color,
-            effect,
-            isCurrent: true})
+            lines
           })
-        setStoryline(updatedStoryline);
+        }));
         setLines({ type: "LINE_ADD" });
       }
       if (mouseStatus === "mousedown") {
         setLines({
           type: "LINE_POINT_ADD",
           payload: {
-            ...mousePosition,
+            x: mousePosition.x - center.x,
+            y: center.y - mousePosition.y,
             timestamp: new Date().getTime(),
           },
         });
@@ -185,6 +130,7 @@ export default ({ width, height }) => {
       <S.CanvasInner>
         <canvas id="canvas" width={width} height={height} ref={canvas} />
       </S.CanvasInner>
+      
       <S.Controllers>
         <S.Controller
           onClick={() => {
@@ -200,17 +146,21 @@ export default ({ width, height }) => {
         >
           <MdKeyboardBackspace />
         </S.Controller>
-        <S.Controller onClick={() => openModal(true)}>
+        <S.Controller onClick={() => setToggleModal(true)}>
           <MdSettings />
         </S.Controller>
       </S.Controllers>
       {isModalOpen && (
         <Panel
-          setAll={setAll}
-          handleLineUpdate={handleLineUpdate}
-          color={color}
-          frattali={frattali}
-          effect={effect}
+          setToggleModal={setToggleModal}
+          handleLineUpdate={(payload) =>{
+            setLines({ 
+              lines: { type: "LINE_UPDATE", payload},
+            });
+          }}
+          color={lines[lines.length -1].color}
+          frattali={lines[lines.length -1].frattali}
+          effect={lines[lines.length -1].effect}
         />
       )}
     </S.CanvasWrapper>

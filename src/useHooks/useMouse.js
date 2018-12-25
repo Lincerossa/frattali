@@ -39,7 +39,6 @@ export default element => {
       return () => {
         el.removeEventListener("mousedown", handleMouseDown);
         el.addEventListener("touchstart", handleMouseDown);
-
         el.removeEventListener("mouseup", handleMouseUp);
         el.removeEventListener("touchend", handleMouseUp);
         el.removeEventListener("mousemove", handleMouseMove);

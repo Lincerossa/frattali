@@ -3,9 +3,9 @@ import { ColorPicker } from "../../components";
 import * as S from "./styles";
 import { MdClose } from "react-icons/md";
 
-export default ({ frattali, color, effect, setAll, handleLineUpdate }) => (
+export default ({ frattali, color, effect, setToggleModal, handleLineUpdate }) => (
   <S.Panel>
-    <S.PanelClose onClick={() => setAll({ modal: null })}>
+    <S.PanelClose onClick={() => setToggleModal(null)}>
       <MdClose />
     </S.PanelClose>
     <S.PanelBlock>
