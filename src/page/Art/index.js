@@ -153,11 +153,7 @@ export default ({ width, height }) => {
       {isModalOpen && (
         <Panel
           setToggleModal={setToggleModal}
-          handleLineUpdate={(payload) =>{
-            setLines({ 
-              lines: { type: "LINE_UPDATE", payload},
-            });
-          }}
+          handleLineUpdate={(payload) => setLines({ type: "LINE_UPDATE", payload})}
           color={lines[lines.length -1].color}
           frattali={lines[lines.length -1].frattali}
           effect={lines[lines.length -1].effect}
