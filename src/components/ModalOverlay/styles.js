@@ -25,6 +25,6 @@ export const Close = styled.div`
   align-items: center;
   justify-content: center;
   &:hover{
-    color: #ac00ff;
+    color: ${props => props.theme.colors.main};
   }
 `

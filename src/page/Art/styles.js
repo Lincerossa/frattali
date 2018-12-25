@@ -35,7 +35,7 @@ export const Controller = styled.div`
   height: 2.5rem;
   width: 2.5rem;
   border-radius: 50%;
-  background-color: #ac00ff;
+  background-color: ${props => props.theme.colors.main};
   color: white;
   margin-right: .5rem;
   
@@ -44,7 +44,7 @@ export const Controller = styled.div`
   }
   &:active{
     background-color: white;
-    color: #ac00ff;
+    color: ${props => props.theme.colors.main};
   }
   &:focus{
     outline: none;
@@ -53,7 +53,7 @@ export const Controller = styled.div`
   @media screen and (min-width: 600px) {
     &:hover{
       background-color: white;
-      color: #ac00ff;
+      color: ${props => props.theme.colors.main};
     }
   }
 `
@@ -96,11 +96,11 @@ export const Button = styled.div`
   display: flex;
   align-items: center;
   ${props => props.isActive && `
-    color:  #ac00ff;
+    color:  ${props => props.theme.colors.main};
   `}
 
   &:hover{
-    color: #ac00ff;
+    color: ${props => props.theme.colors.main};
   }
 `
 
@@ -115,7 +115,7 @@ font-size: 1.5rem;
 cursor: pointer;
 
 &:hover{
-    color: #ac00ff;
+    color: ${props => props.theme.colors.main};
   }
 `
 
@@ -129,7 +129,7 @@ export const PanelBlockTitle = styled.div`
   letter-spacing: .04rem;
   text-transform: uppercase;
   span{
-    color: #ac00ff;
+    color: ${props => props.theme.colors.main};
     margin-left: .5rem;
     font-weight: 600;
   }
