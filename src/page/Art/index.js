@@ -6,7 +6,7 @@ import produce from 'immer'
 import Panel from "./Panel";
 import * as S from "./styles";
 import { useMouse, useGetCenter } from "../../useHooks";
-import drawFrattali from "./draw";
+import draw from "./draw";
 
 const defaultState = {
   lines: [
@@ -78,7 +78,7 @@ export default ({ width, height }) => {
 
   useEffect(
     () => {
-      drawFrattali({
+      draw({
         ctx: canvas.current.getContext("2d"),
         lines,
         center,
@@ -105,6 +105,7 @@ export default ({ width, height }) => {
         setLines({
           type: "LINE_POINT_ADD",
           payload: {
+            // pt già sul piano cartesiano con coordinate del centro, quelle di center
             x: mousePosition.x - center.x,
             y: center.y - mousePosition.y,
             timestamp: new Date().getTime(),
