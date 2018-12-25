@@ -152,6 +152,10 @@ export const InputRange = styled.input`
   &:active, &:focus{
     outline: none;
   }
+  &::-moz-range-track, &::-moz-range-trac, &::-webkit-slider-thumb, &::-webkit-slider-runnable-track{
+    display: none;
+  }
+
 
   &:after{
     content: "${props => props.value}";
