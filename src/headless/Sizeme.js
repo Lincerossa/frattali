@@ -19,7 +19,7 @@ function SizeMe(props) {
     });
   };
 
-  return <div ref={myRef}>{props.children({ ...props, size })}</div>;
+  return <div style={{width: "100%"}} ref={myRef}>{props.children({ ...props, size })}</div>;
 }
 
 export default SizeMe;

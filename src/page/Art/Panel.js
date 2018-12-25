@@ -2,6 +2,7 @@ import React from "react";
 import { ColorPicker } from "../../components";
 import * as S from "./styles";
 import { MdClose } from "react-icons/md";
+import { Sizeme } from '../../headless'
 
 export default ({ frattali, color, effect, setToggleModal, handleLineUpdate }) => (
   <S.Panel>
@@ -9,15 +10,22 @@ export default ({ frattali, color, effect, setToggleModal, handleLineUpdate }) =
       <MdClose />
     </S.PanelClose>
     <S.PanelBlock>
-      <S.PanelBlockTitle>divisions <span>{frattali}</span></S.PanelBlockTitle>
+      <S.PanelBlockTitle>divisions</S.PanelBlockTitle>
       <S.ButtonsWrapper>
-        <S.InputRange 
-          type="range" 
-          min="1" max="200" 
-          value={frattali} 
-          onChange={e => handleLineUpdate({frattali: e.target.value})}
-          step="1"
-        />
+        <Sizeme>
+          {({size}) => (
+            <S.InputRange 
+              type="range" 
+              min="1" max="200" 
+              value={frattali} 
+              onChange={e => handleLineUpdate({frattali: e.target.value})}
+              step="1"
+              width={size.width}
+              height={size.height}
+            />
+          )}
+        </Sizeme>
+
       </S.ButtonsWrapper>
     </S.PanelBlock>
     <S.PanelBlock>
