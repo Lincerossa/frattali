@@ -1,8 +1,8 @@
 import React from 'react';
-import { SketchPicker } from 'react-color';
+import { HuePicker } from 'react-color';
 
 
-export default ({color, setColor}) => <SketchPicker
+export default ({color, setColor}) => <HuePicker
   color={color}
   onChangeComplete={color =>  setColor(color.hex) }
 />
