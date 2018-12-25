@@ -2,12 +2,9 @@ import styled from 'styled-components'
 
 
 export const CanvasWrapper = styled.div`
-  
 `
 
 export const CanvasInner = styled.div`
-  height: calc(100vh);
-  width: calc(100vw);
   position: relative;
   background-color: rgb(29, 24, 35);
 `
@@ -18,7 +15,6 @@ export const Controllers = styled.div`
   right: .5rem;
   top: .5rem;  
   display: flex;
- 
   align-items: center;
   justify-content: center;
 `
@@ -64,11 +60,16 @@ export const Panel = styled.div`
   top: 0;
   right: 0;
   bottom: 0;
+  left: 0;
   background: black;
   padding: 1rem;
   padding-top: 2.5rem;
   border-bottom-left-radius: .5rem;
   border-top-left-radius: .5rem;
+  @media screen and (min-width: 600px) {
+    left: auto;
+  }
+
 `
 
 export const PanelBlock = styled.div`
@@ -96,7 +97,7 @@ export const Button = styled.div`
   display: flex;
   align-items: center;
   ${props => props.isActive && `
-    color:  ${props => props.theme.colors.main};
+    color:  ${props.theme.colors.main};
   `}
 
   &:hover{
@@ -110,9 +111,13 @@ export const PanelClose = styled.div`
 color: white;
 position: absolute;
 top: 0.5rem;
-right: .5rem;
+right: 1rem;
 font-size: 1.5rem;
 cursor: pointer;
+border: 1px solid;
+display: flex;
+align-items: center;
+justify-content: center;
 
 &:hover{
     color: ${props => props.theme.colors.main};
@@ -140,7 +145,7 @@ export const ColorBlock = styled.div`
 
 
 export const InputRange = styled.input`
-  background-color: ${props => props.theme.colors.main};
+  background-color: white;
   border: none;
   width: 100%;
   -webkit-appearance: none;
