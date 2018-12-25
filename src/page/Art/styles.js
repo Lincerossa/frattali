@@ -76,7 +76,7 @@ export const PanelBlock = styled.div`
   padding-bottom: 1rem;
   font-family: sans-serif;
   font-size: 1.125rem;
-  border-bottom: 1px solid white;
+  border-bottom: 1px solid #ffffff3b;
   &:last-of-type {
     border-bottom: none;
   }
@@ -128,6 +128,11 @@ export const PanelBlockTitle = styled.div`
   margin-bottom: .75rem;
   letter-spacing: .04rem;
   text-transform: uppercase;
+  span{
+    color: #ac00ff;
+    margin-left: .5rem;
+    font-weight: 600;
+  }
 `
 
 export const ColorBlock = styled.div`
@@ -136,4 +141,21 @@ export const ColorBlock = styled.div`
   width: 1rem;
   border: 1px solid white;
   margin-left: .5rem;
+`
+
+
+export const InputRange = styled.input`
+  cursor: pointer;
+  width: 100%;
+  cursor: pointer;
+  width: 100%;
+  font-size: red;
+  background: #ad00ff;
+  border: none;
+  -webkit-appearance: none;
+  height: .5rem;
+  border-radius: .5rem;
+  &:active, &:focus{
+    outline: none;
+  }
 `

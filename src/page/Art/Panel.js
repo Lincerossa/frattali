@@ -9,20 +9,15 @@ export default ({ frattali, color, effect, setToggleModal, handleLineUpdate }) =
       <MdClose />
     </S.PanelClose>
     <S.PanelBlock>
-      <S.PanelBlockTitle>divisions: {frattali}</S.PanelBlockTitle>
+      <S.PanelBlockTitle>divisions <span>{frattali}</span></S.PanelBlockTitle>
       <S.ButtonsWrapper>
-        <S.Button
-          onClick={() => handleLineUpdate({ frattali: frattali - 1 })}
-        >
-          {" "}
-          -1
-        </S.Button>
-        <S.Button
-          onClick={() => handleLineUpdate({ frattali: frattali + 1 })}
-        >
-          {" "}
-          +1
-        </S.Button>
+        <S.InputRange 
+          type="range" 
+          min="1" max="200" 
+          value={frattali} 
+          onChange={e => handleLineUpdate({frattali: e.target.value})}
+          step="1"
+        />
       </S.ButtonsWrapper>
     </S.PanelBlock>
     <S.PanelBlock>
