@@ -13,8 +13,7 @@ const defaultState = {
     {
       color: "white",
       points: [],
-      frattali: 50,
-      effect: null,
+      divisions: 50,
       thickness: 1,
     },
   ],
@@ -30,12 +29,8 @@ function linesReducer(state, { type, payload }) {
 
     case "LINE_ADD":
     return produce(state, draftState => {
-      const { color, frattali, effect, thickness} = draftState[draftState.length - 1]
       draftState.push({
-        color,
-        frattali,
-        effect,
-        thickness,
+        ...draftState[draftState.length - 1],
         points: [],
       })
     })
@@ -64,10 +59,10 @@ export default ({ width, height }) => {
   const canvas = useRef(null);
   const { mousePosition, mouseStatus } = useMouse(canvas);
   const { center } = useGetCenter(canvas);
-  const [lines, setLines] = useReducer(linesReducer, defaultState.lines);
-  const [storyline, setStoryline] = useState([]);
-  const [isModalOpen, setToggleModal] = useState(null);
-  const [backgroundColor, setBackGroundColor] = useState("black");
+  const [ lines, setLines ] = useReducer(linesReducer, defaultState.lines);
+  const [ storyline, setStoryline ] = useState([]);
+  const [ isModalOpen, setToggleModal ] = useState(null);
+  const [ backgroundColor, setBackGroundColor ] = useState("black");
 
   function goBack(storyline) {
     const lastStory = storyline[storyline.length -2]
@@ -139,9 +134,6 @@ export default ({ width, height }) => {
         width,
         height
       })
-      return () => {
-        canvas.current.getContext("2d").clearRect(0, 0, width, height)
-      }
     },
     [canvas.current, width, height]
   );
@@ -157,6 +149,12 @@ export default ({ width, height }) => {
           onClick={() => {
             setStoryline([]);
             setLines({ type: "LINE_CLEAR" });
+            drawBackground({ 
+              ctx: canvas.current.getContext("2d"), 
+              backgroundColor,
+              width,
+              height
+            })
           }}
         >
           <MdClose />
@@ -176,8 +174,7 @@ export default ({ width, height }) => {
           handleLineUpdate={(payload) => setLines({ type: "LINE_UPDATE", payload})}
           setBackGroundColor={setBackGroundColor}
           color={lines[lines.length -1].color}
-          frattali={lines[lines.length -1].frattali}
-          effect={lines[lines.length -1].effect}
+          divisions={lines[lines.length -1].divisions}
           thickness={lines[lines.length -1].thickness}
           backgroundColor={backgroundColor}
         />

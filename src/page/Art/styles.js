@@ -60,12 +60,10 @@ export const Panel = styled.div`
   right: 0;
   bottom: 0;
   left: 0;
-  background: black;
+  background: #343434;
   overflow-y: scroll;
   padding: 1rem;
   padding-top: 2.5rem;
-  border-bottom-left-radius: .5rem;
-  border-top-left-radius: .5rem;
   @media screen and (min-width: 600px) {
     left: auto;
   }

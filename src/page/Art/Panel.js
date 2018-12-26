@@ -49,7 +49,7 @@ function CanvasExample({width, height, backgroundColor, ...linesProps}){
   )
 }
 
-export default ({ frattali, color, effect, setToggleModal, handleLineUpdate, thickness, setBackGroundColor, backgroundColor }) => (
+export default ({ divisions, color, setToggleModal, handleLineUpdate, thickness, setBackGroundColor, backgroundColor }) => (
   <S.Panel>
     <S.PanelClose onClick={() => setToggleModal(null)}>
       <MdClose />
@@ -59,9 +59,8 @@ export default ({ frattali, color, effect, setToggleModal, handleLineUpdate, thi
       <Sizeme>
         {({size}) => (
           <CanvasExample 
-            frattali={frattali}
+            divisions={divisions}
             color={color}
-            effect={effect}
             thickness={thickness}
             backgroundColor={backgroundColor}
             {...size} 
@@ -79,8 +78,8 @@ export default ({ frattali, color, effect, setToggleModal, handleLineUpdate, thi
               type="range" 
               min="1" max="200" 
               color={color}
-              value={frattali} 
-              onChange={e => handleLineUpdate({frattali: e.target.value})}
+              value={divisions} 
+              onChange={e => handleLineUpdate({divisions: e.target.value})}
               step="1"
               {...size}
             />
@@ -111,35 +110,6 @@ export default ({ frattali, color, effect, setToggleModal, handleLineUpdate, thi
 
       </S.ButtonsWrapper>
     </S.PanelBlock>
-    {/* <S.PanelBlock>
-      <S.PanelBlockTitle>style</S.PanelBlockTitle>
-      <S.ButtonsWrapper>
-        <S.Button
-          onClick={() => handleLineUpdate({ effect: "noise" })}
-          isActive={effect === "noise"}
-        >
-          Noise
-        </S.Button>
-        <S.Button
-          onClick={() => handleLineUpdate({ effect: "tree" })}
-          isActive={effect === "tree"}
-        >
-          Tree
-        </S.Button>
-        <S.Button
-          onClick={() => handleLineUpdate({ effect: "japanese" })}
-          isActive={effect === "japanese"}
-        >
-          Japanese
-        </S.Button>
-        <S.Button
-          onClick={() => handleLineUpdate({ effect: null })}
-          isActive={effect === null}
-        >
-          Line
-        </S.Button>
-      </S.ButtonsWrapper>
-    </S.PanelBlock>*/}
     <S.PanelBlock> 
       <S.PanelBlockTitle>
         line color <S.ColorBlock color={color} />{" "}
