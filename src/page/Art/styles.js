@@ -6,7 +6,6 @@ export const CanvasWrapper = styled.div`
 
 export const CanvasInner = styled.div`
   position: relative;
-  background-color: rgb(29, 24, 35);
 `
 
 
@@ -62,6 +61,7 @@ export const Panel = styled.div`
   bottom: 0;
   left: 0;
   background: black;
+  overflow-y: scroll;
   padding: 1rem;
   padding-top: 2.5rem;
   border-bottom-left-radius: .5rem;

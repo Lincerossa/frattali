@@ -6,7 +6,7 @@ import produce from 'immer'
 import Panel from "./Panel";
 import * as S from "./styles";
 import { useMouse, useGetCenter } from "../../useHooks";
-import draw from "./draw";
+import { drawLines, drawBackground } from "./draw";
 
 const defaultState = {
   lines: [
@@ -48,7 +48,7 @@ function linesReducer(state, { type, payload }) {
         }
       })
 
-    case "LINE_NEW":
+    case "LINE_RESTORE":
       return payload;
       
     case "LINE_CLEAR":
@@ -67,24 +67,33 @@ export default ({ width, height }) => {
   const [lines, setLines] = useReducer(linesReducer, defaultState.lines);
   const [storyline, setStoryline] = useState([]);
   const [isModalOpen, setToggleModal] = useState(null);
+  const [backgroundColor, setBackGroundColor] = useState("black");
 
   function goBack(storyline) {
-    canvas.current.getContext("2d").clearRect(0, 0, width, height);
     const lastStory = storyline[storyline.length -2]
-    setLines({ type: "LINE_NEW", payload: lastStory.lines})    
+    setLines({ type: "LINE_RESTORE", payload: lastStory.lines})    
     setLines({ type: "LINE_ADD" });
     setStoryline(storyline.slice(0, storyline.length -1))
   }
 
   useEffect(
     () => {
-      draw({
+      drawBackground({ 
+        ctx: canvas.current.getContext("2d"), 
+        backgroundColor,
+        width,
+        height
+      })
+      drawLines({
         ctx: canvas.current.getContext("2d"),
         lines,
         center,
       });
+      return () => {
+        canvas.current.getContext("2d").clearRect(0, 0, width, height)
+      }
     },
-    [lines]
+    [lines, backgroundColor]
   );
 
   useEffect(
@@ -121,9 +130,18 @@ export default ({ width, height }) => {
       canvas.current.style.width = `${window.innerWidth}px`;
       canvas.current.style.height = `${window.innerHeight}px`;
       const ratio = window.devicePixelRatio;
-      canvas.current.width = window.innerWidth * ratio;
-      canvas.current.height = window.innerHeight * ratio;
+      canvas.current.width = width * ratio;
+      canvas.current.height = height * ratio;
       canvas.current.getContext("2d").scale(ratio, ratio);
+      drawBackground({ 
+        ctx: canvas.current.getContext("2d"), 
+        backgroundColor,
+        width,
+        height
+      })
+      return () => {
+        canvas.current.getContext("2d").clearRect(0, 0, width, height)
+      }
     },
     [canvas.current, width, height]
   );
@@ -139,7 +157,6 @@ export default ({ width, height }) => {
           onClick={() => {
             setStoryline([]);
             setLines({ type: "LINE_CLEAR" });
-            canvas.current.getContext("2d").clearRect(0, 0, width, height);
           }}
         >
           <MdClose />
@@ -157,10 +174,12 @@ export default ({ width, height }) => {
         <Panel
           setToggleModal={setToggleModal}
           handleLineUpdate={(payload) => setLines({ type: "LINE_UPDATE", payload})}
+          setBackGroundColor={setBackGroundColor}
           color={lines[lines.length -1].color}
           frattali={lines[lines.length -1].frattali}
           effect={lines[lines.length -1].effect}
           thickness={lines[lines.length -1].thickness}
+          backgroundColor={backgroundColor}
         />
       )}
     </S.CanvasWrapper>

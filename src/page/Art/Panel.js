@@ -3,17 +3,23 @@ import { ColorPicker } from "../../components";
 import * as S from "./styles";
 import { MdClose } from "react-icons/md";
 import { Sizeme } from '../../headless'
-import draw from './draw'
+import { drawLines, drawBackground } from './draw'
 import { useGetCenter } from '../../useHooks'
 
-function CanvasExample({width, height, ...linesProps}){
+function CanvasExample({width, height, backgroundColor, ...linesProps}){
   const canvas = useRef(null);
   const { center } = useGetCenter(canvas);
 
   useEffect(
     () => {
       if(center) {
-        draw({
+        drawBackground({ 
+          ctx: canvas.current.getContext("2d"), 
+          backgroundColor,
+          width,
+          height
+        })
+        drawLines({
           ctx: canvas.current.getContext("2d"),
           lines: [
             {
@@ -33,7 +39,7 @@ function CanvasExample({width, height, ...linesProps}){
       }
     }
     ,
-    [center, linesProps]
+    [center, linesProps, backgroundColor]
   );
 
   return (
@@ -43,7 +49,7 @@ function CanvasExample({width, height, ...linesProps}){
   )
 }
 
-export default ({ frattali, color, effect, setToggleModal, handleLineUpdate, thickness }) => (
+export default ({ frattali, color, effect, setToggleModal, handleLineUpdate, thickness, setBackGroundColor, backgroundColor }) => (
   <S.Panel>
     <S.PanelClose onClick={() => setToggleModal(null)}>
       <MdClose />
@@ -57,6 +63,7 @@ export default ({ frattali, color, effect, setToggleModal, handleLineUpdate, thi
             color={color}
             effect={effect}
             thickness={thickness}
+            backgroundColor={backgroundColor}
             {...size} 
           />
         )}
@@ -104,7 +111,7 @@ export default ({ frattali, color, effect, setToggleModal, handleLineUpdate, thi
 
       </S.ButtonsWrapper>
     </S.PanelBlock>
-    <S.PanelBlock>
+    {/* <S.PanelBlock>
       <S.PanelBlockTitle>style</S.PanelBlockTitle>
       <S.ButtonsWrapper>
         <S.Button
@@ -132,8 +139,8 @@ export default ({ frattali, color, effect, setToggleModal, handleLineUpdate, thi
           Line
         </S.Button>
       </S.ButtonsWrapper>
-    </S.PanelBlock>
-    <S.PanelBlock>
+    </S.PanelBlock>*/}
+    <S.PanelBlock> 
       <S.PanelBlockTitle>
         line color <S.ColorBlock color={color} />{" "}
       </S.PanelBlockTitle>
@@ -145,11 +152,11 @@ export default ({ frattali, color, effect, setToggleModal, handleLineUpdate, thi
 
     <S.PanelBlock>
       <S.PanelBlockTitle>
-        background color <S.ColorBlock color={color} />{" "}
+        background color <S.ColorBlock color={backgroundColor} />{" "}
       </S.PanelBlockTitle>
       <ColorPicker
-        color={color}
-        setColor={color => handleLineUpdate({ color })}
+        color={backgroundColor}
+        setColor={color => setBackGroundColor(color)}
       />
     </S.PanelBlock>
   </S.Panel>

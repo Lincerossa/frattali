@@ -1,4 +1,4 @@
-export default ({ ctx, lines, center }) => {
+export const drawLines =  ({ ctx, lines, center }) => {
   for (let l = 0; l < lines.length; l++) {
     const { frattali, color, thickness, points, effect } = lines[l];  
     const frattaliLines = Array.from({ length: frattali }, e => []);
@@ -84,3 +84,11 @@ export default ({ ctx, lines, center }) => {
 
   }
 };
+
+
+
+export const drawBackground = ({ ctx, backgroundColor, width, height}) => {
+  const ratio = window.devicePixelRatio;
+  ctx.fillStyle = backgroundColor;
+  ctx.fillRect(0, 0, width * ratio, height * ratio);
+}
