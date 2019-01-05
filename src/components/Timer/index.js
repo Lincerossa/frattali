@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+
 function TimeHandler(props) {
   const [initialTime, setInitialTime] = useState(0);
   const [currentTime, updateCurrentTime] = useState(0);

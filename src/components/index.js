@@ -1,2 +1,4 @@
 export { default as ColorPicker } from './ColorPicker'
-export { default as ModalOverlay } from './ModalOverlay'
+export { default as Sizeme } from './Sizeme'
+export { default as Timer } from './Timer'
+export { default as Button } from './Button'
