@@ -1,7 +1,8 @@
 import styled from 'styled-components'
 
-export const CanvasInner = styled.div`
+export const CanvasWrapper = styled.div`
   position: relative;
+  min-height: 200px;
 `
 
 
@@ -13,8 +14,6 @@ export const Controllers = styled.div`
   align-items: center;
   justify-content: center;
 `
-
-
 
 export const Panel = styled.div`
   position: absolute;
@@ -45,24 +44,6 @@ export const PanelBlock = styled.div`
 
 export const ButtonsWrapper = styled.div`
   display: flex;
-`
-
-export const Button = styled.div`
-  cursor: pointer;
-  margin-right: .5rem;
-  height: 1.5rem;
-  border: 1px solid;
-  padding: .5rem;
-  color: white;
-  display: flex;
-  align-items: center;
-  ${props => props.isActive && `
-    color:  ${props.theme.colors.main};
-  `}
-
-  &:hover{
-    color: ${props => props.theme.colors.main};
-  }
 `
 
 export const ColorPicker = styled.div`

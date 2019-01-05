@@ -1,12 +1,11 @@
 import React, { useState, useRef, useEffect, useReducer } from "react";
-import { Sizeme, Button } from '../../components'
+import { Sizeme, Button, Canvas } from '../../components'
 import { MdSettings, MdClose, MdKeyboardBackspace } from "react-icons/md";
 import produce from 'immer'
 
 import Panel from "./Panel";
 import * as S from "./styles";
 import { useMouse, useGetCenter } from "../../useHooks";
-import { drawLines, drawBackground } from "./draw";
 
 const defaultState = {
   lines: [
@@ -55,20 +54,20 @@ function linesReducer(state, { type, payload }) {
 }
 
 
-const Art = ({ width, height }) => {
+export default ({ width, height }) => {
   const canvas = useRef(null);
   const { mousePosition, mouseStatus } = useMouse(canvas);
   const { center } = useGetCenter(canvas);
   const [ lines, setLines ] = useReducer(linesReducer, defaultState.lines);
-  const [ storyline, setStoryline ] = useState([]);
-  const [ isModalOpen, setToggleModal ] = useState(null);
+  const [ storyOfLines, setStoryOfLines ] = useState([]);
+  const [ isPanelOpen, openPanel ] = useState(null);
   const [ backgroundColor, setBackGroundColor ] = useState("black");
 
-  function goBack(storyline) {
-    const lastStory = storyline[storyline.length -2]
+  function goBack(storyOfLines) {
+    const lastStory = storyOfLines[storyOfLines.length -2]
     setLines({ type: "LINE_RESTORE", payload: lastStory.lines})    
     setLines({ type: "LINE_ADD" });
-    setStoryline(storyline.slice(0, storyline.length -1))
+    setStoryOfLines(storyOfLines.slice(0, storyOfLines.length -1))
   }
 
   useEffect(
@@ -78,7 +77,7 @@ const Art = ({ width, height }) => {
         lines &&
         lines[lines.length - 1].points.length
       ) {
-        setStoryline(produce(storyline, draftState => {
+        setStoryOfLines(produce(storyOfLines, draftState => {
           draftState.push({
             lines
           })
@@ -92,7 +91,6 @@ const Art = ({ width, height }) => {
             // pt già sul piano cartesiano con coordinate del centro, quelle di center
             x: mousePosition.x - center.x,
             y: center.y - mousePosition.y,
-            // timestamp: new Date().getTime(),
           },
         });
       }
@@ -100,75 +98,36 @@ const Art = ({ width, height }) => {
     [mousePosition, mouseStatus === 'mouseup']
   );
 
-
-  useEffect(
-    () => {
-      drawBackground({ 
-        ctx: canvas.current.getContext("2d"), 
-        backgroundColor,
-        width,
-        height
-      })
-      drawLines({
-        ctx: canvas.current.getContext("2d"),
-        lines,
-        center,
-      });
-      return () => {
-        canvas.current.getContext("2d").clearRect(0, 0, width, height)
-      }
-    },
-    [lines, backgroundColor]
-  );
-
-  useEffect(
-    () => {
-      canvas.current.style.width = `${window.innerWidth}px`;
-      canvas.current.style.height = `${window.innerHeight}px`;
-      const ratio = window.devicePixelRatio;
-      canvas.current.width = width * ratio;
-      canvas.current.height = height * ratio;
-      canvas.current.getContext("2d").scale(ratio, ratio);
-      drawBackground({ 
-        ctx: canvas.current.getContext("2d"), 
-        backgroundColor,
-        width,
-        height
-      })
-    },
-    [canvas.current, width, height]
-  );
-
   return (
     <>
-      <canvas id="canvas" width={width} height={height} ref={canvas} />
+      <Sizeme>
+        {({ size }) => 
+          <S.CanvasWrapper ref={canvas}>
+            <Canvas  width={width} height={height} lines={lines} backgroundColor={backgroundColor} hd {...size} />
+          </S.CanvasWrapper>
+        } 
+      </Sizeme>
       <S.Controllers>
         <Button
           onClick={() => {
-            setStoryline([]);
+            setStoryOfLines([]);
             setLines({ type: "LINE_CLEAR" });
-            drawBackground({ 
-              ctx: canvas.current.getContext("2d"), 
-              backgroundColor,
-              width,
-              height
-            })
           }}
         >
           <MdClose />
         </Button>
         <Button
-          onClick={() => storyline && storyline.length > 1 && goBack(storyline)}
+          onClick={() => storyOfLines && storyOfLines.length > 1 && goBack(storyOfLines)}
         >
           <MdKeyboardBackspace />
         </Button>
-        <Button onClick={() => setToggleModal(true)}>
+        <Button onClick={() => openPanel(true)}>
           <MdSettings />
         </Button>
       </S.Controllers>
-      {isModalOpen && (
+      {isPanelOpen && (
         <Panel
-          setToggleModal={setToggleModal}
+          handleClosePanel={() => openPanel(false)}
           handleLineUpdate={(payload) => setLines({ type: "LINE_UPDATE", payload})}
           setBackGroundColor={setBackGroundColor}
           color={lines[lines.length -1].color}
@@ -180,11 +139,3 @@ const Art = ({ width, height }) => {
     </>
   );
 };
-
-
-
-export default () => <Sizeme>
-  {({ size }) => 
-    <Art {...size} />  
-  } 
-</Sizeme>
