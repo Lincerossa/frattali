@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useReducer } from "react";
-
+import { Sizeme, Button } from '../../components'
 import { MdSettings, MdClose, MdKeyboardBackspace } from "react-icons/md";
 import produce from 'immer'
 
@@ -55,7 +55,7 @@ function linesReducer(state, { type, payload }) {
 }
 
 
-export default ({ width, height }) => {
+const Art = ({ width, height }) => {
   const canvas = useRef(null);
   const { mousePosition, mouseStatus } = useMouse(canvas);
   const { center } = useGetCenter(canvas);
@@ -70,6 +70,36 @@ export default ({ width, height }) => {
     setLines({ type: "LINE_ADD" });
     setStoryline(storyline.slice(0, storyline.length -1))
   }
+
+  useEffect(
+    () => {
+      if (
+        mouseStatus === "mouseup" &&
+        lines &&
+        lines[lines.length - 1].points.length
+      ) {
+        setStoryline(produce(storyline, draftState => {
+          draftState.push({
+            lines
+          })
+        }));
+        setLines({ type: "LINE_ADD" });
+      }
+      if (mouseStatus === "mousedown") {
+        setLines({
+          type: "LINE_POINT_ADD",
+          payload: {
+            // pt già sul piano cartesiano con coordinate del centro, quelle di center
+            x: mousePosition.x - center.x,
+            y: center.y - mousePosition.y,
+            // timestamp: new Date().getTime(),
+          },
+        });
+      }
+    },
+    [mousePosition, mouseStatus === 'mouseup']
+  );
+
 
   useEffect(
     () => {
@@ -93,35 +123,6 @@ export default ({ width, height }) => {
 
   useEffect(
     () => {
-      if (
-        mouseStatus === "mouseup" &&
-        lines &&
-        lines[lines.length - 1].points.length
-      ) {
-        setStoryline(produce(storyline, draftState => {
-          draftState.push({
-            lines
-          })
-        }));
-        setLines({ type: "LINE_ADD" });
-      }
-      if (mouseStatus === "mousedown") {
-        setLines({
-          type: "LINE_POINT_ADD",
-          payload: {
-            // pt già sul piano cartesiano con coordinate del centro, quelle di center
-            x: mousePosition.x - center.x,
-            y: center.y - mousePosition.y,
-            timestamp: new Date().getTime(),
-          },
-        });
-      }
-    },
-    [mousePosition, mouseStatus === 'mouseup']
-  );
-
-  useEffect(
-    () => {
       canvas.current.style.width = `${window.innerWidth}px`;
       canvas.current.style.height = `${window.innerHeight}px`;
       const ratio = window.devicePixelRatio;
@@ -139,13 +140,10 @@ export default ({ width, height }) => {
   );
 
   return (
-    <S.CanvasWrapper>
-      <S.CanvasInner>
-        <canvas id="canvas" width={width} height={height} ref={canvas} />
-      </S.CanvasInner>
-      
+    <>
+      <canvas id="canvas" width={width} height={height} ref={canvas} />
       <S.Controllers>
-        <S.Controller
+        <Button
           onClick={() => {
             setStoryline([]);
             setLines({ type: "LINE_CLEAR" });
@@ -158,15 +156,15 @@ export default ({ width, height }) => {
           }}
         >
           <MdClose />
-        </S.Controller>
-        <S.Controller
+        </Button>
+        <Button
           onClick={() => storyline && storyline.length > 1 && goBack(storyline)}
         >
           <MdKeyboardBackspace />
-        </S.Controller>
-        <S.Controller onClick={() => setToggleModal(true)}>
+        </Button>
+        <Button onClick={() => setToggleModal(true)}>
           <MdSettings />
-        </S.Controller>
+        </Button>
       </S.Controllers>
       {isModalOpen && (
         <Panel
@@ -179,6 +177,14 @@ export default ({ width, height }) => {
           backgroundColor={backgroundColor}
         />
       )}
-    </S.CanvasWrapper>
+    </>
   );
 };
+
+
+
+export default () => <Sizeme>
+  {({ size }) => 
+    <Art {...size} />  
+  } 
+</Sizeme>

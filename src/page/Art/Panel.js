@@ -2,13 +2,15 @@ import React, { useRef, useEffect } from "react";
 import { ColorPicker } from "../../components";
 import * as S from "./styles";
 import { MdClose } from "react-icons/md";
-import { Sizeme } from '../../headless'
+
+import { Sizeme } from '../../components'
 import { drawLines, drawBackground } from './draw'
 import { useGetCenter } from '../../useHooks'
 
-function CanvasExample({width, height, backgroundColor, ...linesProps}){
+function Canvas({width, height, backgroundColor, ...linesProps}){
   const canvas = useRef(null);
   const { center } = useGetCenter(canvas);
+
 
   useEffect(
     () => {
@@ -41,12 +43,7 @@ function CanvasExample({width, height, backgroundColor, ...linesProps}){
     ,
     [center, linesProps, backgroundColor]
   );
-
-  return (
-   <S.CanvasInner>
-      <canvas id="canvas" width={width} height={200} ref={canvas} />
-    </S.CanvasInner>
-  )
+  return <canvas id="canvas" width={width} height={200} ref={canvas} />
 }
 
 export default ({ divisions, color, setToggleModal, handleLineUpdate, thickness, setBackGroundColor, backgroundColor }) => (
@@ -56,17 +53,19 @@ export default ({ divisions, color, setToggleModal, handleLineUpdate, thickness,
     </S.PanelClose>
     <S.PanelBlock>
       <S.PanelBlockTitle>example</S.PanelBlockTitle>
-      <Sizeme>
-        {({size}) => (
-          <CanvasExample 
-            divisions={divisions}
-            color={color}
-            thickness={thickness}
-            backgroundColor={backgroundColor}
-            {...size} 
-          />
-        )}
-      </Sizeme>
+      <S.CanvasInner>
+        <Sizeme>
+          {({size}) => (
+            <Canvas 
+              divisions={divisions}
+              color={color}
+              thickness={thickness}
+              backgroundColor={backgroundColor}
+              {...size} 
+            />
+          )}
+        </Sizeme>
+      </S.CanvasInner>
       
     </S.PanelBlock>
     <S.PanelBlock>
@@ -90,7 +89,7 @@ export default ({ divisions, color, setToggleModal, handleLineUpdate, thickness,
     </S.PanelBlock>
     <S.PanelBlock>
       <S.PanelBlockTitle>
-        Dimension
+        Line width
       </S.PanelBlockTitle>
       <S.ButtonsWrapper>
         <Sizeme>

@@ -1,4 +1,5 @@
 export const drawLines =  ({ ctx, lines, center }) => {
+
   for (let l = 0; l < lines.length; l++) {
     const { divisions, color, thickness, points } = lines[l];  
     const frattaliLines = Array.from({ length: divisions }, e => []);
