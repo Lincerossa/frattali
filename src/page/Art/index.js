@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useReducer } from "react";
-import { Sizeme, Button, Canvas } from '../../components'
+import { Sizeme, Button, Canvas } from "../../components";
 import { MdSettings, MdClose, MdKeyboardBackspace } from "react-icons/md";
-import produce from 'immer'
+import produce from "immer";
 
 import Panel from "./Panel";
 import * as S from "./styles";
@@ -20,54 +20,53 @@ const defaultState = {
 
 function linesReducer(state, { type, payload }) {
   switch (type) {
-
     case "LINE_POINT_ADD":
-    return produce(state, draftState => {
-      draftState[draftState.length - 1].points.push(payload)
-    })
+      return produce(state, draftState => {
+        draftState[draftState.length - 1].points.push(payload);
+      });
 
     case "LINE_ADD":
-    return produce(state, draftState => {
-      draftState.push({
-        ...draftState[draftState.length - 1],
-        points: [],
-      })
-    })
+      return produce(state, draftState => {
+        draftState.push({
+          ...draftState[draftState.length - 1],
+          points: [],
+        });
+      });
 
     case "LINE_UPDATE":
       return produce(state, draftState => {
         draftState[draftState.length - 1] = {
           ...draftState[draftState.length - 1],
           ...payload,
-        }
-      })
+        };
+      });
 
     case "LINE_RESTORE":
       return payload;
-      
+
     case "LINE_CLEAR":
       return defaultState.lines;
-      
+
     default:
       return defaultState.lines;
   }
 }
 
-
 export default ({ width, height }) => {
   const canvas = useRef(null);
   const { mousePosition, mouseStatus } = useMouse(canvas);
   const { center } = useGetCenter(canvas);
-  const [ lines, setLines ] = useReducer(linesReducer, defaultState.lines);
-  const [ storyOfLines, setStoryOfLines ] = useState([]);
-  const [ isPanelOpen, openPanel ] = useState(null);
-  const [ backgroundColor, setBackGroundColor ] = useState("black");
+  const [lines, setLines] = useReducer(linesReducer, defaultState.lines);
+  const [storyOfLines, setStoryOfLines] = useState([]);
+  const [hd, setHd] = useState(null);
+  const [isPanelOpen, openPanel] = useState(null);
+  const [backgroundColor, setBackGroundColor] = useState("black");
 
   function goBack(storyOfLines) {
-    const lastStory = storyOfLines[storyOfLines.length -2]
-    setLines({ type: "LINE_RESTORE", payload: lastStory.lines})    
+    const lastStory = storyOfLines[storyOfLines.length - 2];
+    setLines({ type: "LINE_RESTORE", payload: lastStory.lines });
     setLines({ type: "LINE_ADD" });
-    setStoryOfLines(storyOfLines.slice(0, storyOfLines.length -1))
+    setStoryOfLines(storyOfLines.slice(0, storyOfLines.length - 1));
   }
 
   useEffect(
@@ -77,11 +76,13 @@ export default ({ width, height }) => {
         lines &&
         lines[lines.length - 1].points.length
       ) {
-        setStoryOfLines(produce(storyOfLines, draftState => {
-          draftState.push({
-            lines
+        setStoryOfLines(
+          produce(storyOfLines, draftState => {
+            draftState.push({
+              lines,
+            });
           })
-        }));
+        );
         setLines({ type: "LINE_ADD" });
       }
       if (mouseStatus === "mousedown") {
@@ -95,17 +96,24 @@ export default ({ width, height }) => {
         });
       }
     },
-    [mousePosition, mouseStatus === 'mouseup']
+    [mousePosition, mouseStatus === "mouseup"]
   );
 
   return (
     <>
       <Sizeme>
-        {({ size }) => 
-          <S.CanvasWrapper ref={canvas}>
-            <Canvas  width={width} height={height} lines={lines} backgroundColor={backgroundColor} hd {...size} />
+        {({ size }) => (
+          <S.CanvasWrapper ref={canvas} fullheight>
+            <Canvas
+              width={width}
+              height={height}
+              hd={hd}
+              lines={lines}
+              backgroundColor={backgroundColor}
+              {...size}
+            />
           </S.CanvasWrapper>
-        } 
+        )}
       </Sizeme>
       <S.Controllers>
         <Button
@@ -117,7 +125,9 @@ export default ({ width, height }) => {
           <MdClose />
         </Button>
         <Button
-          onClick={() => storyOfLines && storyOfLines.length > 1 && goBack(storyOfLines)}
+          onClick={() =>
+            storyOfLines && storyOfLines.length > 1 && goBack(storyOfLines)
+          }
         >
           <MdKeyboardBackspace />
         </Button>
@@ -128,11 +138,15 @@ export default ({ width, height }) => {
       {isPanelOpen && (
         <Panel
           handleClosePanel={() => openPanel(false)}
-          handleLineUpdate={(payload) => setLines({ type: "LINE_UPDATE", payload})}
+          handleLineUpdate={payload =>
+            setLines({ type: "LINE_UPDATE", payload })
+          }
           setBackGroundColor={setBackGroundColor}
-          color={lines[lines.length -1].color}
-          divisions={lines[lines.length -1].divisions}
-          thickness={lines[lines.length -1].thickness}
+          setHd={setHd}
+          hd={hd}
+          color={lines[lines.length - 1].color}
+          divisions={lines[lines.length - 1].divisions}
+          thickness={lines[lines.length - 1].thickness}
           backgroundColor={backgroundColor}
         />
       )}

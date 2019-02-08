@@ -3,80 +3,87 @@ import { ColorPicker } from "../../components";
 import * as S from "./styles";
 import { MdClose } from "react-icons/md";
 
-import { Sizeme, Canvas } from '../../components'
+import { Sizeme, Canvas } from "../../components";
 
-
-export default ({ divisions, color, handleClosePanel, handleLineUpdate, thickness, setBackGroundColor, backgroundColor }) => (
+export default ({
+  divisions,
+  color,
+  handleClosePanel,
+  handleLineUpdate,
+  thickness,
+  hd,
+  setHd,
+  setBackGroundColor,
+  backgroundColor,
+}) => (
   <S.Panel>
     <S.PanelClose onClick={handleClosePanel}>
       <MdClose />
     </S.PanelClose>
     <S.PanelBlock>
       <S.PanelBlockTitle>example</S.PanelBlockTitle>
-        <Sizeme>
-          {({size}) => (
-            <S.CanvasWrapper>
-              <Canvas 
-                {...size}
-                backgroundColor={backgroundColor}
-                lines={[
-                  {
-                    divisions,
-                    color,
-                    thickness,
-                    points: Array.from({length: 20}, (index, e) => ({
-                      x: 0,
-                      y: e*4 + 30
-                    }))
-                  }
-                ]}
-              />
-            </S.CanvasWrapper>
-          )}
-        </Sizeme>
+      <Sizeme>
+        {({ size }) => (
+          <S.CanvasWrapper>
+            <Canvas
+              {...size}
+              backgroundColor={backgroundColor}
+              lines={[
+                {
+                  divisions,
+                  color,
+                  thickness,
+                  points: Array.from({ length: 20 }, (index, e) => ({
+                    x: 0,
+                    y: e * 4 + 30,
+                  })),
+                },
+              ]}
+            />
+          </S.CanvasWrapper>
+        )}
+      </Sizeme>
     </S.PanelBlock>
     <S.PanelBlock>
       <S.PanelBlockTitle>divisions</S.PanelBlockTitle>
       <S.ButtonsWrapper>
         <Sizeme>
-          {({size}) => (
-            <S.InputRange 
-              type="range" 
-              min="1" max="200" 
+          {({ size }) => (
+            <S.InputRange
+              type="range"
+              min="1"
+              max="200"
               color={color}
-              value={divisions} 
-              onChange={e => handleLineUpdate({divisions: e.target.value})}
+              value={divisions}
+              onChange={e => handleLineUpdate({ divisions: e.target.value })}
               step="1"
               {...size}
             />
           )}
         </Sizeme>
-
       </S.ButtonsWrapper>
     </S.PanelBlock>
     <S.PanelBlock>
-      <S.PanelBlockTitle>
-        Line width
-      </S.PanelBlockTitle>
+      <S.PanelBlockTitle>Line width</S.PanelBlockTitle>
       <S.ButtonsWrapper>
         <Sizeme>
-          {({size}) => (
-            <S.InputRange 
-              type="range" 
-              min="1" max="10" 
-              value={thickness} 
+          {({ size }) => (
+            <S.InputRange
+              type="range"
+              min="1"
+              max="10"
+              value={thickness}
               color={color}
-              onChange={e => handleLineUpdate({thickness: e.target.value})}
+              onChange={e => handleLineUpdate({ thickness: e.target.value })}
               step="1"
               width={size.width}
               height={size.height}
             />
           )}
         </Sizeme>
-
       </S.ButtonsWrapper>
     </S.PanelBlock>
-    <S.PanelBlock> 
+    <S.PanelBlock>
       <S.PanelBlockTitle>
         line color <S.ColorBlock color={color} />{" "}
       </S.PanelBlockTitle>
@@ -84,6 +91,12 @@ export default ({ divisions, color, handleClosePanel, handleLineUpdate, thicknes
         color={color}
         setColor={color => handleLineUpdate({ color })}
       />
+    </S.PanelBlock>
+
+    <S.PanelBlock>
+      <S.PanelBlockTitle>
+        HD <div onClick={() => setHd(!hd)}>{hd ? "ON" : "OFF"} </div>
+      </S.PanelBlockTitle>
     </S.PanelBlock>
 
     <S.PanelBlock>
@@ -96,4 +109,4 @@ export default ({ divisions, color, handleClosePanel, handleLineUpdate, thicknes
       />
     </S.PanelBlock>
   </S.Panel>
-)
+);
