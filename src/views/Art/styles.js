@@ -123,3 +123,22 @@ export const InputRange = styled.input`
   }
 
 `;
+
+export const UserNameWelcome = styled.div`
+  color: white;
+  font-size: 1rem;
+`;
+
+export const UserName = styled.div`
+  height: 2.25rem;
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  color: #ac00ff;
+  font-size: 1.5rem;
+  letter-spacing: 0.04rem;
+  /* border: 1px solid; */
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+`;

@@ -2,7 +2,8 @@ import React, { useState, useRef, useEffect, useReducer } from "react";
 import { Sizeme, Button, Canvas } from "../../components";
 import { MdSettings, MdClose, MdKeyboardBackspace } from "react-icons/md";
 import produce from "immer";
-
+import { connect } from "react-redux";
+import { getUserName } from "../../Redux/auth/reducer";
 import Panel from "./Panel";
 import * as S from "./styles";
 import { useMouse, useGetCenter } from "../../useHooks";
@@ -52,7 +53,7 @@ function linesReducer(state, { type, payload }) {
   }
 }
 
-export default ({ width, height }) => {
+const Art = ({ width, height, userName }) => {
   const canvas = useRef(null);
   const { mousePosition, mouseStatus } = useMouse(canvas);
   const { center } = useGetCenter(canvas);
@@ -132,6 +133,10 @@ export default ({ width, height }) => {
           <MdSettings />
         </Button>
       </S.Controllers>
+      <S.UserName>
+        <S.UserNameWelcome>hello</S.UserNameWelcome>
+        {userName}
+      </S.UserName>
       {isPanelOpen && (
         <Panel
           handleClosePanel={() => openPanel(false)}
@@ -150,3 +155,8 @@ export default ({ width, height }) => {
     </>
   );
 };
+
+const mapStateToProps = state => ({
+  userName: getUserName(state),
+});
+export default connect(mapStateToProps)(Art);

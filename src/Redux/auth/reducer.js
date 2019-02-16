@@ -39,10 +39,10 @@ export const isAuthenticated = state => getAccessToken(state);
 
 export const getUserName = state => {
   const auth = getAuth(state);
-  return auth && auth.profile && auth.profile.nickname;
+  return auth && auth.nickname;
 };
 
 export const getUserPicture = state => {
   const auth = getAuth(state);
-  return auth && auth.profile && auth.profile.picture;
+  return auth && auth.picture;
 };
