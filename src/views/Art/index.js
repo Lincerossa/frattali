@@ -69,35 +69,32 @@ export default ({ width, height }) => {
     setStoryOfLines(storyOfLines.slice(0, storyOfLines.length - 1));
   }
 
-  useEffect(
-    () => {
-      if (
-        mouseStatus === "mouseup" &&
-        lines &&
-        lines[lines.length - 1].points.length
-      ) {
-        setStoryOfLines(
-          produce(storyOfLines, draftState => {
-            draftState.push({
-              lines,
-            });
-          })
-        );
-        setLines({ type: "LINE_ADD" });
-      }
-      if (mouseStatus === "mousedown") {
-        setLines({
-          type: "LINE_POINT_ADD",
-          payload: {
-            // pt già sul piano cartesiano con coordinate del centro, quelle di center
-            x: mousePosition.x - center.x,
-            y: center.y - mousePosition.y,
-          },
-        });
-      }
-    },
-    [mousePosition, mouseStatus === "mouseup"]
-  );
+  useEffect(() => {
+    if (
+      mouseStatus === "mouseup" &&
+      lines &&
+      lines[lines.length - 1].points.length
+    ) {
+      setStoryOfLines(
+        produce(storyOfLines, draftState => {
+          draftState.push({
+            lines,
+          });
+        })
+      );
+      setLines({ type: "LINE_ADD" });
+    }
+    if (mouseStatus === "mousedown") {
+      setLines({
+        type: "LINE_POINT_ADD",
+        payload: {
+          // pt già sul piano cartesiano con coordinate del centro, quelle di center
+          x: mousePosition.x - center.x,
+          y: center.y - mousePosition.y,
+        },
+      });
+    }
+  }, [mousePosition, mouseStatus === "mouseup"]);
 
   return (
     <>
