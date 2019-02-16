@@ -4,7 +4,7 @@ export default class Auth {
   auth0 = new auth0.WebAuth({
     domain: "geoideas.auth0.com",
     clientID: "lXyjMT1ERhZJE3RE35cS8rlllIo2XGht",
-    redirectUri: "https://frattali.netlify.com/login",
+    redirectUri: "https://frattali.netlify.com",
     responseType: "token id_token",
     scope: "openid profile email read:users user_id id",
   });

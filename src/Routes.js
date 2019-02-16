@@ -1,11 +1,6 @@
 import React from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Redirect,
-} from "react-router-dom";
-import { Art, Login } from "./views";
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import { Art, PopupLogin } from "./views";
 import { WithAuth } from "./hoc";
 
 const PrivateRoute = props => (
@@ -17,10 +12,10 @@ const PrivateRoute = props => (
 );
 
 export default () => (
-  <Router>
+  <BrowserRouter>
     <Switch>
-      <Route path="/login" component={Login} />
+      <Route path="/login" component={PopupLogin} exact />
       <PrivateRoute path="/" component={Art} />
     </Switch>
-  </Router>
+  </BrowserRouter>
 );
