@@ -5,12 +5,9 @@ const initialState = null;
 export default (state = initialState, action) => {
   switch (action.type) {
     case AUTH_SET:
-      const { idTokenPayload, expiresIn, ...authData } = action.payload;
       return {
         ...state,
-        ...authData,
-        profile: idTokenPayload,
-        expiresAt: action.payload.expiresIn * 1000 + new Date().getTime(),
+        ...action.payload,
       };
     case AUTH_FAILED:
       return {

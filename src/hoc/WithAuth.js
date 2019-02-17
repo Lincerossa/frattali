@@ -37,6 +37,8 @@ const WithLogin = props => {
     const instantiateAuth = new Auth();
     instantiateAuth.login();
   }
+
+  return null;
 };
 
 const mapStateToProps = state => ({
