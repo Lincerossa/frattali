@@ -12,10 +12,9 @@ export default () => {
       .then(userProfile => {
         setUserProfile(userProfile);
         setIsLoadingProfile(false);
-        window.location.hash = "";
       })
       .catch(e => {
-        setUserProfile({ error: e });
+        setUserProfile({ ...e, error: "getUserProfile failed" });
         setIsLoadingProfile(false);
       });
   });

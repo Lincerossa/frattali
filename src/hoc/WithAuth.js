@@ -1,28 +1,60 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 
 import * as actions from "../Redux/auth/actions";
 import { isAuthenticated } from "../Redux/auth/reducer";
 import { useLoadProfile } from "../useHooks";
-import { Loading } from "../components";
+import { Loading, Wecome } from "../components";
 import Auth from "../Auth/Auth";
 
-function LoadUserProfile({ setAuth, failAuth }) {
-  const { isLoadingProfile, userProfile } = useLoadProfile(
+function Welcome(props) {
+  const [isWelcomeEnded, setIsWelcomeEnded] = useState(0);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsWelcomeEnded(true);
+    }, 2500);
+  });
+
+  useEffect(() => {
+    if (isWelcomeEnded) {
+      const { setAuth, failAuth, userProfile } = props;
+      if (userProfile) {
+        window.location.hash = "";
+        if (userProfile.error) {
+          failAuth(userProfile);
+          return;
+        }
+        setAuth(userProfile);
+      }
+    }
+  }, [isWelcomeEnded]);
+
+  return <Wecome {...props.userProfile} />;
+}
+
+const WelcomeConnected = connect(
+  state => state,
+  actions
+)(Welcome);
+
+function LoadUserProfile() {
+  const { userProfile, isLoadingProfile } = useLoadProfile(
     window.location.hash
   );
+  const [showWelcome, setShowWelcome] = useState(userProfile);
 
   useEffect(() => {
     if (userProfile) {
-      if (userProfile.error) {
-        failAuth(userProfile);
-        return;
-      }
-      setAuth(userProfile);
+      setShowWelcome(true);
     }
   }, [userProfile]);
 
-  return isLoadingProfile && <Loading text="is loading profile" />;
+  return showWelcome ? (
+    <WelcomeConnected userProfile={userProfile} />
+  ) : (
+    <Loading text="is loading profile" />
+  );
 }
 
 const WithLogin = props => {
@@ -37,8 +69,6 @@ const WithLogin = props => {
     const instantiateAuth = new Auth();
     instantiateAuth.login();
   }
-
-  return null;
 };
 
 const mapStateToProps = state => ({
