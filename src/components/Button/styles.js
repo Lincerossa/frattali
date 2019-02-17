@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 
 export const Button = styled.div`
 font-size: 1.75rem;
@@ -14,6 +14,9 @@ border-radius: 50%;
 background-color: ${props => props.theme.colors.main};
 color: white;
 margin-right: .5rem;
+background-size: cover;
+background-position: center center;
+background-image: url("${props => props.backgroundImage}");
 
 &:last-of-type{
   margin:0;
@@ -32,4 +35,4 @@ margin-right: .5rem;
     color: ${props => props.theme.colors.main};
   }
 }
-`
+`;
