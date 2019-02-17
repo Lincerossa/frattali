@@ -13,23 +13,20 @@ export default class Auth {
     this.auth0.authorize();
   }
 
-  getUserProfile() {
+  getUserProfile(hash) {
     return new Promise((resolve, reject) => {
       try {
-        this.auth0.parseHash(
-          { hash: window.location.hash },
-          (err, authResult) => {
-            if (err) {
-              return console.log(err);
-            }
-
-            if (!authResult) return;
-            const { accessToken } = authResult;
-            this.auth0.client.userInfo(accessToken, (err, user) => {
-              resolve({ ...user, accessToken });
-            });
+        this.auth0.parseHash({ hash }, (err, authResult) => {
+          if (err) {
+            return console.log(err);
           }
-        );
+
+          if (!authResult) return;
+          const { accessToken } = authResult;
+          this.auth0.client.userInfo(accessToken, (err, user) => {
+            resolve({ ...user, accessToken });
+          });
+        });
       } catch (e) {
         reject(e);
       }
