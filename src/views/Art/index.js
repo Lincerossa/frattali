@@ -134,10 +134,6 @@ const Art = ({ width, height, userName, picture }) => {
         </Button>
         <Button backgroundImage={picture} />
       </S.Controllers>
-      <S.UserName>
-        <S.UserNameWelcome>hello</S.UserNameWelcome>
-        {userName}
-      </S.UserName>
       {isPanelOpen && (
         <Panel
           handleClosePanel={() => openPanel(false)}
