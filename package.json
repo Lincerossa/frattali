@@ -21,7 +21,8 @@
   "scripts": {
     "init": "npm install && lerna bootstrap",
     "[DEV]frontend": "cd packages/frontend && npm start",
-    "[PROD]frontend": "cd packages/frontend && npm run build"
+    "[PROD]frontend": "cd packages/frontend && npm run build",
+    "[PROD]backend": "cd packages/backend && node index.js"
   },
   "husky": {
     "hooks": {
