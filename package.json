@@ -23,7 +23,7 @@
     "*.{js,jsx}": [
       "jest --bail --findRelatedTests",
       "prettier --write",
-      "eslint --fix packages/",
+      "eslint --fix",
       "git add"
     ]
   },
