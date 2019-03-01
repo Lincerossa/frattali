@@ -4,8 +4,6 @@
   "description": "1. npm install 2. npm start",
   "main": "index.js",
   "devDependencies": {
-    "babel-eslint": "^9.0.0",
-    "eslint": "^5.14.1",
     "eslint-config-react-app": "^3.0.7",
     "eslint-plugin-flowtype": "^2.50.3",
     "eslint-plugin-import": "^2.16.0",
@@ -14,8 +12,7 @@
     "husky": "^1.3.1",
     "lerna": "^3.4.1",
     "lint-staged": "^8.1.0",
-    "prettier": "^1.16.4",
-    "jest": "^24.1.0"
+    "prettier": "^1.16.4"
   },
   "scripts": {
     "init": "npm install && lerna bootstrap",
