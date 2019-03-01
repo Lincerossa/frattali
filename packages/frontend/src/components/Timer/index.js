@@ -12,15 +12,12 @@ function TimeHandler(props) {
     updateCurrentTime(currentTime);
   };
 
-  useEffect(
-    () => {
-      let myTimer = requestAnimationFrame(handleUpdateCurrentTime);
-      return () => {
-        cancelAnimationFrame(myTimer);
-      };
-    },
-    [currentTime]
-  );
+  useEffect(() => {
+    let myTimer = requestAnimationFrame(handleUpdateCurrentTime);
+    return () => {
+      cancelAnimationFrame(myTimer);
+    };
+  }, [currentTime]);
 
   return props.children({ ...props, currentTime });
 }

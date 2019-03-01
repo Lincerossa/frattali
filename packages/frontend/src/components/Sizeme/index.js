@@ -4,7 +4,7 @@ function SizeMe(props) {
   const myRef = useRef(null);
   const [size, updateSize] = useState({
     width: 0,
-    height: 0
+    height: 0,
   });
 
   useEffect(() => {
@@ -15,11 +15,15 @@ function SizeMe(props) {
     const ref = myRef.current;
     updateSize({
       width: ref.clientWidth,
-      height: ref.clientHeight
+      height: ref.clientHeight,
     });
   };
 
-  return <div style={{width: "100%"}} ref={myRef}>{props.children({ ...props, size })}</div>;
+  return (
+    <div style={{ width: "100%" }} ref={myRef}>
+      {props.children({ ...props, size })}
+    </div>
+  );
 }
 
 export default SizeMe;

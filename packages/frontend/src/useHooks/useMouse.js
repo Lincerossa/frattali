@@ -29,24 +29,21 @@ export default element => {
     });
   }
 
-  useEffect(
-    () => {
-      const el = element.current.parentNode;
+  useEffect(() => {
+    const el = element.current.parentNode;
 
-      el.addEventListener("mousedown", handleMouseDown);
-      el.addEventListener("touchstart", handleTouchStart, { passive: false });
+    el.addEventListener("mousedown", handleMouseDown);
+    el.addEventListener("touchstart", handleTouchStart, { passive: false });
 
-      return () => {
-        el.removeEventListener("mousedown", handleMouseDown);
-        el.addEventListener("touchstart", handleMouseDown);
-        el.removeEventListener("mouseup", handleMouseUp);
-        el.removeEventListener("touchend", handleMouseUp);
-        el.removeEventListener("mousemove", handleMouseMove);
-        el.removeEventListener("touchmove", handleMouseMove);
-      };
-    },
-    [element]
-  );
+    return () => {
+      el.removeEventListener("mousedown", handleMouseDown);
+      el.addEventListener("touchstart", handleMouseDown);
+      el.removeEventListener("mouseup", handleMouseUp);
+      el.removeEventListener("touchend", handleMouseUp);
+      el.removeEventListener("mousemove", handleMouseMove);
+      el.removeEventListener("touchmove", handleMouseMove);
+    };
+  }, [element]);
 
   return {
     mousePosition,
