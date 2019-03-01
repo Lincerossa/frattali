@@ -21,6 +21,8 @@ const initialState = {
   },
 };
 
+console.log("prova");
+
 const store = createStore(
   rootReducer,
   // initialState,
