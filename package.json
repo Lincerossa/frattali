@@ -15,7 +15,8 @@
     "prettier": "^1.16.4",
     "babel-jest": "23.6.0",
     "eslint": "5.6.0",
-    "jest": "23.6.0"
+    "jest": "23.6.0",
+    "babel-eslint": "9.0.0"
   },
   "scripts": {
     "init": "npm install && lerna bootstrap",
@@ -48,8 +49,5 @@
   "bugs": {
     "url": "https://github.com/Lincerossa/frattali/issues"
   },
-  "homepage": "https://github.com/Lincerossa/frattali#readme",
-  "dependencies": {
-    "babel-eslint": "^10.0.1"
-  }
+  "homepage": "https://github.com/Lincerossa/frattali#readme"
 }
