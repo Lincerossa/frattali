@@ -18,9 +18,9 @@
     "jest": "^24.1.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "init": "npm install && lerna bootstrap",
-    "frontend": "cd packages/frontend && npm start"
+    "[DEV]frontend": "cd packages/frontend && npm start",
+    "[PROD]frontend": "cd packages/frontend && npm run build"
   },
   "husky": {
     "hooks": {
