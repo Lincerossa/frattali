@@ -1,8 +1,9 @@
-const uuidv1 = require("uuid/v1");
+const Model = require("../mongoose/Model");
 
 const resolvers = {
   Query: {
     getUser: async (_, args, context, info) => {
+      // qui leggerò da db
       return {
         username: "Marcello Luatti",
         email: "marcello.luatti@gmail.com",
@@ -11,11 +12,17 @@ const resolvers = {
   },
   Mutation: {
     createUser: async (_, args, context, info) => {
+      const { User } = Model;
       const { username, email } = args;
-      const id = uuidv1();
 
-      // qui prendo Model User e ne creo uno nuovo in mongoo
-      console.log({ username, email, id });
+      const newUser = new User({ username, email });
+      const id = await new Promise((resolve, reject) => {
+        newUser.save(function(err, user) {
+          if (err) return console.error(err);
+          const { _id } = user;
+          resolve(_id);
+        });
+      });
       return id;
     },
   },
