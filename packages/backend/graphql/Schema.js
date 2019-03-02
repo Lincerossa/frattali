@@ -1,8 +1,22 @@
-// Construct a schema, using GraphQL schema language
-const { gql } = require("apollo-server-express");
+const typeDefs = `
 
-module.exports = gql`
-  type Query {
-    getNumbers(limit: Float): Float
-  }
+type User {
+  username: String,
+  email: String
+}
+
+type Query {
+  getUser(id: Float): User
+}
+
+type Mutation {
+  createUser(username: String, email: String): ID
+}
+
+schema {
+  query: Query
+  mutation: Mutation
+}
 `;
+
+module.exports = typeDefs;

@@ -1,18 +1,21 @@
 const express = require("express");
 const { ApolloServer } = require("apollo-server-express");
-const Mongoose = require("mongoose");
+const mongoose = require("mongoose");
 
-const resolvers = require("./graphql/Resolver");
-const typeDefs = require("./graphql/Schema");
+const schema = require("./graphql");
 
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
+mongoose.connect("mongodb://localhost:27017");
+const db = mongoose.connection;
+db.on("error", console.error.bind(console, "connection error:"));
+db.once("open", function() {
+  const server = new ApolloServer({
+    schema,
+  });
+
+  const app = express();
+  server.applyMiddleware({ app });
+
+  app.listen({ port: 4000 }, () =>
+    console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
+  );
 });
-
-const app = express();
-server.applyMiddleware({ app });
-
-app.listen({ port: 4000 }, () =>
-  console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
-);
