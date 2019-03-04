@@ -1,9 +1,8 @@
-const Model = require("../mongoose/Model");
+const Model = require("../../mongoose/Model");
 
 const resolvers = {
   Query: {
     getUser: async (_, args, context, info) => {
-      // qui leggerò da db
       return {
         username: "Marcello Luatti",
         email: "marcello.luatti@gmail.com",

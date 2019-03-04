@@ -1,0 +1,15 @@
+
+
+type Paint {
+  title: String
+  backgroundColor: String
+  points: Float
+}
+
+type Query {
+  getPaint(id: Float): Paint
+}
+
+schema {
+  query: Query
+}
