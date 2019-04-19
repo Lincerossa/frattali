@@ -1,7 +1,7 @@
 {
   "name": "frattali",
   "version": "1.0.0",
-  "description": "1. npm init 2. npm start",
+  "description": "lerna, react, graphql, mongoose, redux, styled-components, storybook, playground",
   "main": "index.js",
   "devDependencies": {
     "eslint-config-react-app": "^3.0.7",
