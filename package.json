@@ -24,7 +24,7 @@
     "frontend": "cd packages/frontend && npm start",
     "components": "cd packages/components && npm run start",
     "backend": "cd packages/backend && npm start",
-    "frontent:deploy": "cd packages/frontend && npm run build",
+    "frontend:deploy": "cd packages/frontend && npm run build",
     "backend:deploy": "cd packages/backend && npm run now"
   },
   "husky": {
