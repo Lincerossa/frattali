@@ -11,8 +11,9 @@ border-radius: 50%;
 height: 2.5rem;
 width: 2.5rem;
 border-radius: 50%;
-background-color: ${props => props.theme.colors.main};
+background-color: violet;
 color: white;
+background-color: violet;
 margin-right: .5rem;
 background-size: cover;
 background-position: center center;
@@ -23,7 +24,7 @@ background-image: url("${props => props.backgroundImage}");
 }
 &:active{
   background-color: white;
-  color: ${props => props.theme.colors.main};
+  color: violet;
 }
 &:focus{
   outline: none;
@@ -32,7 +33,7 @@ background-image: url("${props => props.backgroundImage}");
 @media screen and (min-width: 600px) {
   &:hover{
     background-color: white;
-    color: ${props => props.theme.colors.main};
+    color: violet;
   }
 }
 `;

@@ -15,5 +15,5 @@ export const Loading = styled.div`
 export const LoadingText = styled.div`
   font-family: sans-serif;
   font-size: 3rem;
-  color: ${props => props.theme.colors.main};
+  color: red;
 `;

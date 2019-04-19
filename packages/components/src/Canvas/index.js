@@ -1,8 +1,14 @@
 import React, { useEffect, useRef } from "react";
-import { useGetCenter } from "../../useHooks";
 import { drawBackground, drawLines } from "./draw";
 
-export default ({ width, height, backgroundColor, hd, lines }) => {
+export default ({
+  width,
+  height,
+  backgroundColor,
+  hd,
+  lines,
+  useGetCenter,
+}) => {
   const canvas = useRef(null);
   const { center } = useGetCenter(canvas);
 
