@@ -4,12 +4,13 @@
   "description": "",
   "main": "dist",
   "scripts": {
-    "build": "rm -rf dist && babel src --watch -d dist",
+    "build": "rm -rf dist && babel src -d dist",
+    "build:watch": "rm -rf dist && babel src --watch -d dist",
     "storybook": "start-storybook -p 6006",
-    "components": "concurrently \"npm run build\" \"npm run storybook\"",
     "build-storybook": "build-storybook",
     "playroom:start": "playroom start",
-    "playroom:build": "playroom build"
+    "playroom:build": "playroom build",
+    "start": "concurrently \"npm run build:watch\" \"npm run storybook\" \"npm run playroom:start\""
   },
   "author": "",
   "license": "ISC",
