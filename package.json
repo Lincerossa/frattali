@@ -1,7 +1,7 @@
 {
   "name": "frattali",
   "version": "1.0.0",
-  "description": "1. npm install 2. npm start",
+  "description": "1. npm init 2. npm start",
   "main": "index.js",
   "devDependencies": {
     "eslint-config-react-app": "^3.0.7",
@@ -19,11 +19,13 @@
     "babel-eslint": "9.0.0"
   },
   "scripts": {
-    "init": "npm install && lerna bootstrap",
-    "[DEV]frontend": "cd packages/frontend && npm start",
-    "[PROD]frontend": "cd packages/frontend && npm run build",
-    "[DEV]backend": "cd packages/backend && npm start",
-    "[PROD]deploy_backend": "cd packages/backend && npm run now"
+    "clean": "rm -rf node_modules/ package-lock.json && rm -rf packages/**/node_modules/ && rm -rf packages/**/package-lock.json",
+    "init": "npm install && lerna bootstrap && cd packages/components && npm link ../frontend/node_modules/react && npm link ../frontend/node_modules/styled-components && npm run build",
+    "frontend": "cd packages/frontend && npm start",
+    "components": "cd packages/components && npm run start",
+    "backend": "cd packages/backend && npm start",
+    "frontent:deploy": "cd packages/frontend && npm run build",
+    "backend:deploy": "cd packages/backend && npm run now"
   },
   "husky": {
     "hooks": {
