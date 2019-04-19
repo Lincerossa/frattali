@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 export const Welcome = styled.div`
   position: absolute;
@@ -10,7 +10,7 @@ export const Welcome = styled.div`
   align-items: center;
   background-color: black;
   justify-content: center;
-`;
+`
 
 export const Picture = styled.div`
   background-image: url("${props => props.backgroundImage}");
@@ -20,7 +20,7 @@ export const Picture = styled.div`
   border-radius: 50%;
   background-size: contain;
   position: relative;
-`;
+`
 
 export const Nickname = styled.div`
   font-family: sans-serif;
@@ -28,4 +28,4 @@ export const Nickname = styled.div`
   position: absolute;
   top: 100%;
   color: white;
-`;
+`

@@ -8,6 +8,8 @@ import Panel from "./Panel";
 import * as S from "./styles";
 import { useMouse, useGetCenter } from "../../useHooks";
 
+const ff = 0
+
 const defaultState = {
   lines: [
     {
@@ -18,6 +20,7 @@ const defaultState = {
     },
   ],
 };
+
 
 function linesReducer(state, { type, payload }) {
   switch (type) {

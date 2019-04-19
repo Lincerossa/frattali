@@ -1,25 +1,29 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react'
+
+const cioa = () => {
+  console.loog('ok')
+}
 
 function TimeHandler(props) {
-  const [initialTime, setInitialTime] = useState(0);
-  const [currentTime, updateCurrentTime] = useState(0);
+  const [initialTime, setInitialTime] = useState(0)
+  const [currentTime, updateCurrentTime] = useState(0)
 
   const handleUpdateCurrentTime = timer => {
     if (!initialTime) {
-      setInitialTime(timer);
+      setInitialTime(timer)
     }
-    const currentTime = timer - initialTime;
-    updateCurrentTime(currentTime);
-  };
+    const currentTime = timer - initialTime
+    updateCurrentTime(currentTime)
+  }
 
   useEffect(() => {
-    let myTimer = requestAnimationFrame(handleUpdateCurrentTime);
+    let myTimer = requestAnimationFrame(handleUpdateCurrentTime)
     return () => {
-      cancelAnimationFrame(myTimer);
-    };
-  }, [currentTime]);
+      cancelAnimationFrame(myTimer)
+    }
+  }, [currentTime])
 
-  return props.children({ ...props, currentTime });
+  return props.children({ ...props, currentTime })
 }
 
-export default TimeHandler;
+export default TimeHandler

@@ -1,5 +1,5 @@
-import React from "react";
-import * as S from "./styles";
+import React from 'react'
+import * as S from './styles'
 
 export default ({ nickname, picture, timer }) => (
   <S.Welcome timer={timer}>
@@ -7,4 +7,4 @@ export default ({ nickname, picture, timer }) => (
       <S.Nickname>{nickname}</S.Nickname>
     </S.Picture>
   </S.Welcome>
-);
+)

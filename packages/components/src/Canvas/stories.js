@@ -1,11 +1,11 @@
-import React from "react";
-import { storiesOf } from "@storybook/react";
-import { action } from "@storybook/addon-actions";
-import Canvas from "./index";
+import React from 'react'
+import { storiesOf } from '@storybook/react'
+import { action } from '@storybook/addon-actions'
+import Canvas from './index'
 
-storiesOf("Canvas", module).add("with text", () => (
+storiesOf('Canvas', module).add('with text', () => (
   <Canvas
-    onClick={action("clicked")}
+    onClick={action('clicked')}
     width={500}
     height={400}
     lines={[]}
@@ -13,4 +13,4 @@ storiesOf("Canvas", module).add("with text", () => (
   >
     Hello Canvas
   </Canvas>
-));
+))

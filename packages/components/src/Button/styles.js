@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 export const Button = styled.div`
 font-size: 1.75rem;
@@ -36,4 +36,4 @@ background-image: url("${props => props.backgroundImage}");
     color: violet;
   }
 }
-`;
+`

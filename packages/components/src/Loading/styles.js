@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 export const Loading = styled.div`
   position: absolute;
@@ -10,10 +10,10 @@ export const Loading = styled.div`
   align-items: center;
   background-color: black;
   justify-content: center;
-`;
+`
 
 export const LoadingText = styled.div`
   font-family: sans-serif;
   font-size: 3rem;
   color: red;
-`;
+`

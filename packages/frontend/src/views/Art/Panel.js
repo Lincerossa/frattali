@@ -3,6 +3,12 @@ import { ColorPicker, Sizeme, Canvas } from "components";
 import * as S from "./styles";
 import { MdClose } from "react-icons/md";
 
+
+
+
+
+
+
 export default ({
   divisions,
   color,
