@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useReducer } from "react";
-import { Sizeme, Button, Canvas } from "../../components";
+import { Sizeme, Button, Canvas } from "components";
 import { MdSettings, MdClose, MdKeyboardBackspace } from "react-icons/md";
 import produce from "immer";
 import { connect } from "react-redux";
@@ -107,6 +107,7 @@ const Art = ({ width, height, userName, picture }) => {
               height={height}
               hd={hd}
               lines={lines}
+              useGetCenter={useGetCenter}
               backgroundColor={backgroundColor}
               {...size}
             />
@@ -143,6 +144,7 @@ const Art = ({ width, height, userName, picture }) => {
           setBackGroundColor={setBackGroundColor}
           setHd={setHd}
           hd={hd}
+          useGetCenter={useGetCenter}
           color={lines[lines.length - 1].color}
           divisions={lines[lines.length - 1].divisions}
           thickness={lines[lines.length - 1].thickness}

@@ -1,11 +1,12 @@
 {
-  "name": "frattali",
+  "name": "frontend",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "components": "1.0.0",
     "auth0-js": "^9.10.0",
     "immer": "^1.9.3",
-    "react": "16.8.0",
+    "react": "^16.8.6",
     "react-color": "^2.14.1",
     "react-dom": "16.8.0",
     "react-icons": "^3.2.2",
@@ -15,7 +16,7 @@
     "redux": "^4.0.1",
     "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0",
-    "styled-components": "^4.1.2"
+    "styled-components": "^4.2.0"
   },
   "devDependencies": {
     "react-scripts": "2.1.1"

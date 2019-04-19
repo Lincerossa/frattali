@@ -1,9 +1,7 @@
 import React from "react";
-import { ColorPicker } from "../../components";
+import { ColorPicker, Sizeme, Canvas } from "components";
 import * as S from "./styles";
 import { MdClose } from "react-icons/md";
-
-import { Sizeme, Canvas } from "../../components";
 
 export default ({
   divisions,
@@ -15,6 +13,7 @@ export default ({
   setHd,
   setBackGroundColor,
   backgroundColor,
+  useGetCenter,
 }) => (
   <S.Panel>
     <S.PanelClose onClick={handleClosePanel}>
@@ -28,6 +27,7 @@ export default ({
             <Canvas
               {...size}
               backgroundColor={backgroundColor}
+              useGetCenter={useGetCenter}
               lines={[
                 {
                   divisions,

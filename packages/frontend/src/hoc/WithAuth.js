@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import * as actions from "../Redux/auth/actions";
 import { isAuthenticated } from "../Redux/auth/reducer";
 import { useLoadProfile } from "../useHooks";
-import { Loading, Wecome } from "../components";
+import { Loading, Wecome } from "components";
 import Auth from "../Auth/Auth";
 
 function Welcome(props) {
