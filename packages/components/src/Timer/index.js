@@ -1,9 +1,5 @@
 import { useEffect, useState } from 'react'
 
-const cioa = () => {
-  console.loog('ok')
-}
-
 function TimeHandler(props) {
   const [initialTime, setInitialTime] = useState(0)
   const [currentTime, updateCurrentTime] = useState(0)
