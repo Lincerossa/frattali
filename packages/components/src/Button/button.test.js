@@ -18,11 +18,9 @@ describe('<Button />', () => {
     const Foo = jest.fn().mockReturnValue('fired function')
 
     const tree = shallow(<Button onClick={Foo} />)
+    const fnPassedAsProp = tree.prop('onClick')()
 
-    // trying to call it
     expect(Foo).toBeCalled()
-
-    // test the returned value
-    expect(tree.prop('onClick')()).toBe('fired function')
+    expect(fnPassedAsProp).toBe('fired function')
   })
 })
