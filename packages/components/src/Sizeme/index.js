@@ -8,22 +8,14 @@ function SizeMe(props) {
   })
 
   useEffect(() => {
-    handleUpdateSize()
-  }, [])
-
-  const handleUpdateSize = () => {
     const ref = myRef.current
     updateSize({
       width: ref.clientWidth,
       height: ref.clientHeight,
     })
-  }
+  }, [])
 
-  return (
-    <div style={{ width: '100%' }} ref={myRef}>
-      {props.children({ ...props, size })}
-    </div>
-  )
+  return <div ref={myRef}>{props.children({ ...props, size })}</div>
 }
 
 export default SizeMe
