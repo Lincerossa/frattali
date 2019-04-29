@@ -10,6 +10,8 @@
     "build-storybook": "build-storybook",
     "playroom:start": "playroom start",
     "playroom:build": "playroom build",
+    "test": "jest",
+    "test:coverage": "jest --coverage",
     "start": "concurrently \"npm run build:watch\" \"npm run storybook\" \"npm run playroom:start\""
   },
   "author": "",
@@ -32,6 +34,9 @@
     "babel-loader": "^8.0.5",
     "babel-plugin-styled-components": "^1.10.0",
     "concurrently": "^4.1.0",
+    "enzyme": "^3.9.0",
+    "enzyme-adapter-react-16": "^1.12.1",
+    "jest": "^24.7.1",
     "playroom": "^0.9.1",
     "react": "^16.8.6",
     "react-color": "^2.17.0",

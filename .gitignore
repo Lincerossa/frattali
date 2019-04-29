@@ -14,7 +14,7 @@ packages/**/mongoose/data
 # production
 /build
 db
-
+coverage
 dist
 
 # misc
