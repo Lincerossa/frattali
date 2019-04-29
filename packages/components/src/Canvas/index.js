@@ -1,16 +1,19 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { drawBackground, drawLines } from './draw'
 
-export default ({
-  width,
-  height,
-  backgroundColor,
-  hd,
-  lines,
-  useGetCenter,
-}) => {
+export default ({ width, height, backgroundColor, hd, lines }) => {
   const canvas = useRef(null)
-  const { center } = useGetCenter(canvas)
+  const [center, setCenter] = useState(null)
+
+  useEffect(() => {
+    if (!canvas || !canvas.current) return
+    const { offsetHeight, offsetWidth, offsetTop, offsetLeft } = canvas.current
+
+    setCenter({
+      y: offsetHeight / 2 - offsetTop,
+      x: offsetWidth / 2 + offsetLeft,
+    })
+  }, [canvas, canvas.current])
 
   useEffect(() => {
     if (hd) {

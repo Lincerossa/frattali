@@ -1,13 +1,7 @@
-import React from "react";
-import { ColorPicker, Sizeme, Canvas } from "components";
-import * as S from "./styles";
-import { MdClose } from "react-icons/md";
-
-
-
-
-
-
+import React from 'react'
+import { ColorPicker, Sizeme, Canvas } from 'components'
+import * as S from './styles'
+import { MdClose } from 'react-icons/md'
 
 export default ({
   divisions,
@@ -19,7 +13,6 @@ export default ({
   setHd,
   setBackGroundColor,
   backgroundColor,
-  useGetCenter,
 }) => (
   <S.Panel>
     <S.PanelClose onClick={handleClosePanel}>
@@ -33,7 +26,6 @@ export default ({
             <Canvas
               {...size}
               backgroundColor={backgroundColor}
-              useGetCenter={useGetCenter}
               lines={[
                 {
                   divisions,
@@ -91,7 +83,7 @@ export default ({
     </S.PanelBlock>
     <S.PanelBlock>
       <S.PanelBlockTitle>
-        line color <S.ColorBlock color={color} />{" "}
+        line color <S.ColorBlock color={color} />{' '}
       </S.PanelBlockTitle>
       <ColorPicker
         color={color}
@@ -101,13 +93,13 @@ export default ({
 
     <S.PanelBlock>
       <S.PanelBlockTitle>
-        HD <div onClick={() => setHd(!hd)}>{hd ? "ON" : "OFF"} </div>
+        HD <div onClick={() => setHd(!hd)}>{hd ? 'ON' : 'OFF'} </div>
       </S.PanelBlockTitle>
     </S.PanelBlock>
 
     <S.PanelBlock>
       <S.PanelBlockTitle>
-        background color <S.ColorBlock color={backgroundColor} />{" "}
+        background color <S.ColorBlock color={backgroundColor} />{' '}
       </S.PanelBlockTitle>
       <ColorPicker
         color={backgroundColor}
@@ -115,4 +107,4 @@ export default ({
       />
     </S.PanelBlock>
   </S.Panel>
-);
+)
