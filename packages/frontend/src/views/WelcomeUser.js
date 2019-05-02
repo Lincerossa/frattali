@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Fullscreen, Wrapper, Image } from 'components'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
-import { isAuthenticated, getUserPicture } from '../Redux/auth/reducer'
+import { getUserPicture } from '../Redux/auth/reducer'
 
 function WelcomeUser({ userPicture, isAuthenticated }) {
   const [isWelcomeEnded, setIsWelcomeEnded] = useState(null)
@@ -15,7 +15,7 @@ function WelcomeUser({ userPicture, isAuthenticated }) {
     return () => clearTimeout(timeout)
   }, [])
 
-  if (isAuthenticated && isWelcomeEnded) {
+  if (isWelcomeEnded) {
     return <Redirect to="/" />
   }
 
@@ -29,7 +29,6 @@ function WelcomeUser({ userPicture, isAuthenticated }) {
 }
 
 const WelcomeUserConnected = connect(state => ({
-  isAuthenticated: isAuthenticated(state),
   userPicture: getUserPicture(state),
 }))(WelcomeUser)
 
