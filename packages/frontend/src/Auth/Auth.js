@@ -18,7 +18,7 @@ export default class Auth {
       try {
         this.auth0.parseHash({ hash }, (err, authResult) => {
           if (err) {
-            return console.log(err)
+            console.log(err)
           }
 
           if (!authResult) return
