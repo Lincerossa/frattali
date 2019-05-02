@@ -4,13 +4,12 @@ import { action } from '@storybook/addon-actions'
 import Button from './index'
 
 storiesOf('Button', module)
-  .add('with text', () => (
-    <Button onClick={action('clicked')}>Hello Button</Button>
-  ))
-  .add('with some emoji', () => (
-    <Button onClick={action('clicked')}>
-      <span role="img" aria-label="so cool">
-        😀 😎 👍 💯
-      </span>
+  .add('default', () => <Button onClick={action('clicked')}>M</Button>)
+  .add('with backgroundImage', () => (
+    <Button
+      onClick={action('clicked')}
+      backgroundImage="https://www.unsplash.it/300/600"
+    >
+      M
     </Button>
   ))

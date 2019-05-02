@@ -20,7 +20,7 @@ storiesOf('Canvas', module).add('with text', () => (
     width={1500}
     height={1400}
     lines={defaultState.lines}
-    useGetCenter={() => ({ center: { x: 200, y: 200 } })}
+    useGetCenter={() => ({ center: { x: 700, y: 500 } })}
   >
     Hello Canvas
   </Canvas>
