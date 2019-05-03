@@ -11,19 +11,8 @@ import theme from './styles/theme'
 import * as serviceWorker from './serviceWorker'
 import Routes from './Routes'
 
-const initialState = {
-  auth: {
-    accessToken: 'asdasdnasdndacadasd',
-    profile: {
-      picture: 'ciao.png',
-      nickname: 'marcello',
-    },
-  },
-}
-
 const store = createStore(
   rootReducer,
-  // initialState,
   compose(
     applyMiddleware(thunk),
     window.devToolsExtension ? window.devToolsExtension() : f => f
