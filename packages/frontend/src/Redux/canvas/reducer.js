@@ -15,7 +15,7 @@ const defaultState = {
   hd: false,
   lines: [
     {
-      color: 'white',
+      color: 'black',
       points: [],
       divisions: 50,
       thickness: 1,
