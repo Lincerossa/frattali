@@ -1,9 +1,16 @@
-import React, { useState, useRef, useEffect, useReducer } from 'react'
-import { Sizeme, Button, Canvas } from 'components'
-import { MdSettings, MdClose, MdKeyboardBackspace } from 'react-icons/md'
-import produce from 'immer'
+import React, { useState, useRef, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { getUserName, getUserPicture } from '../../Redux/auth/reducer'
+import { Sizeme, Button, Canvas } from 'components'
+import { MdSettings, MdClose } from 'react-icons/md'
+import { getUserPicture } from '../../Redux/auth/reducer'
+import {
+  getCanvasLines,
+  getCanvasTitle,
+  getCanvasBackground,
+  getCanvasHd,
+} from '../../Redux/canvas/reducer'
+import * as actions from '../../Redux/canvas/actions'
+
 import Panel from './Panel'
 import * as S from './styles'
 
@@ -58,60 +65,23 @@ function useMouse(element) {
   }
 }
 
-const defaultState = {
-  lines: [
-    {
-      color: 'white',
-      points: [],
-      divisions: 50,
-      thickness: 1,
-    },
-  ],
-}
-
-function linesReducer(state, { type, payload }) {
-  switch (type) {
-    case 'LINE_POINT_ADD':
-      return produce(state, draftState => {
-        draftState[draftState.length - 1].points.push(payload)
-      })
-
-    case 'LINE_ADD':
-      return produce(state, draftState => {
-        draftState.push({
-          ...draftState[draftState.length - 1],
-          points: [],
-        })
-      })
-
-    case 'LINE_UPDATE':
-      return produce(state, draftState => {
-        draftState[draftState.length - 1] = {
-          ...draftState[draftState.length - 1],
-          ...payload,
-        }
-      })
-
-    case 'LINE_RESTORE':
-      return payload
-
-    case 'LINE_CLEAR':
-      return defaultState.lines
-
-    default:
-      return defaultState.lines
-  }
-}
-
-const Art = ({ width, height, userName, picture }) => {
+const Art = ({
+  picture,
+  canvasTitle,
+  canvasBackground,
+  canvasLines,
+  canvasHd,
+  addCanvasPoint,
+  addCanvasLine,
+  updateCanvasLineSettings,
+  clearCanvas,
+  setCanvasTitle,
+  setCanvasHd,
+  setCanvasBackground,
+}) => {
   const canvas = useRef(null)
   const { mousePosition, mouseStatus } = useMouse(canvas)
-
-  const [lines, setLines] = useReducer(linesReducer, defaultState.lines)
-  const [storyOfLines, setStoryOfLines] = useState([])
-  const [hd, setHd] = useState(null)
   const [isPanelOpen, openPanel] = useState(null)
-  const [backgroundColor, setBackGroundColor] = useState('black')
   const [center, setCenter] = useState(null)
 
   useEffect(() => {
@@ -124,36 +94,19 @@ const Art = ({ width, height, userName, picture }) => {
     })
   }, [canvas, canvas.current])
 
-  function goBack(storyOfLines) {
-    const lastStory = storyOfLines[storyOfLines.length - 2]
-    setLines({ type: 'LINE_RESTORE', payload: lastStory.lines })
-    setLines({ type: 'LINE_ADD' })
-    setStoryOfLines(storyOfLines.slice(0, storyOfLines.length - 1))
-  }
-
   useEffect(() => {
     if (
       mouseStatus === 'mouseup' &&
-      lines &&
-      lines[lines.length - 1].points.length
+      canvasLines &&
+      canvasLines[canvasLines.length - 1].points.length
     ) {
-      setStoryOfLines(
-        produce(storyOfLines, draftState => {
-          draftState.push({
-            lines,
-          })
-        })
-      )
-      setLines({ type: 'LINE_ADD' })
+      addCanvasLine()
     }
     if (mouseStatus === 'mousedown') {
-      setLines({
-        type: 'LINE_POINT_ADD',
-        payload: {
-          // pt già sul piano cartesiano con coordinate del centro, quelle di center
-          x: mousePosition.x - center.x,
-          y: center.y - mousePosition.y,
-        },
+      addCanvasPoint({
+        // pt già sul piano cartesiano con coordinate del centro, quelle di center
+        x: mousePosition.x - center.x,
+        y: center.y - mousePosition.y,
       })
     }
   }, [mousePosition, mouseStatus === 'mouseup'])
@@ -164,11 +117,9 @@ const Art = ({ width, height, userName, picture }) => {
         {({ size }) => (
           <S.CanvasWrapper ref={canvas} fullheight>
             <Canvas
-              width={width}
-              height={height}
-              hd={hd}
-              lines={lines}
-              backgroundColor={backgroundColor}
+              hd={canvasHd}
+              lines={canvasLines}
+              backgroundColor={canvasBackground}
               {...size}
             />
           </S.CanvasWrapper>
@@ -177,18 +128,10 @@ const Art = ({ width, height, userName, picture }) => {
       <S.Controllers>
         <Button
           onClick={() => {
-            setStoryOfLines([])
-            setLines({ type: 'LINE_CLEAR' })
+            clearCanvas()
           }}
         >
           <MdClose />
-        </Button>
-        <Button
-          onClick={() =>
-            storyOfLines && storyOfLines.length > 1 && goBack(storyOfLines)
-          }
-        >
-          <MdKeyboardBackspace />
         </Button>
         <Button onClick={() => openPanel(true)}>
           <MdSettings />
@@ -198,24 +141,27 @@ const Art = ({ width, height, userName, picture }) => {
       {isPanelOpen && (
         <Panel
           handleClosePanel={() => openPanel(false)}
-          handleLineUpdate={payload =>
-            setLines({ type: 'LINE_UPDATE', payload })
-          }
-          setBackGroundColor={setBackGroundColor}
-          setHd={setHd}
-          hd={hd}
-          color={lines[lines.length - 1].color}
-          divisions={lines[lines.length - 1].divisions}
-          thickness={lines[lines.length - 1].thickness}
-          backgroundColor={backgroundColor}
+          handleLineUpdate={payload => updateCanvasLineSettings(payload)}
+          setBackGroundColor={setCanvasBackground}
+          setHd={setCanvasHd}
+          hd={setCanvasHd}
+          color={canvasLines[canvasLines.length - 1].color}
+          divisions={canvasLines[canvasLines.length - 1].divisions}
+          thickness={canvasLines[canvasLines.length - 1].thickness}
+          backgroundColor={canvasBackground}
         />
       )}
     </>
   )
 }
 
-const mapStateToProps = state => ({
-  userName: getUserName(state),
-  picture: getUserPicture(state),
-})
-export default connect(mapStateToProps)(Art)
+export default connect(
+  state => ({
+    picture: getUserPicture(state),
+    canvasLines: getCanvasLines(state),
+    canvasTitle: getCanvasTitle(state),
+    canvasBackground: getCanvasBackground(state),
+    canvasHd: getCanvasHd(state),
+  }),
+  actions
+)(Art)
