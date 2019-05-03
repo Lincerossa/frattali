@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { Sizeme, Button, Canvas } from 'components'
+import { Sizeme, Button, Canvas, ColorPicker, InputRange } from 'components'
 import { MdSettings, MdClose } from 'react-icons/md'
 import { getUserPicture } from '../../Redux/auth/reducer'
 import {
@@ -11,7 +11,6 @@ import {
 } from '../../Redux/canvas/reducer'
 import * as actions from '../../Redux/canvas/actions'
 
-import Panel from './Panel'
 import * as S from './styles'
 
 function useMouse(element) {
@@ -139,17 +138,91 @@ const Art = ({
         <Button backgroundImage={picture} />
       </S.Controllers>
       {isPanelOpen && (
-        <Panel
-          handleClosePanel={() => openPanel(false)}
-          handleLineUpdate={payload => updateCanvasLineSettings(payload)}
-          setBackGroundColor={setCanvasBackground}
-          setHd={setCanvasHd}
-          hd={setCanvasHd}
-          color={canvasLines[canvasLines.length - 1].color}
-          divisions={canvasLines[canvasLines.length - 1].divisions}
-          thickness={canvasLines[canvasLines.length - 1].thickness}
-          backgroundColor={canvasBackground}
-        />
+        <S.Panel>
+          <S.PanelClose onClick={() => openPanel(false)}>
+            <MdClose />
+          </S.PanelClose>
+          <S.PanelBlock>
+            <S.PanelBlockTitle>example</S.PanelBlockTitle>
+            <Sizeme>
+              {({ size }) => (
+                <S.CanvasWrapper>
+                  <Canvas
+                    {...size}
+                    backgroundColor={canvasBackground}
+                    lines={[
+                      {
+                        divisions:
+                          canvasLines[canvasLines.length - 1].divisions,
+                        color: canvasLines[canvasLines.length - 1].color,
+                        thickness:
+                          canvasLines[canvasLines.length - 1].thickness,
+                        points: Array.from({ length: 20 }, (index, e) => ({
+                          x: 0,
+                          y: e * 4 + 30,
+                        })),
+                      },
+                    ]}
+                  />
+                </S.CanvasWrapper>
+              )}
+            </Sizeme>
+          </S.PanelBlock>
+          <S.PanelBlock>
+            <S.PanelBlockTitle>divisions</S.PanelBlockTitle>
+            <S.ButtonsWrapper>
+              <InputRange
+                min="1"
+                max="200"
+                value={canvasLines[canvasLines.length - 1].divisions}
+                onChange={divisions => updateCanvasLineSettings({ divisions })}
+                step="1"
+              />
+            </S.ButtonsWrapper>
+          </S.PanelBlock>
+          <S.PanelBlock>
+            <S.PanelBlockTitle>Line width</S.PanelBlockTitle>
+            <S.ButtonsWrapper>
+              <InputRange
+                type="range"
+                min="1"
+                max="10"
+                value={canvasLines[canvasLines.length - 1].thickness}
+                onChange={thickness => updateCanvasLineSettings({ thickness })}
+                step="1"
+              />
+            </S.ButtonsWrapper>
+          </S.PanelBlock>
+          <S.PanelBlock>
+            <S.PanelBlockTitle>
+              line color{' '}
+              <S.ColorBlock color={canvasLines[canvasLines.length - 1].color} />{' '}
+            </S.PanelBlockTitle>
+            <ColorPicker
+              color={canvasLines[canvasLines.length - 1].color}
+              setColor={color => updateCanvasLineSettings({ color })}
+            />
+          </S.PanelBlock>
+
+          <S.PanelBlock>
+            <S.PanelBlockTitle>
+              HD{' '}
+              <div onClick={() => setCanvasHd(!canvasHd)}>
+                {canvasHd ? 'ON' : 'OFF'}{' '}
+              </div>
+            </S.PanelBlockTitle>
+          </S.PanelBlock>
+
+          <S.PanelBlock>
+            <S.PanelBlockTitle>
+              background color <S.ColorBlock color={canvasBackground} />{' '}
+            </S.PanelBlockTitle>
+            <ColorPicker
+              color={canvasBackground}
+              setColor={setCanvasBackground}
+            />
+          </S.PanelBlock>
+        </S.Panel>
       )}
     </>
   )
