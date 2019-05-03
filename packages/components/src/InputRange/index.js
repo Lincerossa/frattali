@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import * as S from './styles'
 
-export default ({ value, min, max, onChange }) => {
+import Label from '../Label'
+export default ({ value, min, max, onChange, label }) => {
   const [innerValue, setInnerValue] = useState(value)
 
   function handleInnerChange(e) {
@@ -15,13 +16,16 @@ export default ({ value, min, max, onChange }) => {
   }, [innerValue])
 
   return (
-    <S.InputRange
-      type="range"
-      min={min}
-      max={max}
-      value={innerValue}
-      onChange={handleInnerChange}
-      step="1"
-    />
+    <>
+      {label && <Label>{label}</Label>}
+      <S.InputRange
+        type="range"
+        min={min}
+        max={max}
+        value={innerValue}
+        onChange={handleInnerChange}
+        step="1"
+      />
+    </>
   )
 }
