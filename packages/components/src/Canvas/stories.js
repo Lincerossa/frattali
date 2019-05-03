@@ -2,26 +2,21 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
 import Canvas from './index'
-
+import SizeMe from '../Sizeme'
 const defaultState = {
   lines: [
     {
       color: 'white',
-      points: [],
+      points: Array.from({ length: 20 }, (index, e) => ({
+        x: 0,
+        y: e * 4 + 30,
+      })),
       divisions: 50,
       thickness: 1,
     },
   ],
 }
 
-storiesOf('Canvas', module).add('with text', () => (
-  <Canvas
-    onClick={action('clicked')}
-    width={1500}
-    height={1400}
-    lines={defaultState.lines}
-    useGetCenter={() => ({ center: { x: 700, y: 500 } })}
-  >
-    Hello Canvas
-  </Canvas>
+storiesOf('Canvas', module).add('Default', () => (
+  <Canvas onClick={action('clicked')} lines={defaultState.lines} />
 ))

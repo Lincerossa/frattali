@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { drawBackground, drawLines } from './draw'
 
-export default ({ width, height, backgroundColor, hd, lines }) => {
+export default ({ width = 500, height = 500, backgroundColor, hd, lines }) => {
   const canvas = useRef(null)
   const [center, setCenter] = useState(null)
 
