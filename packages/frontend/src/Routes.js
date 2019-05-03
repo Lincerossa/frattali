@@ -27,6 +27,8 @@ const AuthenticationRouteHandler = props => {
     const instantiateAuth = new Auth()
     instantiateAuth.login()
   }
+
+  return null
 }
 
 const ConnectedAuthenticationRouteHandler = connect(
