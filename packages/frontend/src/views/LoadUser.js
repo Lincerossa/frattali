@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Fullscreen, Loading } from 'components'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
-import Auth from '../Auth/Auth'
+import Auth from '../modules/Auth'
 import { isAuthenticated } from '../Redux/auth/reducer'
 import * as actions from '../Redux/auth/actions'
 
