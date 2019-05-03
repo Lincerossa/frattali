@@ -103,12 +103,13 @@ const Art = ({
     }
     if (mouseStatus === 'mousedown') {
       addCanvasPoint({
-        // pt già sul piano cartesiano con coordinate del centro, quelle di center
         x: mousePosition.x - center.x,
         y: center.y - mousePosition.y,
       })
     }
   }, [mousePosition, mouseStatus === 'mouseup'])
+
+  const { divisions, color, thickness } = canvasLines[canvasLines.length - 1]
 
   return (
     <>
@@ -152,11 +153,9 @@ const Art = ({
                     backgroundColor={canvasBackground}
                     lines={[
                       {
-                        divisions:
-                          canvasLines[canvasLines.length - 1].divisions,
-                        color: canvasLines[canvasLines.length - 1].color,
-                        thickness:
-                          canvasLines[canvasLines.length - 1].thickness,
+                        divisions,
+                        color,
+                        thickness,
                         points: Array.from({ length: 20 }, (index, e) => ({
                           x: 0,
                           y: e * 4 + 30,
@@ -169,38 +168,28 @@ const Art = ({
             </Sizeme>
           </S.PanelBlock>
           <S.PanelBlock>
-            <S.PanelBlockTitle>divisions</S.PanelBlockTitle>
-            <S.ButtonsWrapper>
-              <InputRange
-                min="1"
-                max="200"
-                value={canvasLines[canvasLines.length - 1].divisions}
-                onChange={divisions => updateCanvasLineSettings({ divisions })}
-                step="1"
-              />
-            </S.ButtonsWrapper>
+            <InputRange
+              label="divisions"
+              min={1}
+              max={200}
+              value={divisions}
+              onChange={divisions => updateCanvasLineSettings({ divisions })}
+            />
           </S.PanelBlock>
           <S.PanelBlock>
-            <S.PanelBlockTitle>Line width</S.PanelBlockTitle>
-            <S.ButtonsWrapper>
-              <InputRange
-                type="range"
-                min="1"
-                max="10"
-                value={canvasLines[canvasLines.length - 1].thickness}
-                onChange={thickness => updateCanvasLineSettings({ thickness })}
-                step="1"
-              />
-            </S.ButtonsWrapper>
+            <InputRange
+              label="line width"
+              min={1}
+              max={10}
+              value={thickness}
+              onChange={thickness => updateCanvasLineSettings({ thickness })}
+            />
           </S.PanelBlock>
           <S.PanelBlock>
-            <S.PanelBlockTitle>
-              line color{' '}
-              <S.ColorBlock color={canvasLines[canvasLines.length - 1].color} />{' '}
-            </S.PanelBlockTitle>
             <ColorPicker
-              color={canvasLines[canvasLines.length - 1].color}
+              color={color}
               setColor={color => updateCanvasLineSettings({ color })}
+              label="line color"
             />
           </S.PanelBlock>
 
@@ -212,14 +201,11 @@ const Art = ({
               </div>
             </S.PanelBlockTitle>
           </S.PanelBlock>
-
           <S.PanelBlock>
-            <S.PanelBlockTitle>
-              background color <S.ColorBlock color={canvasBackground} />{' '}
-            </S.PanelBlockTitle>
             <ColorPicker
               color={canvasBackground}
               setColor={setCanvasBackground}
+              label="background color"
             />
           </S.PanelBlock>
         </S.Panel>

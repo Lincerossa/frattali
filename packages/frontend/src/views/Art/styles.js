@@ -72,11 +72,3 @@ export const PanelBlockTitle = styled.div`
   letter-spacing: 0.04rem;
   text-transform: uppercase;
 `
-
-export const ColorBlock = styled.div`
-  background-color: ${props => props.color};
-  height: 1rem;
-  width: 1rem;
-  border: 1px solid white;
-  margin-left: 0.5rem;
-`
