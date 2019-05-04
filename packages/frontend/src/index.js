@@ -1,12 +1,12 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { ThemeProvider } from 'styled-components'
-
 import { Provider } from 'react-redux'
 import { createStore, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
-import rootReducer from './Redux'
 
+import rootReducer from './Redux'
+import GlobalStyle from './styles/global'
 import theme from './styles/theme'
 import * as serviceWorker from './serviceWorker'
 import Routes from './Routes'
@@ -21,6 +21,7 @@ const store = createStore(
 
 const App = () => (
   <Provider store={store}>
+    <GlobalStyle />
     <ThemeProvider theme={theme}>
       <Routes />
     </ThemeProvider>
