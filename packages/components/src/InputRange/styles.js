@@ -9,6 +9,7 @@ export const InputRange = styled.input`
   height: .5rem;
   border-radius: .5rem;
   position: relative;
+ 
   z-index: 1;
 
   &:active, &:focus{
@@ -18,13 +19,15 @@ export const InputRange = styled.input`
   &:after{
     content: "${props => props.value}";
     position: absolute;
+    border: 1px solid white;
+    pointer-events: none;
     left: ${props =>
       `calc(${((props.value - props.min) / (props.max - props.min)) *
         100}% - .375rem)`};
     background-color: black;
-    color: "red";
-    width: .75rem;
-    height: .75rem;
+    color: white;
+    width: 2rem;
+    height: 2rem;
     transform:  ${props =>
       `translate(-${((props.value - props.min) / (props.max - props.min)) *
         16}px , -50%)`};
@@ -32,8 +35,7 @@ export const InputRange = styled.input`
     border-radius: 50%;
     top: 50%;
     cursor: pointer;
-    font-size: .875rem;
-    border: 1px solid violet;
+    font-size: 1rem;
     display: flex;
     align-items: center;
     justify-content: center;

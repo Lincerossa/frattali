@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import * as S from './styles'
 
 import Label from '../Label'
-export default ({ value, min, max, onChange, label }) => {
+export default ({ value, step = 1, min, max, onChange, label }) => {
   const [innerValue, setInnerValue] = useState(value)
 
   function handleInnerChange(e) {
@@ -24,7 +24,7 @@ export default ({ value, min, max, onChange, label }) => {
         max={max}
         value={innerValue}
         onChange={handleInnerChange}
-        step="1"
+        step={step}
       />
     </>
   )

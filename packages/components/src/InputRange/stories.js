@@ -16,3 +16,7 @@ storiesOf('InputRange', module)
       onChange={action(console.log())}
     />
   ))
+
+  .add('with big number max', () => (
+    <InputRange min={1} max={200} value={4} onChange={action(console.log())} />
+  ))
