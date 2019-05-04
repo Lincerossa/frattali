@@ -1,6 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { Sizeme, Button, Canvas, ColorPicker, InputRange } from 'components'
+import {
+  Sizeme,
+  Button,
+  Canvas,
+  ColorPicker,
+  InputRange,
+  Sidebar,
+} from 'components'
 import { MdSettings, MdClose } from 'react-icons/md'
 import { getUserPicture } from '../../Redux/auth/reducer'
 import {
@@ -80,7 +87,7 @@ const Art = ({
 }) => {
   const canvas = useRef(null)
   const { mousePosition, mouseStatus } = useMouse(canvas)
-  const [isPanelOpen, openPanel] = useState(null)
+  const [isSidebarOpen, toggleSidebar] = useState(null)
   const [center, setCenter] = useState(null)
 
   useEffect(() => {
@@ -133,16 +140,13 @@ const Art = ({
         >
           <MdClose />
         </Button>
-        <Button onClick={() => openPanel(true)}>
+        <Button onClick={() => toggleSidebar(true)}>
           <MdSettings />
         </Button>
         <Button backgroundImage={picture} />
       </S.Controllers>
-      {isPanelOpen && (
-        <S.Panel>
-          <S.PanelClose onClick={() => openPanel(false)}>
-            <MdClose />
-          </S.PanelClose>
+      {isSidebarOpen && (
+        <Sidebar onClose={() => toggleSidebar(false)}>
           <S.PanelBlock>
             <S.PanelBlockTitle>example</S.PanelBlockTitle>
             <Sizeme>
@@ -208,7 +212,7 @@ const Art = ({
               label="background color"
             />
           </S.PanelBlock>
-        </S.Panel>
+        </Sidebar>
       )}
     </>
   )

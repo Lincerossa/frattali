@@ -14,21 +14,6 @@ export const Controllers = styled.div`
   justify-content: center;
 `
 
-export const Panel = styled.div`
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background: #343434;
-  overflow-y: scroll;
-  padding: 1rem;
-  padding-top: 2.5rem;
-  @media screen and (min-width: 600px) {
-    left: auto;
-  }
-`
-
 export const PanelBlock = styled.div`
   margin-bottom: 1rem;
   padding-bottom: 1rem;
@@ -42,24 +27,6 @@ export const PanelBlock = styled.div`
 
 export const ButtonsWrapper = styled.div`
   display: flex;
-`
-
-export const ColorPicker = styled.div``
-export const PanelClose = styled.div`
-  color: white;
-  position: absolute;
-  top: 0.5rem;
-  right: 1rem;
-  font-size: 1.5rem;
-  cursor: pointer;
-  border: 1px solid;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  &:hover {
-    color: ${props => props.theme.colors.main};
-  }
 `
 
 export const PanelBlockTitle = styled.div`
