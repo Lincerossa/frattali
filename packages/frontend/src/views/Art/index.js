@@ -7,6 +7,7 @@ import {
   ColorPicker,
   InputRange,
   Sidebar,
+  Checkbox,
 } from 'components'
 import { MdSettings, MdClose } from 'react-icons/md'
 import { getUserPicture } from '../../Redux/auth/reducer'
@@ -178,14 +179,12 @@ const Art = ({
               label="line color"
             />
           </S.PanelBlock>
-
           <S.PanelBlock>
-            <S.PanelBlockTitle>
-              HD{' '}
-              <div onClick={() => setCanvasHd(!canvasHd)}>
-                {canvasHd ? 'ON' : 'OFF'}{' '}
-              </div>
-            </S.PanelBlockTitle>
+            <Checkbox
+              checked={canvasHd}
+              onClick={setCanvasHd}
+              label="Chose HD version"
+            />
           </S.PanelBlock>
           <S.PanelBlock>
             <ColorPicker
