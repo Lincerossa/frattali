@@ -1,19 +1,15 @@
 import styled from 'styled-components'
 
+export const Art = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+`
 export const CanvasWrapper = styled.div`
-  ${props =>
-    props.fullheight
-      ? `
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-    `
-      : `
-      position: relative;
-      height: 200px;
-    `}
+  position: relative;
+  height: 200px;
 `
 
 export const Controllers = styled.div`

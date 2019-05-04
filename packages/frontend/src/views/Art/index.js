@@ -20,16 +20,15 @@ import * as actions from '../../Redux/canvas/actions'
 
 import * as S from './styles'
 
-function useMouse(element) {
+function useMouse() {
   const [mousePosition, setMousePosition] = useState(null)
   const [mouseStatus, setMouseStatus] = useState(null)
 
   function handleMouseDown() {
-    const el = element.current.parentNode
-    el.addEventListener('mousemove', handleMouseMove)
-    el.addEventListener('mouseup', handleMouseUp)
-    el.addEventListener('touchmove', handleMouseMove, { passive: false })
-    el.addEventListener('touchend', handleMouseUp)
+    window.addEventListener('mousemove', handleMouseMove)
+    window.addEventListener('mouseup', handleMouseUp)
+    window.addEventListener('touchmove', handleMouseMove, { passive: false })
+    window.addEventListener('touchend', handleMouseUp)
     setMouseStatus('mousedown')
   }
 
@@ -50,20 +49,18 @@ function useMouse(element) {
   }
 
   useEffect(() => {
-    const el = element.current.parentNode
-
-    el.addEventListener('mousedown', handleMouseDown)
-    el.addEventListener('touchstart', handleTouchStart, { passive: false })
+    window.addEventListener('mousedown', handleMouseDown)
+    window.addEventListener('touchstart', handleTouchStart, { passive: false })
 
     return () => {
-      el.removeEventListener('mousedown', handleMouseDown)
-      el.addEventListener('touchstart', handleMouseDown)
-      el.removeEventListener('mouseup', handleMouseUp)
-      el.removeEventListener('touchend', handleMouseUp)
-      el.removeEventListener('mousemove', handleMouseMove)
-      el.removeEventListener('touchmove', handleMouseMove)
+      window.removeEventListener('mousedown', handleMouseDown)
+      window.addEventListener('touchstart', handleMouseDown)
+      window.removeEventListener('mouseup', handleMouseUp)
+      window.removeEventListener('touchend', handleMouseUp)
+      window.removeEventListener('mousemove', handleMouseMove)
+      window.removeEventListener('touchmove', handleMouseMove)
     }
-  }, [element])
+  }, [])
 
   return {
     mousePosition,
@@ -85,20 +82,8 @@ const Art = ({
   setCanvasHd,
   setCanvasBackground,
 }) => {
-  const canvas = useRef(null)
-  const { mousePosition, mouseStatus } = useMouse(canvas)
+  const { mousePosition, mouseStatus } = useMouse()
   const [isSidebarOpen, toggleSidebar] = useState(null)
-  const [center, setCenter] = useState(null)
-
-  useEffect(() => {
-    if (!canvas || !canvas.current) return
-    const { offsetHeight, offsetWidth, offsetTop, offsetLeft } = canvas.current
-
-    setCenter({
-      y: offsetHeight / 2 - offsetTop,
-      x: offsetWidth / 2 + offsetLeft,
-    })
-  }, [canvas, canvas.current])
 
   useEffect(() => {
     if (
@@ -108,33 +93,32 @@ const Art = ({
     ) {
       addCanvasLine()
     }
-    if (mouseStatus === 'mousedown') {
+  }, [mouseStatus])
+
+  useEffect(() => {
+    if (mouseStatus === 'mousedown' && mousePosition) {
       addCanvasPoint({
-        x: mousePosition.x - center.x,
-        y: center.y - mousePosition.y,
+        x: mousePosition.x - window.innerWidth / 2,
+        y: window.innerHeight / 2 - mousePosition.y,
       })
     }
-  }, [mousePosition, mouseStatus === 'mouseup'])
+  }, [mousePosition, mouseStatus])
 
-  const { divisions, color, thickness } = canvasLines[canvasLines.length - 1]
+  const lastCanvasLine = canvasLines[canvasLines.length - 1]
+  const { divisions, color, thickness } = lastCanvasLine
 
   return (
-    <>
-      <S.CanvasWrapper ref={canvas} fullheight>
-        <Canvas
-          hd={canvasHd}
-          lines={canvasLines}
-          backgroundColor={canvasBackground}
-          width={window.innerWidth}
-          height={window.innerHeight}
-        />
-      </S.CanvasWrapper>
+    <S.Art>
+      <Canvas
+        hd={canvasHd}
+        lines={canvasLines}
+        backgroundColor={canvasBackground}
+        width={window.innerWidth}
+        height={window.innerHeight}
+      />
+
       <S.Controllers>
-        <Button
-          onClick={() => {
-            clearCanvas()
-          }}
-        >
+        <Button onClick={clearCanvas}>
           <MdClose />
         </Button>
         <Button onClick={() => toggleSidebar(true)}>
@@ -142,6 +126,7 @@ const Art = ({
         </Button>
         <Button backgroundImage={picture} />
       </S.Controllers>
+
       {isSidebarOpen && (
         <Sidebar onClose={() => toggleSidebar(false)}>
           <S.PanelBlock>
@@ -211,7 +196,7 @@ const Art = ({
           </S.PanelBlock>
         </Sidebar>
       )}
-    </>
+    </S.Art>
   )
 }
 
