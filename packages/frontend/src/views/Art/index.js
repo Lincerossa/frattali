@@ -120,18 +120,15 @@ const Art = ({
 
   return (
     <>
-      <Sizeme>
-        {({ size }) => (
-          <S.CanvasWrapper ref={canvas} fullheight>
-            <Canvas
-              hd={canvasHd}
-              lines={canvasLines}
-              backgroundColor={canvasBackground}
-              {...size}
-            />
-          </S.CanvasWrapper>
-        )}
-      </Sizeme>
+      <S.CanvasWrapper ref={canvas} fullheight>
+        <Canvas
+          hd={canvasHd}
+          lines={canvasLines}
+          backgroundColor={canvasBackground}
+          width={window.innerWidth}
+          height={window.innerHeight}
+        />
+      </S.CanvasWrapper>
       <S.Controllers>
         <Button
           onClick={() => {

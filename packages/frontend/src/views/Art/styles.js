@@ -1,8 +1,19 @@
 import styled from 'styled-components'
 
 export const CanvasWrapper = styled.div`
-  position: relative;
-  min-height: ${props => (props.fullheight ? '100vh' : '200px')};
+  ${props =>
+    props.fullheight
+      ? `
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    `
+      : `
+      position: relative;
+      height: 200px;
+    `}
 `
 
 export const Controllers = styled.div`
