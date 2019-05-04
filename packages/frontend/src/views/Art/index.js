@@ -88,6 +88,7 @@ const Art = ({
 
   useEffect(() => {
     if (
+      !isSidebarOpen &&
       mouseStatus === 'mouseup' &&
       canvasLines &&
       canvasLines[canvasLines.length - 1].points.length
@@ -97,7 +98,7 @@ const Art = ({
   }, [mouseStatus])
 
   useEffect(() => {
-    if (mouseStatus === 'mousedown' && mousePosition) {
+    if (mouseStatus === 'mousedown' && mousePosition && !isSidebarOpen) {
       addCanvasPoint({
         x: mousePosition.x - window.innerWidth / 2,
         y: window.innerHeight / 2 - mousePosition.y,
