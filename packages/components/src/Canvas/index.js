@@ -23,7 +23,10 @@ export default ({ width = 500, height = 500, backgroundColor, hd, lines }) => {
       canvas.current.width = width * ratio
       canvas.current.height = height * ratio
       canvas.current.getContext('2d').scale(ratio, ratio)
+      return
     }
+    canvas.current.width = width
+    canvas.current.height = height
   }, [canvas.current, width, height, hd])
 
   useEffect(() => {
