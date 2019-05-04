@@ -41,7 +41,7 @@ export default (state = defaultState, action) => {
       })
 
     case CANVAS_LINE_SETTINGS_UPDATE:
-      // AGGIORNA L'ULTIMA LINEA (es. cambia colore dal panellino ecc ecc)
+      // AGGIORNA L'ULTIMA LINEA (es. ne cambia colore dal panellino ecc ecc)
       return produce(state, draftState => {
         draftState.lines[draftState.lines.length - 1] = {
           ...draftState.lines[draftState.lines.length - 1],

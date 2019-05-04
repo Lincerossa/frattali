@@ -1,7 +1,7 @@
 import React from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
-import { Art, LoadUser, WelcomeUser } from './views'
+import { LoadUser, WelcomeUser, Art } from './views'
 
 import { AuthenticationRouteHandler } from './modules'
 

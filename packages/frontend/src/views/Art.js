@@ -1,4 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
+import styled from 'styled-components'
 import { connect } from 'react-redux'
 import {
   Sizeme,
@@ -8,18 +9,20 @@ import {
   InputRange,
   Sidebar,
   Checkbox,
+  Label,
+  Divider,
+  Fullscreen,
 } from 'components'
 import { MdSettings, MdClose } from 'react-icons/md'
-import { getUserPicture } from '../../Redux/auth/reducer'
+
+import { getUserPicture } from '../Redux/auth/reducer'
 import {
   getCanvasLines,
   getCanvasTitle,
   getCanvasBackground,
   getCanvasHd,
-} from '../../Redux/canvas/reducer'
-import * as actions from '../../Redux/canvas/actions'
-
-import * as S from './styles'
+} from '../Redux/canvas/reducer'
+import * as actions from '../Redux/canvas/actions'
 
 function useMouse() {
   const [mousePosition, setMousePosition] = useState(null)
@@ -110,7 +113,7 @@ const Art = ({
   const { divisions, color, thickness } = lastCanvasLine
 
   return (
-    <S.Art>
+    <Fullscreen>
       <Canvas
         hd={canvasHd}
         lines={canvasLines}
@@ -119,7 +122,7 @@ const Art = ({
         height={window.innerHeight}
       />
 
-      <S.Controllers>
+      <Controllers>
         <Button onClick={clearCanvas}>
           <MdClose />
         </Button>
@@ -127,15 +130,15 @@ const Art = ({
           <MdSettings />
         </Button>
         <Button backgroundImage={picture} />
-      </S.Controllers>
+      </Controllers>
 
       {isSidebarOpen && (
         <Sidebar onClose={() => toggleSidebar(false)}>
-          <S.PanelBlock>
-            <S.PanelBlockTitle>example</S.PanelBlockTitle>
+          <Divider>
+            <Label>example</Label>
             <Sizeme>
               {({ size }) => (
-                <S.CanvasWrapper>
+                <CanvasWrapper>
                   <Canvas
                     {...size}
                     backgroundColor={canvasBackground}
@@ -151,11 +154,11 @@ const Art = ({
                       },
                     ]}
                   />
-                </S.CanvasWrapper>
+                </CanvasWrapper>
               )}
             </Sizeme>
-          </S.PanelBlock>
-          <S.PanelBlock>
+          </Divider>
+          <Divider>
             <InputRange
               label="divisions"
               min={1}
@@ -163,8 +166,8 @@ const Art = ({
               value={divisions}
               onChange={divisions => updateCanvasLineSettings({ divisions })}
             />
-          </S.PanelBlock>
-          <S.PanelBlock>
+          </Divider>
+          <Divider>
             <InputRange
               label="line width"
               min={1}
@@ -172,33 +175,47 @@ const Art = ({
               value={thickness}
               onChange={thickness => updateCanvasLineSettings({ thickness })}
             />
-          </S.PanelBlock>
-          <S.PanelBlock>
+          </Divider>
+          <Divider>
             <ColorPicker
               color={color}
               setColor={color => updateCanvasLineSettings({ color })}
               label="line color"
             />
-          </S.PanelBlock>
-          <S.PanelBlock>
+          </Divider>
+          <Divider>
             <Checkbox
               checked={canvasHd}
               onClick={setCanvasHd}
               label="Chose HD version"
             />
-          </S.PanelBlock>
-          <S.PanelBlock>
+          </Divider>
+          <Divider>
             <ColorPicker
               color={canvasBackground}
               setColor={setCanvasBackground}
               label="background color"
             />
-          </S.PanelBlock>
+          </Divider>
         </Sidebar>
       )}
-    </S.Art>
+    </Fullscreen>
   )
 }
+
+const CanvasWrapper = styled.div`
+  position: relative;
+  height: 200px;
+`
+
+const Controllers = styled.div`
+  position: absolute;
+  right: 0.5rem;
+  top: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
 
 export default connect(
   state => ({
