@@ -8,6 +8,7 @@ import {
   CANVAS_TITLE_SET,
   CANVAS_HD_SET,
   CANVAS_BACKGROUND_SET,
+  CANVAS_UPDATE,
 } from './types'
 
 const defaultState = {
@@ -66,6 +67,9 @@ export default (state = defaultState, action) => {
         ...state,
         background: action.payload,
       }
+
+    case CANVAS_UPDATE:
+      return action.payload
 
     case CANVAS_CLEAR:
       return defaultState

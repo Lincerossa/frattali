@@ -5,6 +5,7 @@ import {
   CANVAS_CLEAR,
   CANVAS_TITLE_SET,
   CANVAS_HD_SET,
+  CANVAS_UPDATE,
   CANVAS_BACKGROUND_SET,
 } from './types'
 
@@ -35,5 +36,10 @@ export const setCanvasHd = payload => ({
 })
 export const setCanvasBackground = payload => ({
   type: CANVAS_BACKGROUND_SET,
+  payload,
+})
+
+export const updateCanvas = payload => ({
+  type: CANVAS_UPDATE,
   payload,
 })
