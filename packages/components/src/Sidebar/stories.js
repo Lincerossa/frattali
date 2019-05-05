@@ -3,6 +3,8 @@ import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
 import Sidebar from './index'
 
-storiesOf('Sidebar', module).add('default', () => (
-  <Sidebar onClose={action('chiuso')} />
-))
+storiesOf('Sidebar', module)
+  .add('default', () => <Sidebar onClose={action('chiuso')} />)
+  .add('from left', () => (
+    <Sidebar onClose={action('chiuso')} direction="left" />
+  ))

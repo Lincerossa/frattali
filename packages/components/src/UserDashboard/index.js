@@ -1,6 +1,9 @@
 import React from 'react'
 import * as S from './styles'
 import Image from '../Image'
+
+import Button from '../Button'
+
 export default ({
   username,
   picture,
@@ -8,6 +11,7 @@ export default ({
   LinkComponent,
   handleClose,
   handleLogout,
+  LogoutIcon,
 }) => (
   <S.UserDashboard>
     <S.ImageWrapper>
@@ -21,6 +25,10 @@ export default ({
           <LinkComponent to={link}>{text}</LinkComponent>
         </S.LinkWrapper>
       ))}
-    <div onClick={handleLogout}>logout</div>
+    <S.LogoutWrapper>
+      <Button onClick={handleLogout}>
+        <LogoutIcon />
+      </Button>
+    </S.LogoutWrapper>
   </S.UserDashboard>
 )

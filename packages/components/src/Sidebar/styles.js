@@ -13,8 +13,18 @@ export const Sidebar = styled.div`
 
   @media screen and (min-width: 768px) {
     width: 400px;
-    right: -400px;
-    left: auto;
+    ${props =>
+      props.direction === 'right' &&
+      `
+      right: -400px;
+      left: auto;
+    `}
+    ${props =>
+      props.direction === 'left' &&
+      `
+      left: -400px;
+      right: auto;
+    `}
   }
 `
 
