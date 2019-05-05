@@ -4,6 +4,9 @@ import { ThemeProvider } from 'styled-components'
 import { Provider } from 'react-redux'
 import { createStore, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
+import { persistStore, persistReducer } from 'redux-persist'
+import { PersistGate } from 'redux-persist/integration/react'
+import storage from 'redux-persist/lib/storage'
 
 import rootReducer from './Redux'
 import GlobalStyle from './styles/global'
@@ -11,20 +14,32 @@ import theme from './styles/theme'
 import * as serviceWorker from './serviceWorker'
 import Routes from './Routes'
 
+const persistConfig = {
+  key: 'auth',
+  storage,
+  blacklist: ['canvas'],
+}
+
+const persistedReducer = persistReducer(persistConfig, rootReducer)
+
 const store = createStore(
-  rootReducer,
+  persistedReducer,
   compose(
     applyMiddleware(thunk),
     window.devToolsExtension ? window.devToolsExtension() : f => f
   )
 )
 
+let persistor = persistStore(store)
+
 const App = () => (
   <Provider store={store}>
-    <GlobalStyle />
-    <ThemeProvider theme={theme}>
-      <Routes />
-    </ThemeProvider>
+    <PersistGate loading={null} persistor={persistor}>
+      <GlobalStyle />
+      <ThemeProvider theme={theme}>
+        <Routes />
+      </ThemeProvider>
+    </PersistGate>
   </Provider>
 )
 
