@@ -144,7 +144,11 @@ const Art = ({
         <Sidebar onClose={() => toggleSidebar(false)}>
           <Divider>
             <CanvasThing>
-              <Button onClick={() => savePainting(canvas)}>
+              <Button
+                onClick={() =>
+                  savePainting({ ...canvas, datetime: new Date() })
+                }
+              >
                 <MdSave />
               </Button>
               <Button onClick={clearCanvas}>
