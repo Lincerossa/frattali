@@ -4,6 +4,13 @@ export const ImageWrapper = styled.div`
   position: relative;
   padding-top: 100%;
   width: 100%;
+
+  ${props =>
+    props.round &&
+    `
+    border-radius: 50%;
+    overflow: hidden;
+  `}
 `
 
 export const Image = styled.div`
