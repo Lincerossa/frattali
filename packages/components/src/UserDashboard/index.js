@@ -14,9 +14,11 @@ export default ({
   LogoutIcon,
 }) => (
   <S.UserDashboard>
-    <S.ImageWrapper>
-      <Image round picture={picture} />
-    </S.ImageWrapper>
+    <LinkComponent to="/">
+      <S.ImageWrapper>
+        <Image round picture={picture} />
+      </S.ImageWrapper>
+    </LinkComponent>
     <S.Username>{username}</S.Username>
     {links &&
       links.length > 0 &&

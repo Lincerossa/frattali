@@ -15,6 +15,10 @@ export const Username = styled.div`
 
 export const ImageWrapper = styled.div`
   margin-bottom: 1rem;
+  max-width: 50%;
+  border: 1px solid red;
+  transform: translate(50%,0);
+}
 `
 
 export const LinkWrapper = styled.div`
