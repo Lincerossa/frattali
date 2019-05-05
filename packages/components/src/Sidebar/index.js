@@ -7,10 +7,14 @@ export default ({ children, onClose }) => {
   const sidebar = useRef()
 
   function handleClose() {
+    if (window.innerWidth < 768) {
+      onClose()
+      return
+    }
     anime({
       targets: sidebar.current,
       easing: 'easeInOutExpo',
-      right: '-60%',
+      right: '-400px',
       complete: () => {
         onClose()
       },

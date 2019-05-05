@@ -2,14 +2,20 @@ import styled from 'styled-components'
 
 export const Sidebar = styled.div`
   position: absolute;
-  width: 60%;
-  right: -60%;
+  left: 0;
+  right: 0;
   top: 0;
   bottom: 0;
   background: #343434;
   overflow-y: scroll;
   padding: 1rem;
   padding-top: 2.5rem;
+
+  @media screen and (min-width: 768px) {
+    width: 400px;
+    right: -400px;
+    left: auto;
+  }
 `
 
 export const Close = styled.div`
