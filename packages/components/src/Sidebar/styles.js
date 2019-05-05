@@ -6,7 +6,7 @@ export const Sidebar = styled.div`
   right: 0;
   top: 0;
   bottom: 0;
-  background: #343434;
+  background: ${props => props.theme.colors.dark};
   overflow-y: scroll;
   padding: 1rem;
   padding-top: 2.5rem;
