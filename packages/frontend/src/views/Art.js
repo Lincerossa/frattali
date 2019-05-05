@@ -12,6 +12,7 @@ import {
   Label,
   Divider,
   Fullscreen,
+  TextInput,
 } from 'components'
 import { MdSettings, MdClose } from 'react-icons/md'
 
@@ -141,7 +142,13 @@ const Art = ({
       {isSidebarOpen && (
         <Sidebar onClose={() => toggleSidebar(false)}>
           <Divider>
-            <Label>{canvasTitle}</Label>
+            <TextInput
+              label="Title"
+              value={canvasTitle}
+              onChange={setCanvasTitle}
+            />
+          </Divider>
+          <Divider>
             <Sizeme>
               {({ size }) => (
                 <CanvasWrapper>
