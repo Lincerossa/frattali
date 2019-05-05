@@ -22,7 +22,13 @@ import {
   getCanvasBackground,
   getCanvasHd,
 } from '../Redux/canvas/reducer'
-import * as actions from '../Redux/canvas/actions'
+import * as canvasActions from '../Redux/canvas/actions'
+import * as authActions from '../Redux/auth/actions'
+
+const actions = {
+  ...authActions,
+  ...canvasActions,
+}
 
 function useMouse() {
   const [mousePosition, setMousePosition] = useState(null)
@@ -85,6 +91,7 @@ const Art = ({
   setCanvasTitle,
   setCanvasHd,
   setCanvasBackground,
+  logoutAuth,
 }) => {
   const { mousePosition, mouseStatus } = useMouse()
   const [isSidebarOpen, toggleSidebar] = useState(null)
@@ -110,7 +117,7 @@ const Art = ({
   }, [mousePosition, mouseStatus])
 
   const lastCanvasLine = canvasLines[canvasLines.length - 1]
-  const { divisions, color, thickness } = lastCanvasLine
+  const { divisions, color, thickness, lines } = lastCanvasLine
 
   return (
     <Fullscreen>
@@ -121,6 +128,9 @@ const Art = ({
         width={window.innerWidth}
         height={window.innerHeight}
       />
+      <UserController>
+        <Button backgroundImage={picture} onClick={logoutAuth} />
+      </UserController>
 
       <Controllers>
         <Button onClick={clearCanvas}>
@@ -129,13 +139,12 @@ const Art = ({
         <Button onClick={() => toggleSidebar(true)}>
           <MdSettings />
         </Button>
-        <Button backgroundImage={picture} />
       </Controllers>
 
       {isSidebarOpen && (
         <Sidebar onClose={() => toggleSidebar(false)}>
           <Divider>
-            <Label>example</Label>
+            <Label>{canvasTitle}</Label>
             <Sizeme>
               {({ size }) => (
                 <CanvasWrapper>
@@ -206,6 +215,12 @@ const Art = ({
 const CanvasWrapper = styled.div`
   position: relative;
   height: 200px;
+`
+
+const UserController = styled.div`
+  position: absolute;
+  left: 0.5rem;
+  top: 0.5rem;
 `
 
 const Controllers = styled.div`
