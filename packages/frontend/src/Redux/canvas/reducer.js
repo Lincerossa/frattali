@@ -1,4 +1,5 @@
 import produce from 'immer'
+import uuidv5 from 'uuid'
 import {
   CANVAS_POINT_ADD,
   CANVAS_LINE_ADD,
@@ -13,6 +14,7 @@ const defaultState = {
   title: 'main canvas',
   background: 'violet',
   hd: false,
+  id: uuidv5(),
   lines: [
     {
       color: 'black',

@@ -17,7 +17,8 @@
     "redux-devtools-extension": "^2.13.8",
     "redux-persist": "^5.10.0",
     "redux-thunk": "^2.3.0",
-    "styled-components": "^4.2.0"
+    "styled-components": "^4.2.0",
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "react-scripts": "2.1.1"
