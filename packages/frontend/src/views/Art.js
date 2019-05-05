@@ -9,12 +9,11 @@ import {
   InputRange,
   Sidebar,
   Checkbox,
-  Label,
   Divider,
   Fullscreen,
   TextInput,
 } from 'components'
-import { MdSettings, MdClose } from 'react-icons/md'
+import { MdSettings, MdClose, MdSave } from 'react-icons/md'
 
 import { getUserPicture } from '../Redux/auth/reducer'
 import {
@@ -22,13 +21,16 @@ import {
   getCanvasTitle,
   getCanvasBackground,
   getCanvasHd,
+  getCanvas,
 } from '../Redux/canvas/reducer'
 import * as canvasActions from '../Redux/canvas/actions'
 import * as authActions from '../Redux/auth/actions'
+import * as paintings from '../Redux/paintings/actions'
 
 const actions = {
   ...authActions,
   ...canvasActions,
+  ...paintings,
 }
 
 function useMouse() {
@@ -81,6 +83,7 @@ function useMouse() {
 
 const Art = ({
   picture,
+  canvas,
   canvasTitle,
   canvasBackground,
   canvasLines,
@@ -93,6 +96,7 @@ const Art = ({
   setCanvasHd,
   setCanvasBackground,
   logoutAuth,
+  savePainting,
 }) => {
   const { mousePosition, mouseStatus } = useMouse()
   const [isSidebarOpen, toggleSidebar] = useState(null)
@@ -131,9 +135,6 @@ const Art = ({
       />
 
       <Controllers>
-        <Button onClick={clearCanvas}>
-          <MdClose />
-        </Button>
         <Button onClick={() => toggleSidebar(true)}>
           <MdSettings />
         </Button>
@@ -141,6 +142,16 @@ const Art = ({
 
       {isSidebarOpen && (
         <Sidebar onClose={() => toggleSidebar(false)}>
+          <Divider>
+            <CanvasThing>
+              <Button onClick={() => savePainting(canvas)}>
+                <MdSave />
+              </Button>
+              <Button onClick={clearCanvas}>
+                <MdClose />
+              </Button>
+            </CanvasThing>
+          </Divider>
           <Divider>
             <TextInput
               label="Title"
@@ -229,6 +240,9 @@ const Controllers = styled.div`
   align-items: center;
   justify-content: center;
 `
+const CanvasThing = styled.div`
+  display: flex;
+`
 
 export default connect(
   state => ({
@@ -237,6 +251,7 @@ export default connect(
     canvasTitle: getCanvasTitle(state),
     canvasBackground: getCanvasBackground(state),
     canvasHd: getCanvasHd(state),
+    canvas: getCanvas(state),
   }),
   actions
 )(Art)
