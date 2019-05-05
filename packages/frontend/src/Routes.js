@@ -1,7 +1,7 @@
 import React from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
-import { LoadUser, WelcomeUser, Art } from './views'
+import { LoadUser, WelcomeUser, Art, Paintings } from './views'
 
 import { AuthenticationRouteHandler, Layout } from './modules'
 
@@ -33,10 +33,7 @@ export default () => (
     <Switch>
       <Route path="/loaduser" component={LoadUser} />
       <Route path="/welcomeuser" component={withAuth(WelcomeUser)} />
-      <Route
-        path="/paintings"
-        component={withAuth(withLayout(() => <div>paintings</div>))}
-      />
+      <Route path="/paintings" component={withAuth(withLayout(Paintings))} />
       <Route path="/" component={withAuth(withLayout(Art))} />
     </Switch>
   </BrowserRouter>
