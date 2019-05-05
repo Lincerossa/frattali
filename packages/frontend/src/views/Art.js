@@ -128,9 +128,6 @@ const Art = ({
         width={window.innerWidth}
         height={window.innerHeight}
       />
-      <UserController>
-        <Button backgroundImage={picture} onClick={logoutAuth} />
-      </UserController>
 
       <Controllers>
         <Button onClick={clearCanvas}>
@@ -215,12 +212,6 @@ const Art = ({
 const CanvasWrapper = styled.div`
   position: relative;
   height: 200px;
-`
-
-const UserController = styled.div`
-  position: absolute;
-  left: 0.5rem;
-  top: 0.5rem;
 `
 
 const Controllers = styled.div`
