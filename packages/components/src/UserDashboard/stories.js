@@ -3,9 +3,9 @@ import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
 import UserDashboard from './index'
 
-storiesOf('Sidebar', module).add('default', () => (
+storiesOf('UserDashboard', module).add('default', () => (
   <UserDashboard
-    onClose={action('chiuso')}
+    handleLogout={action('chiuso')}
     username="marcello luatti"
     LinkComponent={({ children, ...props }) => (
       <a href={props.to}>{children}</a>
@@ -16,6 +16,7 @@ storiesOf('Sidebar', module).add('default', () => (
         link: '/paintings',
       },
     ]}
+    LogoutIcon={() => <div>L</div>}
     picture="https://www.unsplash.it/300/400"
   />
 ))
