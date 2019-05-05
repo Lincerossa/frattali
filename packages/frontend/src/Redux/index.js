@@ -5,10 +5,12 @@ import { persistStore, persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import auth from './auth/reducer'
 import canvas from './canvas/reducer'
+import paintings from './paintings/reducer'
 
 const rootReducer = combineReducers({
   auth,
   canvas,
+  paintings,
 })
 
 const persistConfig = {
