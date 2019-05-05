@@ -18,10 +18,6 @@ const withLayout = Component => props => {
     <Layout
       links={[
         {
-          text: 'home',
-          link: '/',
-        },
-        {
           text: 'paintings',
           link: '/paintings',
         },

@@ -79,3 +79,4 @@ export const getCanvasLines = state => state.canvas.lines
 export const getCanvasTitle = state => state.canvas.title
 export const getCanvasBackground = state => state.canvas.background
 export const getCanvasHd = state => state.canvas.hd
+export const getCanvas = state => state.canvas
