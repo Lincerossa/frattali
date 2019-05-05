@@ -13,6 +13,7 @@ export default ({ children, onClose, direction = 'right' }) => {
     }
     anime({
       targets: sidebar.current,
+      duration: 250,
       easing: 'easeInOutExpo',
       ...(direction === 'right' && { right: '-400px' }),
       ...(direction === 'left' && { left: '-400px' }),
@@ -27,6 +28,7 @@ export default ({ children, onClose, direction = 'right' }) => {
 
     anime({
       targets: sidebar.current,
+      duration: 250,
       easing: 'easeInOutExpo',
       ...(direction === 'right' && { right: '0' }),
       ...(direction === 'left' && { left: '0' }),
