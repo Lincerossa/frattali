@@ -2,8 +2,6 @@ import styled from 'styled-components'
 
 export const Sidebar = styled.div`
   position: absolute;
-  left: 0;
-  right: 0;
   top: 0;
   bottom: 0;
   background: ${props => props.theme.colors.dark};
@@ -11,21 +9,17 @@ export const Sidebar = styled.div`
   padding: 1rem;
   padding-top: 2.5rem;
 
-  @media screen and (min-width: 768px) {
-    width: 400px;
-    ${props =>
-      props.direction === 'right' &&
-      `
-      right: -400px;
-      left: auto;
-    `}
-    ${props =>
-      props.direction === 'left' &&
-      `
-      left: -400px;
-      right: auto;
-    `}
-  }
+  width: 300px;
+  ${props =>
+    props.direction === 'right' &&
+    `
+    right: -300px;
+  `}
+  ${props =>
+    props.direction === 'left' &&
+    `
+    left: -300px;
+  `}
 `
 
 export const Close = styled.div`

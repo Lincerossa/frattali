@@ -7,10 +7,6 @@ export default ({ children, onClose, direction = 'right' }) => {
   const sidebar = useRef()
 
   function handleClose() {
-    if (window.innerWidth < 768) {
-      onClose()
-      return
-    }
     anime({
       targets: sidebar.current,
       duration: 250,
