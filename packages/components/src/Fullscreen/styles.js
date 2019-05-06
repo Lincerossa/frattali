@@ -5,6 +5,11 @@ export const Fullscreen = styled.div`
   top: 0;
   left: 0;
   right: 0;
+  ${props =>
+    props.opacity &&
+    `
+    opacity: ${props.opacity}
+  `};
   bottom: 0;
   display: flex;
   align-items: center;

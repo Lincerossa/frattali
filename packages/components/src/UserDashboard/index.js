@@ -1,7 +1,7 @@
 import React from 'react'
 import * as S from './styles'
 import Image from '../Image'
-
+import { MdArrowForward } from 'react-icons/md'
 import Button from '../Button'
 
 export default ({
@@ -24,7 +24,9 @@ export default ({
       links.length > 0 &&
       links.map(({ text, link }) => (
         <S.LinkWrapper>
-          <LinkComponent to={link}>{text}</LinkComponent>
+          <LinkComponent to={link}>
+            {text} <MdArrowForward />
+          </LinkComponent>
         </S.LinkWrapper>
       ))}
     <S.LogoutWrapper>

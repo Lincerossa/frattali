@@ -8,17 +8,18 @@ export const Sidebar = styled.div`
   overflow-y: scroll;
   padding: 1rem;
   padding-top: 2.5rem;
+  z-index: 1;
 
-  width: 300px;
+  width: 280px;
   ${props =>
     props.direction === 'right' &&
     `
-    right: -300px;
+    right: -280px;
   `}
   ${props =>
     props.direction === 'left' &&
     `
-    left: -300px;
+    left: -280px;
   `}
 `
 
@@ -36,7 +37,11 @@ export const Close = styled.div`
   color: white;
   cursor: pointer;
   &:hover {
-    color: #9c27b0;
-    border: 2px solid #9c27b0;
+    color: ${props => props.theme.colors.main};
+    border: 2px solid ${props => props.theme.colors.main};
   }
+`
+
+export const SidebarOpacity = styled.div`
+  position: absoliute;
 `

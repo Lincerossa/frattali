@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from 'react'
 import anime from 'animejs'
 import { MdClose } from 'react-icons/md'
 import * as S from './styles'
+import Fullscreen from '../Fullscreen'
 
 export default ({ children, onClose, direction = 'right' }) => {
   const sidebar = useRef()
@@ -11,8 +12,8 @@ export default ({ children, onClose, direction = 'right' }) => {
       targets: sidebar.current,
       duration: 250,
       easing: 'easeInOutExpo',
-      ...(direction === 'right' && { right: '-400px' }),
-      ...(direction === 'left' && { left: '-400px' }),
+      ...(direction === 'right' && { right: '-280px' }),
+      ...(direction === 'left' && { left: '-280px' }),
       complete: () => {
         onClose()
       },
@@ -32,11 +33,14 @@ export default ({ children, onClose, direction = 'right' }) => {
   }, [sidebar])
 
   return (
-    <S.Sidebar ref={sidebar} direction={direction}>
-      <S.Close onClick={handleClose}>
-        <MdClose />
-      </S.Close>
-      {children}
-    </S.Sidebar>
+    <>
+      <S.Sidebar ref={sidebar} direction={direction}>
+        <S.Close onClick={handleClose}>
+          <MdClose />
+        </S.Close>
+        {children}
+      </S.Sidebar>
+      <Fullscreen backgroundColor="black" opacity={0.3} />
+    </>
   )
 }
