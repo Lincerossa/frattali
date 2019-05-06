@@ -9,7 +9,7 @@ export const InputRange = styled.input`
   height: .5rem;
   border-radius: .5rem;
   position: relative;
- 
+  cursor: pointer;
   z-index: 1;
 
   &:active, &:focus{
@@ -34,11 +34,11 @@ export const InputRange = styled.input`
     padding: .5rem;
     border-radius: 50%;
     top: 50%;
-    cursor: pointer;
     font-size: 1rem;
     display: flex;
     align-items: center;
     justify-content: center;
+    
   }
 
 `
