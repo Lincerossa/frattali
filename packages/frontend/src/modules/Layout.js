@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Sidebar, UserDashboard, Button } from 'components'
-import { MdSettings, MdExitToApp } from 'react-icons/md'
+import { MdViewList, MdExitToApp } from 'react-icons/md'
 import styled from 'styled-components'
 
 import { getUserPicture, getUserName } from './../Redux/auth/reducer'
@@ -16,7 +16,7 @@ const Layout = ({ children, username, picture, links, logoutAuth }) => {
       {children}
       <UserController>
         <Button onClick={() => setIsUserDashboardOpen(true)}>
-          <MdSettings />
+          <MdViewList />
         </Button>
       </UserController>
       {isUserDashboardOpen && (
