@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Fullscreen } from 'components'
 
@@ -17,13 +17,14 @@ const actions = {
   ...canvasActions,
 }
 
-const Art = ({ paintings, canvas, removePainting, updateCanvas }) => {
+const Art = ({ paintings, canvas, removePainting, updateCanvas, history }) => {
   const [currentId, selectCurrentID] = useState(canvas.id)
 
   useEffect(() => {
     if (currentId !== canvas.id) {
       const newCanvas = paintings.find(painting => painting.id === currentId)
       updateCanvas(newCanvas)
+      history.push('/')
     }
   }, [currentId])
 
@@ -40,9 +41,6 @@ const Art = ({ paintings, canvas, removePainting, updateCanvas }) => {
               >
                 {e.title}
               </PaintingTitle>
-              <PaintingLink>
-                <Link to="/">-></Link>
-              </PaintingLink>
             </Painting>
           ))}
       </Paintings>
@@ -61,14 +59,15 @@ const Painting = styled.div`
   border: 1px solid white;
   height: 2rem;
   margin-bottom: 0.25rem;
+  position: relative;
 `
 const PaintingTitle = styled.div`
-  flex-basis: 100%;
   color: ${props => (props.isActive ? props.theme.colors.main : 'white')};
   background-color: ${props => (props.isActive ? 'white' : 'auto')};
   padding: 0.25rem;
   display: flex;
   align-items: center;
+  flex-basis: 100%;
 
   &:hover {
     background-color: white;
@@ -78,8 +77,12 @@ const PaintingTitle = styled.div`
 `
 
 const PaintingLink = styled.div`
-  flex-basis: 50px;
-  background: #ab01ff;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  width: 45px;
+  background: ${props => props.theme.colors.main};
   a {
     color: white;
   }
@@ -94,4 +97,4 @@ export default connect(
     canvas: getCanvas(state),
   }),
   actions
-)(Art)
+)(withRouter(Art))
