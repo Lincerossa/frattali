@@ -12,6 +12,7 @@ import {
   Divider,
   Fullscreen,
   TextInput,
+  Label,
 } from 'components'
 import { MdSettings, MdClose, MdSave } from 'react-icons/md'
 
@@ -143,16 +144,17 @@ const Art = ({
       {isSidebarOpen && (
         <Sidebar onClose={() => toggleSidebar(false)}>
           <Divider>
+            <Label>Actions</Label>
             <CanvasThing>
+              <Button onClick={clearCanvas}>
+                <MdClose />
+              </Button>
               <Button
                 onClick={() =>
                   savePainting({ ...canvas, datetime: new Date() })
                 }
               >
                 <MdSave />
-              </Button>
-              <Button onClick={clearCanvas}>
-                <MdClose />
               </Button>
             </CanvasThing>
           </Divider>
