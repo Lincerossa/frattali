@@ -157,15 +157,6 @@ const Art = ({
                 <MdSave />
               </Button>
             </CanvasThing>
-          </Divider>
-          <Divider>
-            <TextInput
-              label="Title"
-              value={canvasTitle}
-              onChange={setCanvasTitle}
-            />
-          </Divider>
-          <Divider>
             <Sizeme>
               {({ size }) => (
                 <CanvasWrapper>
@@ -187,6 +178,13 @@ const Art = ({
                 </CanvasWrapper>
               )}
             </Sizeme>
+          </Divider>
+          <Divider>
+            <TextInput
+              label="Title"
+              value={canvasTitle}
+              onChange={setCanvasTitle}
+            />
           </Divider>
           <Divider>
             <InputRange
@@ -248,6 +246,7 @@ const Controllers = styled.div`
 `
 const CanvasThing = styled.div`
   display: flex;
+  margin-bottom: 1rem;
 `
 
 export default connect(
