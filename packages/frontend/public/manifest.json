@@ -1,13 +1,19 @@
 {
   "short_name": "Frattali",
   "name": "Frattali",
-  "icons": [
-    {
-      "src": "favicon.ico",
-      "sizes": "144x144 64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
-    }
-  ],
+  "icons": [{
+    "src": "https://practicaldev-herokuapp-com.freetls.fastly.net/assets/devlogo-pwa-192-b92c1c02f2f63967c2889ba04a4d7bc61da640a6dbe419d65703b1282c96b46c.png",
+    "sizes": "192x192",
+    "type": "image/png"
+  }, {
+    "src": "https://practicaldev-herokuapp-com.freetls.fastly.net/assets/devlogo-pwa-128-e49191af946d2cd2106dcd0b3da0a89731c65917c2c18b18eaf1995f46ae4db3.png",
+    "sizes": "128x128",
+    "type": "image/png"
+  }, {
+    "src": "https://practicaldev-herokuapp-com.freetls.fastly.net/assets/devlogo-pwa-512-444d3f1893347145a99bc0a37312eacc8aa664dcac502882ea952454c3588913.png",
+    "sizes": "512x512",
+    "type": "image/png"
+  }],
   "start_url": ".",
   "display": "fullscreen",
   "theme_color": "#ac00ff",
