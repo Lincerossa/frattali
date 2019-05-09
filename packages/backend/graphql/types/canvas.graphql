@@ -1,0 +1,46 @@
+type Line {
+  color: String,
+  thickness: Float,
+  divisions: Float,
+  points: [Float]
+}
+
+type Canvas {
+  title: String,
+  background: String,
+  hd: Boolean,
+  id: String,
+  lines: [Line]
+}
+
+
+input LineInput {
+  color: String,
+  thickness: Float,
+  divisions: Float,
+  points: [Float]
+}
+
+
+input CanvasInput {
+  title: String,
+  background: String,
+  hd: Boolean,
+  id: String,
+  lines: [LineInput]
+}
+
+
+type Query {
+  getCanvas(id: String): Canvas
+}
+
+
+type Mutation {
+  createCanvas(input: CanvasInput): ID
+}
+
+schema {
+  query: Query
+  mutation: Mutation
+}

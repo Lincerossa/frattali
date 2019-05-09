@@ -1,7 +1,7 @@
-const { mergeResolvers } = require("merge-graphql-schemas");
-const paint = require("./paint");
-const user = require("./user");
+const { mergeResolvers } = require('merge-graphql-schemas')
+const canvas = require('./canvas')
+const user = require('./user')
 
-const resolvers = [paint, user];
+const resolvers = [canvas, user]
 
-module.exports = mergeResolvers(resolvers);
+module.exports = mergeResolvers(resolvers)
