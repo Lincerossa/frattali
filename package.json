@@ -25,6 +25,7 @@
     "frontend": "cd packages/frontend && npm start",
     "components": "cd packages/components && npm run start",
     "backend": "cd packages/backend && npm start",
+    "database": "cd packages && mongod --dbpath ./db/",
     "frontend:deploy": "cd packages/frontend && npm run build",
     "backend:deploy": "cd packages/backend && npm run now"
   },
