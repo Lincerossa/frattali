@@ -14,6 +14,8 @@ import {
   TextInput,
   Label,
 } from 'components'
+import { Mutation } from 'react-apollo'
+import { gql } from 'apollo-boost'
 import { MdSettings, MdClose, MdSave } from 'react-icons/md'
 
 import { getUserPicture } from '../Redux/auth/reducer'
@@ -125,6 +127,26 @@ const Art = ({
   const lastCanvasLine = canvasLines[canvasLines.length - 1]
   const { divisions, color, thickness, lines } = lastCanvasLine
 
+  const CREATE_CANVAS = gql`
+    mutation createCanvas(
+      $title: String
+      $background: String
+      $hd: Boolean
+      $id: String
+      $lines: [LineInput]
+    ) {
+      createCanvas(
+        input: {
+          title: $title
+          background: $background
+          hd: $hd
+          id: $id
+          lines: $lines
+        }
+      )
+    }
+  `
+
   return (
     <Fullscreen>
       <Canvas
@@ -149,6 +171,7 @@ const Art = ({
               <Button onClick={clearCanvas}>
                 <MdClose />
               </Button>
+
               <Button
                 onClick={() =>
                   savePainting({ ...canvas, datetime: new Date() })
@@ -156,6 +179,10 @@ const Art = ({
               >
                 <MdSave />
               </Button>
+
+              <Mutation mutation={CREATE_CANVAS} variables={canvas}>
+                {createCanvas => <div onClick={createCanvas}>Mongo</div>}
+              </Mutation>
             </CanvasThing>
             <Sizeme>
               {({ size }) => (

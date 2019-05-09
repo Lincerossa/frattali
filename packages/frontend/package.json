@@ -3,10 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "apollo-boost": "^0.3.1",
     "auth0-js": "^9.10.0",
     "components": "1.0.0",
+    "graphql": "^14.3.0",
     "immer": "^1.9.3",
     "react": "^16.8.6",
+    "react-apollo": "^2.5.5",
     "react-color": "^2.14.1",
     "react-dom": "16.8.0",
     "react-icons": "^3.2.2",
