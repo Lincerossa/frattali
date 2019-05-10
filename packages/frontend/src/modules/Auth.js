@@ -6,6 +6,7 @@ export default class Auth {
     clientID: 'lXyjMT1ERhZJE3RE35cS8rlllIo2XGht',
     redirectUri: process.env.REACT_APP_AUTH_REDIRECT,
     responseType: 'token id_token',
+    audience: 'https://geoideas.auth0.com/api/v2/',
     scope: 'openid profile email read:users user_id id',
   })
 
