@@ -1,7 +1,7 @@
 const express = require('express')
 const jwt = require('jsonwebtoken')
 const jwksClient = require('jwks-rsa')
-const { ApolloServer } = require('apollo-server-express')
+const { ApolloServer, ApolloError } = require('apollo-server-express')
 const mongoose = require('mongoose')
 
 const schema = require('./graphql')
@@ -25,7 +25,6 @@ const options = {
   audience: process.env.CLIENT_ID,
   issuer: `https://${process.env.AUTH_DOMAIN}/`,
   algorithms: ['RS256'],
-  jwtid: 'jwtid',
 }
 
 mongoose.connect(process.env.MONGOOSE_URI)
@@ -40,18 +39,16 @@ db.once('open', function() {
     context: async ({ req }) => {
       const token = req.headers.authorization
 
-      console.log({ token })
-      const user = new Promise((resolve, reject) => {
+      const user = await new Promise((resolve, reject) => {
         jwt.verify(token, getKey, options, (err, decoded) => {
-          console.log('dddd', decoded)
           if (err) {
-            return reject(err)
+            throw new ApolloError('must authenticate')
           }
           resolve(decoded.email)
         })
       })
 
-      console.log({ user })
+      console.log('autenticato')
 
       return {
         user,
