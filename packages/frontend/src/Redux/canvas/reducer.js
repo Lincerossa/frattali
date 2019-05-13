@@ -30,9 +30,13 @@ export default (state = defaultState, action) => {
   switch (action.type) {
     case CANVAS_POINT_ADD:
       return produce(state, draftState => {
-        draftState.lines[draftState.lines.length - 1].points.push(
-          action.payload
-        )
+        const previousPoints =
+          draftState.lines[draftState.lines.length - 1].points
+        draftState.lines[draftState.lines.length - 1].points = [
+          ...previousPoints,
+          action.payload.x,
+          action.payload.y,
+        ]
       })
 
     case CANVAS_LINE_ADD:

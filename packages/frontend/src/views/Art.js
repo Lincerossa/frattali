@@ -195,10 +195,9 @@ const Art = ({
                         divisions,
                         color,
                         thickness,
-                        points: Array.from({ length: 20 }, (index, e) => ({
-                          x: 0,
-                          y: e * 4 + 30,
-                        })),
+                        points: Array.from({ length: 20 }, (index, e) =>
+                          index % 2 === 0 ? 0 : e * 4 + 30
+                        ),
                       },
                     ]}
                   />

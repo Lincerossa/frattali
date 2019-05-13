@@ -30,8 +30,24 @@ function getFrattaliLines({ divisions, points, center }) {
 
 export const drawLines = ({ ctx, lines, center }) => {
   for (let l = 0; l < lines.length; l++) {
-    const { divisions, color, thickness, points } = lines[l]
+    const { divisions, color, thickness, points: pp } = lines[l]
 
+    // siccome salvo un array di numeri
+    // qui lo riconverto in array
+    const points = pp.reduce((acc, val, index) => {
+      if (!acc[Math.floor(index / 2)]) {
+        acc.push({ x: null, y: null })
+      }
+      if (index % 2 === 0) {
+        acc[Math.floor(index / 2)].x = val
+      }
+
+      if (index % 2 === 1) {
+        acc[Math.floor(index / 2)].y = val
+      }
+
+      return acc
+    }, [])
     const frattaliLines = getFrattaliLines({ divisions, points, center })
 
     for (let i = 0; i < frattaliLines.length; i++) {
